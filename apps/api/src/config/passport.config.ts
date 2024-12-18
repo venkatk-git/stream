@@ -1,16 +1,17 @@
 import passport, { DoneCallback, Profile } from 'passport';
 import GoogleStratergy from 'passport-google-oauth20';
 
-import { InMemorySessionStore } from '../temp/InMemorySessionStore';
-const store = new InMemorySessionStore();
+import { User } from '../lib/types';
+
+import Users from '../models/user.model';
 
 // Serialization & Deserialization
-passport.serializeUser((userId: string, done: DoneCallback) => {
-  done(null, userId);
+passport.serializeUser((user: User, done: DoneCallback) => {
+  done(null, user._id);
 });
 
-passport.deserializeUser((userId: string, done: DoneCallback) => {
-  done(null, store.getGoogleId(userId));
+passport.deserializeUser(async (userId: string, done: DoneCallback) => {
+  done(null, await Users.findById(userId));
 });
 
 // Passport Middleware
@@ -22,22 +23,30 @@ passport.use(
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
       callbackURL: '/auth/google/cb',
     },
-    (
+    async (
       accessToken: string,
       refreshToken: string,
       profile: Profile,
       done: DoneCallback
-    ) => {
+    ) => {  
       // passport cb function
-        if (store.containsGoogleId(profile.id)) {
-        console.log('Existing User: ', store.getUser(profile.id));
-        done(null, store.getUser(profile.id));
+      const user = await Users.findOne({ googleId: profile.id });
+      
+      if (user) {
+        console.log('Existing User: ', user);
+        done(null, user);
         return;
       }
 
-      store.setGoogleId(profile.id);
-      done(null, store.getUser(profile.id));
-      console.log('New User: ', store.getUser(profile.id));
+      const newUser = new Users({
+        username: profile.displayName,
+        googleId: profile.id,
+      });
+
+      await newUser.save();
+
+      done(null, newUser);
+      console.log('New User: ', newUser);
     }
   )
 );

@@ -11,7 +11,8 @@ router.get(
 );
 
 router.get('/google/cb', passport.authenticate('google'), (req, res) => {
-  res.send(req.headers);
+  res.redirect('/protected');
 });
+
 
 export default router;

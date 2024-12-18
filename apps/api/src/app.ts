@@ -6,6 +6,7 @@ import session from 'express-session';
 import passport from 'passport';
 
 import authRouter from './routes/auth.router';
+import testRouter from './routes/test.router';
 
 const app = express();
 
@@ -31,13 +32,14 @@ app.use(helmet());
  **/
 app.use(
   session({
-    name: 'sid',
+    name: 'session_id',
     resave: false,
-    secret: process.env.COOKIE_SECRET,
     saveUninitialized: false,
+    secret: process.env.COOKIE_SECRET,
     cookie: {
-      secure: false,
       maxAge: 1000 * 60 * 60 * 24,
+      secure: 'auto',
+      httpOnly: true,
     },
   })
 );
@@ -48,5 +50,7 @@ app.use(passport.session());
 
 // Authentication
 app.use('/auth', authRouter);
+
+app.use('/', testRouter);
 
 export default app;
