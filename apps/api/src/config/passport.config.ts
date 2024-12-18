@@ -28,10 +28,10 @@ passport.use(
       refreshToken: string,
       profile: Profile,
       done: DoneCallback
-    ) => {  
+    ) => {
       // passport cb function
       const user = await Users.findOne({ googleId: profile.id });
-      
+
       if (user) {
         console.log('Existing User: ', user);
         done(null, user);

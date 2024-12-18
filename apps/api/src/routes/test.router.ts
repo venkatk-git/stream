@@ -1,12 +1,15 @@
 import { Router } from 'express';
+import { ExtendedRequest } from '../lib/types';
 
 const router = Router();
 
 router.get(
   '/protected',
-  (req, res, next) => {
-    if (!req.headers.cookie) {
-      res.redirect('/auth/google');
+  (req: ExtendedRequest, res, next) => {
+    console.log(req.session);
+
+    if (!req.session || !req.session.user) {
+      res.status(401).redirect('/auth/google');
       return;
     }
 

@@ -1,5 +1,7 @@
 import express from 'express';
 import mongoose from 'mongoose';
+import Redis from 'ioredis';
+import { RedisStore } from 'connect-redis';
 
 import helmet from 'helmet';
 import session from 'express-session';
@@ -27,18 +29,25 @@ mongoose
 app.use(helmet());
 
 /**
+ ** Using ioredis as a scalable alternative to express-session's default
+ ** InMemoryStore for storing user session details.
+ **/
+const redisClient = new Redis();
+
+/**
  ** Session initialization using express-session
  ** for handling the incoming session data from Passport.
  **/
 app.use(
   session({
     name: 'session_id',
+    store: new RedisStore({ client: redisClient }),
     resave: false,
     saveUninitialized: false,
     secret: process.env.COOKIE_SECRET,
     cookie: {
       maxAge: 1000 * 60 * 60 * 24,
-      secure: 'auto',
+      secure: false,
       httpOnly: true,
     },
   })

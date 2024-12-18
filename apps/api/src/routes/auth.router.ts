@@ -6,13 +6,19 @@ const router = Router();
 router.get(
   '/google',
   passport.authenticate('google', {
-    scope: ['profile'],
+    scope: ['profile', 'email'],
   })
 );
 
-router.get('/google/cb', passport.authenticate('google'), (req, res) => {
-  res.redirect('/protected');
-});
-
+router.get(
+  '/google/cb',
+  passport.authenticate('google', {
+    failureRedirect: '/auth/google',
+  }),
+  (req, res) => {
+    req.session['user'] = req.user['_id'];
+    res.redirect('/protected');
+  }
+);
 
 export default router;
