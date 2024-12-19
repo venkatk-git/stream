@@ -29,13 +29,13 @@ passport.use(
       profile: Profile,
       done: DoneCallback
     ) => {
-      // passport cb function
+      // passport callback function
       const user = await Users.findOne({ googleId: profile.id });
 
       if (user) {
         console.log('Existing User: ', user);
         done(null, user);
-        return;
+        return; 
       }
 
       const newUser = new Users({

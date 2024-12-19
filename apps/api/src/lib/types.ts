@@ -10,4 +10,8 @@ export type ExtendedRequest = Request & {
   session: {
     user: string;
   };
+  user: {
+    username: string;
+    googleId: string;
+  };
 };
