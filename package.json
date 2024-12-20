@@ -11,7 +11,9 @@
     "@types/ioredis": "^4.28.10",
     "@types/mongoose": "^5.11.96",
     "@types/passport": "^1.0.17",
+    "@types/react-router-dom": "^5.3.3",
     "@types/socket.io": "^3.0.1",
+    "@types/socket.io-client": "^1.4.36",
     "axios": "^1.6.0",
     "connect-redis": "^8.0.1",
     "cookie-session": "^2.1.0",
@@ -26,7 +28,9 @@
     "passport-google-oauth20": "^2.0.0",
     "react": "18.3.1",
     "react-dom": "18.3.1",
+    "react-router-dom": "^7.0.2",
     "socket.io": "^4.8.1",
+    "socket.io-client": "^4.8.1",
     "uuid": "^11.0.3"
   },
   "devDependencies": {

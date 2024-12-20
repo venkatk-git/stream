@@ -2,12 +2,13 @@ import session from 'express-session';
 import { RedisStore } from 'connect-redis';
 import Redis from 'ioredis';
 
-import { Socket } from 'socket.io';
-import { NextFunction } from 'express';
 /**
- ** Using ioredis as a scalable alternative to express-session's default
- ** InMemoryStore for storing user session details.
- **/
+ * Configures ioredis as a scalable session store.
+ *
+ * This replaces the default InMemoryStore of express-session with ioredis
+ * for storing user session details, providing better scalability and
+ * performance in distributed environments.
+ */
 const redisClient = new Redis();
 
 const sessionMiddleware = session({
@@ -24,10 +25,4 @@ const sessionMiddleware = session({
   },
 });
 
-function sessionWrapper(expressMiddleware) {
-  return function (socket: Socket, next: NextFunction) {
-    expressMiddleware(socket.request, {}, next);
-  };
-}
-
-export { sessionMiddleware, sessionWrapper };
+export { sessionMiddleware };

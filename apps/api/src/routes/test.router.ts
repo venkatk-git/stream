@@ -14,8 +14,7 @@ router.get(
     next();
   },
   (req: ExtendedRequest, res) => {
-    console.log(req.user);
-
+    console.log(req.sessionID);
     res.send(`Hii ${req.user.username}!! This is a session protected page.`);
   }
 );

@@ -1,4 +1,5 @@
 import { Request } from 'express';
+import { Socket } from 'socket.io';
 
 export type User = {
   _id: string;
@@ -6,12 +7,28 @@ export type User = {
   googleId: string;
 };
 
+export type RequestUser = {
+  username: string;
+  googleId: string;
+};
+
 export type ExtendedRequest = Request & {
   session: {
-    user: string;
+    passport?: {
+      user: string;
+    };
   };
-  user: {
-    username: string;
-    googleId: string;
+  user?: RequestUser;
+};
+
+export type ExtendedSocket = Socket & {
+  request: {
+    sessionID: string;
+    session: {
+      passport?: {
+        user: string;
+      };
+    };
+    user?: RequestUser;
   };
 };
