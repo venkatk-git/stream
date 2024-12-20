@@ -6,8 +6,6 @@ const router = Router();
 router.get(
   '/protected',
   (req: ExtendedRequest, res, next) => {
-    console.log(req.session);
-
     if (!req.user) {
       res.status(401).redirect('/auth/google');
       return;
@@ -16,6 +14,8 @@ router.get(
     next();
   },
   (req: ExtendedRequest, res) => {
+    console.log(req.user);
+
     res.send(`Hii ${req.user.username}!! This is a session protected page.`);
   }
 );

@@ -16,7 +16,7 @@ router.get(
     failureRedirect: '/auth/google',
   }),
   (req, res) => {
-    req.session['user'] = req.user['_id'];
+    req.session['user'] = req.user['user'];
     res.redirect('/protected');
   }
 );

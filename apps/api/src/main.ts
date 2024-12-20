@@ -3,6 +3,10 @@ import { Server } from 'socket.io';
 
 import app from './app';
 import dotenv from 'dotenv';
+import {
+  sessionMiddleware,
+  sessionWrapper,
+} from './config/sessionMiddleware.config';
 dotenv.config({ path: '../.env.local' });
 
 const host = process.env.HOST ?? 'localhost';
@@ -13,7 +17,9 @@ const port = process.env.PORT ? Number(process.env.PORT) : 3000;
  **/
 const server = http.createServer(app);
 
-// Socket initialization
+/**
+ ** Socket io initialization
+ **/
 const io = new Server(server, {
   cors: {
     origin: '*',
@@ -21,10 +27,15 @@ const io = new Server(server, {
   },
 });
 
-app.get('/', (req, res) => {
-  res.send('Home');
+io.use(sessionWrapper(sessionMiddleware));
+
+io.on('connect', (socket) => {
+  console.log(socket.request);
+  console.log('Successfull new connection');
 });
 
-server.listen(port, host, () => {
+server.listen(port, () => {
   console.log(`[ ready ] http://${host}:${port}`);
 });
+
+export { io };

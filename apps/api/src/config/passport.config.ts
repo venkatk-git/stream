@@ -11,7 +11,18 @@ passport.serializeUser((user: User, done: DoneCallback) => {
 });
 
 passport.deserializeUser(async (userId: string, done: DoneCallback) => {
-  done(null, await Users.findById(userId));
+  const user = await Users.findById(userId);
+
+  if (!user) {
+    throw new Error('Something went wrong in deserialization');
+  }
+
+  const deserializeUser = {
+    id: user._id,
+    username: user.username,
+  };
+
+  done(null, deserializeUser);
 });
 
 // Passport Middleware
@@ -35,7 +46,7 @@ passport.use(
       if (user) {
         console.log('Existing User: ', user);
         done(null, user);
-        return; 
+        return;
       }
 
       const newUser = new Users({
