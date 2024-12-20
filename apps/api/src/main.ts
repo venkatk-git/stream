@@ -14,26 +14,49 @@ const host = process.env.HOST ?? 'localhost';
 const port = process.env.PORT ? Number(process.env.PORT) : 3000;
 
 /**
- ** Creating a http server with the express app.
- **/
+ * Creates an HTTP server using the Express app.
+ *
+ * This server will handle incoming HTTP requests and pass them to the Express
+ * application (`app`) for routing and processing.
+ */
 const server = http.createServer(app);
 
 /**
- ** Socket io initialization
- **/
+ * Initializes a new instance of Socket.io server.
+ *
+ * This sets up the Socket.io server to listen on the provided HTTP server
+ * (`server`) and configures the CORS (Cross-Origin Resource Sharing) settings
+ * to allow connections from `process.env.CLIENT_ORIGIN` with credentials (cookies, etc.).
+ */
 const io = new Server(server, {
   cors: {
-    origin: 'http://localhost:4200',
+    origin: process.env.CLIENT_ORIGIN,
     credentials: true,
   },
 });
 
 /**
- ** Assigning socket.io middlewares
- **/
+ * Assigning session middleware to socket.io engine
+ * This middleware ensures that session data is available for each incoming socket connection.
+ */
 io.engine.use(sessionMiddleware);
+
+/**
+ * Assigning user attachment middleware to socket.io
+ * This middleware populates the socket with the authenticated user data, making it available
+ * for further socket operations.
+ */
 io.use(attachUserToSocket);
 
+/**
+ * Handles new socket connections.
+ *
+ * This event listener is triggered when a new socket connection is established.
+ * It logs the session ID from the socket's request object and confirms the successful
+ * connection with a message in the console.
+ *
+ * @param socket - The connected socket, extended with session data and user details.
+ */
 io.on('connect', (socket: ExtendedSocket) => {
   console.log(socket.request.sessionID);
 
