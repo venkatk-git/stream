@@ -1,8 +1,8 @@
 import express from 'express';
 import mongoose from 'mongoose';
+import passport from 'passport';
 
 import helmet from 'helmet';
-import passport from 'passport';
 
 import authRouter from './routes/auth.router';
 import testRouter from './routes/test.router';

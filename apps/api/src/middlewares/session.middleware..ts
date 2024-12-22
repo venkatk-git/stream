@@ -3,14 +3,18 @@ import { RedisStore } from 'connect-redis';
 import Redis from 'ioredis';
 
 /**
- * Configures ioredis as a scalable session store.
+ * Configures a scalable session store using ioredis and connect-redis.
  *
- * This replaces the default InMemoryStore of express-session with ioredis
- * for storing user session details, providing better scalability and
- * performance in distributed environments.
+ * This setup replaces the default InMemoryStore of express-session with Redis
+ * for managing session data. Using Redis improves scalability and performance,
+ * particularly in distributed environments where session data must be shared
+ * across multiple instances of the application.
  */
 const redisClient = new Redis();
 
+/**
+ * Express session middleware configuration.
+ */
 const sessionMiddleware = session({
   name: 'session_id',
   store: new RedisStore({ client: redisClient }),
@@ -21,7 +25,7 @@ const sessionMiddleware = session({
     maxAge: 1000 * 60 * 60 * 24,
     secure: false,
     httpOnly: true,
-    sameSite: 'none',
+    sameSite: 'lax',
   },
 });
 

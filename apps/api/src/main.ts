@@ -9,6 +9,7 @@ import { attachUserToSocket } from './middlewares/socket.middleware';
 import { sessionMiddleware } from './middlewares/session.middleware.';
 
 import { ExtendedSocket } from './lib/types';
+import { authorizeUser } from './controllers/auth.controller';
 
 const host = process.env.HOST ?? 'localhost';
 const port = process.env.PORT ? Number(process.env.PORT) : 3000;
@@ -49,6 +50,12 @@ io.engine.use(sessionMiddleware);
 io.use(attachUserToSocket);
 
 /**
+ * Assigning user authorization middleware to socket.io
+ * This middleware ensures that the user is authenticated before establishing a socket connection.
+ */
+io.use(authorizeUser);
+
+/**
  * Handles new socket connections.
  *
  * This event listener is triggered when a new socket connection is established.
@@ -58,9 +65,7 @@ io.use(attachUserToSocket);
  * @param socket - The connected socket, extended with session data and user details.
  */
 io.on('connect', (socket: ExtendedSocket) => {
-  console.log(socket.request.sessionID);
-
-  console.log('Successfull new connection');
+  console.log('New Socket Connection: ', socket.request.user);
 });
 
 server.listen(port, () => {
