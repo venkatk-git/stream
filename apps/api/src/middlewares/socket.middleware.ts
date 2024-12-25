@@ -29,7 +29,7 @@ export async function attachUserToSocket(
     return;
   }
 
-  socket.request.user = {
+  socket.request.session.user = {
     id: user._id.toString(),
     username: user.username,
     googleId: user.googleId,

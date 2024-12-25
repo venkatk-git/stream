@@ -4,6 +4,13 @@ import socket from './socket';
 
 export default function SocketIo() {
   useSocketSetup();
+
+  React.useEffect(() => {
+    socket.on('user:new', (payload) => {
+      console.log(payload);
+    });
+  }, []);
+
   return <div>socket.io</div>;
 }
 

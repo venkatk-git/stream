@@ -32,8 +32,9 @@ export type ExtendedSocket = Socket & {
       passport?: {
         user: string;
       };
+      user: RequestUser;
     };
-    
-    user: RequestUser;
   };
+
+  user: RequestUser;
 };

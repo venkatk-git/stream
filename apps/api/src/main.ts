@@ -7,9 +7,9 @@ dotenv.config({ path: '../.env.local' });
 
 import { attachUserToSocket } from './middlewares/socket.middleware';
 import { sessionMiddleware } from './middlewares/session.middleware.';
+import { authorizeUser } from './controllers/auth.controller';
 
 import { ExtendedSocket } from './lib/types';
-import { authorizeUser } from './controllers/auth.controller';
 
 const host = process.env.HOST ?? 'localhost';
 const port = process.env.PORT ? Number(process.env.PORT) : 3000;
@@ -58,14 +58,22 @@ io.use(authorizeUser);
 /**
  * Handles new socket connections.
  *
- * This event listener is triggered when a new socket connection is established.
- * It logs the session ID from the socket's request object and confirms the successful
- * connection with a message in the console.
+ * Triggered when a client establishes a socket connection. This function sets up
+ * event listeners for the connected socket and provides confirmation of the
+ * successful connection in the console.
  *
- * @param socket - The connected socket, extended with session data and user details.
+ * @param socket - The connected socket instance.
  */
 io.on('connect', (socket: ExtendedSocket) => {
-  console.log('New Socket Connection: ', socket.request.user);
+  console.log(socket.user);
+
+  io.emit('user:connected', {
+    message: `${socket.user.username} has connected`,
+  });
+
+  socket.on('room:join', (payload) => {
+    socket.join(payload.roomId);
+  });
 });
 
 server.listen(port, () => {

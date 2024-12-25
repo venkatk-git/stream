@@ -1,6 +1,6 @@
 import session from 'express-session';
 import { RedisStore } from 'connect-redis';
-import Redis from 'ioredis';
+import { redisClient } from '../redis';
 
 /**
  * Configures a scalable session store using ioredis and connect-redis.
@@ -10,7 +10,6 @@ import Redis from 'ioredis';
  * particularly in distributed environments where session data must be shared
  * across multiple instances of the application.
  */
-const redisClient = new Redis();
 
 /**
  * Express session middleware configuration.
