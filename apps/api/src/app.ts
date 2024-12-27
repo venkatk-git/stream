@@ -6,8 +6,10 @@ import helmet from 'helmet';
 
 import authRouter from './routes/auth.router';
 import testRouter from './routes/test.router';
+import roomRouter from './routes/room.router';
 
 import { sessionMiddleware } from './middlewares/session.middleware.';
+import { attachUserToRequest } from './middlewares/auth.middleware';
 
 const app = express();
 
@@ -48,10 +50,18 @@ app.use(passport.session());
 // Authentication
 app.use('/auth', authRouter);
 
+/**
+ * Middleware to attach the authenticated user to the request object.
+ * This ensures that user details are available in `req.user` for all subsequent routes and middleware.
+ */
+app.use(attachUserToRequest);
+
 app.get('/', (req, res) => {
   res.send('Home');
 });
 
 app.use('/', testRouter);
+
+app.use('/r', roomRouter);
 
 export default app;

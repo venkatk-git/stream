@@ -15,6 +15,7 @@
     "@types/redis": "^4.0.10",
     "@types/socket.io": "^3.0.1",
     "@types/socket.io-client": "^1.4.36",
+    "@types/uuid": "^10.0.0",
     "axios": "^1.6.0",
     "connect-redis": "^8.0.1",
     "cookie-session": "^2.1.0",

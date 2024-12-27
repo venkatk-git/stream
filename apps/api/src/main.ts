@@ -74,6 +74,7 @@ io.on('connect', (socket: ExtendedSocket) => {
   socket.on('room:join', (payload) => {
     socket.join(payload.roomId);
   });
+  
 });
 
 server.listen(port, () => {

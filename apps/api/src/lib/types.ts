@@ -38,3 +38,10 @@ export type ExtendedSocket = Socket & {
 
   user: RequestUser;
 };
+
+export interface ApiResponse {
+  success: boolean;
+  error: null | {
+    message: string;
+  };
+}
