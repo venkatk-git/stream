@@ -5,7 +5,7 @@ import { ExtendedRequest } from '../lib/types';
 
 export function isAuthenticated(): RequestHandler {
   return (req: ExtendedRequest, res: Response, next: NextFunction) => {
-    if (!req.user || !req.isAuthenticated()) {
+    if (!req.user || !req.isAuthenticated() || !req.session?.passport?.user) {
       return next(new Error('Not authenticated'));
     }
 
