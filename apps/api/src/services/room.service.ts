@@ -90,7 +90,10 @@ export async function isValidRoomService(roomId: string): Promise<boolean> {
  * Usage:
  * - Use this function to allow users to join a room while ensuring they are not added more than once.
  */
-export async function joinMemberService(roomId: string, userId: string) {
+export async function joinMemberService(
+  roomId: string,
+  userId: string
+): Promise<boolean> {
   try {
     // Validate userId
     if (!mongoose.Types.ObjectId.isValid(userId)) {
