@@ -19,13 +19,18 @@ const roomSchema = new mongoose.Schema({
     ref: 'User',
     default: [],
     validate: {
-      validator: (members) => members.length <= 50,
+      validator: (members: Schema.Types.ObjectId[]) => members.length <= 50,
       message: 'A room cannot have more than 50 members',
     },
   },
   videoQueue: {
     type: [String],
     default: [],
+  },
+  roomType: {
+    type: String,
+    enum: ['public', 'private'],
+    default: 'public',
   },
 });
 

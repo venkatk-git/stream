@@ -2,6 +2,7 @@ import { Router } from 'express';
 
 import { isAuthenticated } from '../middlewares/auth.middleware';
 import {
+  connectMemberService,
   createRoomService,
   isValidRoomService,
   joinMemberService,
@@ -86,5 +87,46 @@ router.get('/:id', isAuthenticated(), async (req: ExtendedRequest, res) => {
       );
   }
 });
+
+/**
+ * /r/connect/:id - Connects the user to a room by the room ID.
+ */
+router.get(
+  '/connect/:id',
+  isAuthenticated(),
+  async (req: ExtendedRequest, res) => {
+    try {
+      const roomId = req.params.id;
+      const userId = req.user.id;
+
+      const canConnect = await connectMemberService(roomId, userId);
+      if (!canConnect) {
+        return res
+          .status(400)
+          .json(
+            errorResponse(
+              'Invalid room ID. Please check the room ID and try again.',
+              400
+            )
+          );
+      }
+
+      res.status(201).json(successResponse(null));
+      console.info(
+        `User connected to room: { roomId: ${roomId}, userId: ${userId} }`
+      );
+    } catch (err) {
+      console.error(err);
+
+      res
+        .status(500)
+        .json(
+          errorResponse(
+            'An unexpected error occurred while creating the room. Please try again later.'
+          )
+        );
+    }
+  }
+);
 
 export default router;
