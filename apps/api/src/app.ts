@@ -8,8 +8,14 @@ import authRouter from './routes/auth.router';
 import testRouter from './routes/test.router';
 import roomRouter from './routes/room.router';
 
+import { globalErrorHandler } from './controllers/error.controller';
+
 import { sessionMiddleware } from './middlewares/session.middleware.';
 import { attachUserToRequest } from './middlewares/auth.middleware';
+
+import AppError from './lib/utils/AppError';
+
+import { Response, Request, NextFunction } from 'express';
 
 const app = express();
 
@@ -29,6 +35,9 @@ mongoose
  * This middleware helps protect the application from common web vulnerabilities
  * by setting various HTTP headers, such as those for content security,
  * cross-site scripting (XSS) protection, and more...
+ *
+ * Purpose:
+ * - Enhances the security of the application by setting various HTTP headers.
  */
 app.use(helmet());
 
@@ -40,6 +49,9 @@ app.use(express.json());
  * This middleware manages the session data for incoming requests, integrating
  * with Passport.js to store user session information and maintain user state
  * across requests.
+ *
+ * Purpose:
+ * - Manages session data for incoming requests, integrating with Passport.js
  */
 app.use(sessionMiddleware);
 
@@ -53,6 +65,9 @@ app.use('/auth', authRouter);
 /**
  * Middleware to attach the authenticated user to the request object.
  * This ensures that user details are available in `req.user` for all subsequent routes and middleware.
+ *
+ * Purpose:
+ * - Attaches the authenticated user to the request object for easy access in subsequent middleware and routes.
  */
 app.use(attachUserToRequest);
 
@@ -63,5 +78,19 @@ app.get('/', (req, res) => {
 app.use('/', testRouter);
 
 app.use('/r', roomRouter);
+
+app.all('*', (req: Request, res: Response, next: NextFunction) => {
+  next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
+});
+
+/**
+ * Global Error Handling Middleware
+ * Attached at the end of the middleware stack.
+ *
+ * Purpose:
+ * - Ensures consistent error responses across the application.
+ * - Handles both operational and unexpected errors.
+ */
+app.use(globalErrorHandler);
 
 export default app;

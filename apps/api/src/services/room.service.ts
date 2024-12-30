@@ -17,36 +17,31 @@ import User from '../models/user.model';
 export async function createRoomService(
   ownerId: string
 ): Promise<string | null> {
-  try {
-    // Validate ownerId
-    if (!mongoose.Types.ObjectId.isValid(ownerId)) {
-      console.error('Invalid ownerId');
-      return null;
-    }
-
-    // Check if owner exists
-    const owner = await User.findById(ownerId);
-    if (!owner) {
-      console.error(`Owner not found: { ownerId: ${ownerId} }`);
-      return null;
-    }
-
-    const roomId = uuidV4();
-
-    const newRoom = new Room({
-      roomId: roomId,
-      ownerId,
-      members: [ownerId],
-    });
-
-    await newRoom.save();
-
-    console.info(`Room created: { roomId: ${roomId}, ownerId: ${ownerId} }`);
-    return roomId;
-  } catch (error) {
-    console.error('Room creation failed:', error);
+  // Validate ownerId
+  if (!mongoose.Types.ObjectId.isValid(ownerId)) {
+    console.error('Invalid ownerId');
     return null;
   }
+
+  // Check if owner exists
+  const owner = await User.findById(ownerId);
+  if (!owner) {
+    console.error(`Owner not found: { ownerId: ${ownerId} }`);
+    return null;
+  }
+
+  const roomId = uuidV4();
+
+  const newRoom = new Room({
+    roomId: roomId,
+    ownerId,
+    members: [ownerId],
+  });
+
+  await newRoom.save();
+
+  console.info(`Room created: { roomId: ${roomId}, ownerId: ${ownerId} }`);
+  return roomId;
 }
 
 /**
@@ -66,16 +61,11 @@ export async function createRoomService(
  *   it logs the error and returns `false`.
  */
 export async function isValidRoomService(roomId: string): Promise<boolean> {
-  try {
-    // Check if room exists
-    const room = await Room.exists({ roomId });
+  // Check if room exists
+  const room = await Room.exists({ roomId });
 
-    console.info(`Room validation: { roomId: ${roomId}, isValid: ${room} }`);
-    return room !== null;
-  } catch (error) {
-    console.error(`Failed to validate room with ID: ${roomId}`, error);
-    return false;
-  }
+  console.info(`Room validation: { roomId: ${roomId}, isValid: ${room} }`);
+  return room !== null;
 }
 
 /**
@@ -96,55 +86,48 @@ export async function joinMemberService(
   roomId: string,
   userId: string
 ): Promise<boolean> {
-  try {
-    // Validate userId
-    if (!mongoose.Types.ObjectId.isValid(userId)) {
-      console.error('Invalid userId');
-      return false;
-    }
-
-    // Check if user exists
-    const user = await User.findById(userId);
-    if (!user) {
-      console.error(`User not found: { userId: ${userId} }`);
-      return false;
-    }
-
-    // Check if room exists
-    const room = await Room.findOne({ roomId }).select('members roomType');
-    if (!room) {
-      console.error(`Room not found: { roomId: ${roomId} }`);
-      return false;
-    }
-
-    const userObjectId = new Types.ObjectId(userId);
-
-    // Add user to the room if not already a member
-    if (room.members.includes(userObjectId)) {
-      console.info(
-        `User joined room: { roomId: ${roomId}, userId: ${userId} }`
-      );
-      return true;
-    }
-
-    // Prevent joining if the room is private
-    if (room.roomType === 'private') {
-      console.info(
-        `User cannot connect to private room: { roomId: ${roomId}, userId: ${userId} }`
-      );
-      return false;
-    }
-
-    // Add the user to the room's members list
-    room.members.push(userObjectId);
-    await room.save();
-
-    console.info(`User joined room: { roomId: ${roomId}, userId: ${userId} }`);
-    return true;
-  } catch (error) {
-    console.error('Joining room failed:', error);
+  // Validate userId
+  if (!mongoose.Types.ObjectId.isValid(userId)) {
+    console.error('Invalid userId');
     return false;
   }
+
+  // Check if user exists
+  const user = await User.findById(userId);
+  if (!user) {
+    console.error(`User not found: { userId: ${userId} }`);
+    return false;
+  }
+
+  // Check if room exists
+  const room = await Room.findOne({ roomId }).select('members roomType');
+  if (!room) {
+    console.error(`Room not found: { roomId: ${roomId} }`);
+    return false;
+  }
+
+  const userObjectId = new Types.ObjectId(userId);
+
+  // Add user to the room if not already a member
+  if (room.members.includes(userObjectId)) {
+    console.info(`User joined room: { roomId: ${roomId}, userId: ${userId} }`);
+    return true;
+  }
+
+  // Prevent joining if the room is private
+  if (room.roomType === 'private') {
+    console.info(
+      `User cannot connect to private room: { roomId: ${roomId}, userId: ${userId} }`
+    );
+    return false;
+  }
+
+  // Add the user to the room's members list
+  room.members.push(userObjectId);
+  await room.save();
+
+  console.info(`User joined room: { roomId: ${roomId}, userId: ${userId} }`);
+  return true;
 }
 
 /**
@@ -161,43 +144,38 @@ export async function connectMemberService(
   roomId: string,
   userId: string
 ): Promise<boolean> {
-  try {
-    // Validate userId
-    if (!mongoose.Types.ObjectId.isValid(userId)) {
-      console.error('Invalid userId');
-      return false;
-    }
-
-    // Convert userId to ObjectId
-    const userObjectId = new mongoose.Types.ObjectId(userId);
-
-    // Check if user exists
-    const user = await User.findById(userObjectId);
-    if (!user) {
-      console.error(`User not found: { userId: ${userId} }`);
-      return false;
-    }
-
-    // Check if room exists
-    const room = await isValidRoomService(roomId);
-    if (!room) {
-      console.error(`Room not found: { roomId: ${roomId} }`);
-      return false;
-    }
-
-    // Check if the user is already a member of the room
-    const isUserInRoom = await Room.exists({ roomId, members: userObjectId });
-    if (isUserInRoom) {
-      console.info(
-        `User already connected to room: { roomId: ${roomId}, userId: ${userId} }`
-      );
-      return true;
-    }
-
-    // If not already connected, delegate to the `joinMemberService` to add the user to the room
-    return joinMemberService(roomId, userId);
-  } catch (error) {
-    console.error('Connection to room failed:', error);
+  // Validate userId
+  if (!mongoose.Types.ObjectId.isValid(userId)) {
+    console.error('Invalid userId');
     return false;
   }
+
+  // Convert userId to ObjectId
+  const userObjectId = new mongoose.Types.ObjectId(userId);
+
+  // Check if user exists
+  const user = await User.findById(userObjectId);
+  if (!user) {
+    console.error(`User not found: { userId: ${userId} }`);
+    return false;
+  }
+
+  // Check if room exists
+  const room = await isValidRoomService(roomId);
+  if (!room) {
+    console.error(`Room not found: { roomId: ${roomId} }`);
+    return false;
+  }
+
+  // Check if the user is already a member of the room
+  const isUserInRoom = await Room.exists({ roomId, members: userObjectId });
+  if (isUserInRoom) {
+    console.info(
+      `User already connected to room: { roomId: ${roomId}, userId: ${userId} }`
+    );
+    return true;
+  }
+
+  // If not already connected, delegate to the `joinMemberService` to add the user to the room
+  return joinMemberService(roomId, userId);
 }
