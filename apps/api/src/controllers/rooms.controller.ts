@@ -36,9 +36,9 @@ export const createNewRoom = catchAsync(
 );
 
 /**
- * @route GET /r/:id
+ * !!IMPORTANT!! This function is not used in the application and is provided as a reference.
  *
- * The function performs the following actions:
+ *  The function performs the following actions:
  * - Retrieves the room ID from the URL parameters.
  * - Validates if the room ID exists and is valid by calling the service function.
  * - If the room ID is invalid, returns a 400 error response with a relevant message.
@@ -89,7 +89,8 @@ export const joinRoom = catchAsync(
 );
 
 /**
- * @route GET /r/connect/:id
+ * !!IMPORTANT!! This function is not used in the application and is provided as a reference.
+ * 
  * @desc Allows an authenticated user to connect to an existing room by its room ID.
  * The function performs the following actions:
  * - Retrieves the room ID from the URL parameters and the authenticated user's ID from the request.

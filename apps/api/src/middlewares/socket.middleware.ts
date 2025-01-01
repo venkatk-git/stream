@@ -22,18 +22,22 @@ export async function attachUserToSocket(
   socket: ExtendedSocket,
   next: NextFunction
 ) {
-  const user = await Users.findById(socket.request.session.passport.user);
+  try {
+    const user = await Users.findById(socket.request.session.passport.user);
 
-  if (!user) {
-    next('Unauthorized from socket middleware');
-    return;
+    if (!user) {
+      next(new Error('Unauthorized from socket middleware'));
+      return;
+    }
+
+    socket.request.session.user = {
+      id: user._id.toString(),
+      username: user.username,
+      googleId: user.googleId,
+    };
+
+    next();
+  } catch (error) {
+    next(error);
   }
-
-  socket.request.session.user = {
-    id: user._id.toString(),
-    username: user.username,
-    googleId: user.googleId,
-  };
-
-  next();
 }

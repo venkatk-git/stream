@@ -33,6 +33,7 @@ export type ExtendedSocket = Socket & {
         user: string;
       };
       user: RequestUser;
+      roomId?: string;
     };
   };
 

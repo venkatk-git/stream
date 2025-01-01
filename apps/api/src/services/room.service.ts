@@ -100,6 +100,13 @@ export async function joinMemberService(
   }
 
   // Check if room exists
+  const isRoomValid = await isValidRoomService(roomId);
+  if (!isRoomValid) {
+    console.error(`Room not found: { roomId: ${roomId} }`);
+    return false;
+  }
+
+  // Get the room and its members
   const room = await Room.findOne({ roomId }).select('members roomType');
   if (!room) {
     console.error(`Room not found: { roomId: ${roomId} }`);
