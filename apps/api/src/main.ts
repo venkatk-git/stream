@@ -1,15 +1,18 @@
 import http from 'http';
 import { Server } from 'socket.io';
-
-import app from './app';
+import helmet from 'helmet';
 import dotenv from 'dotenv';
 dotenv.config({ path: '../.env.local' });
 
+import { authorizeUser } from './middlewares/auth.middleware';
 import { attachUserToSocket } from './middlewares/socket.middleware';
 import { sessionMiddleware } from './middlewares/session.middleware.';
-import { authorizeUser } from './controllers/auth.controller';
+import { joinHandler } from './socket/handlers/room.handler';
+import { videoEventHandler } from './socket/handlers/video.handler';
 
 import { ExtendedSocket } from './lib/types';
+
+import app from './app';
 
 const host = process.env.HOST ?? 'localhost';
 const port = process.env.PORT ? Number(process.env.PORT) : 3000;
@@ -37,23 +40,37 @@ const io = new Server(server, {
 });
 
 /**
+ * Adds security-related HTTP headers to the application using helmet.
+ *
+ * This middleware helps protect the application from common web vulnerabilities
+ * by setting various HTTP headers, such as those for content security,
+ * cross-site scripting (XSS) protection, and more...
+ *
+ * Purpose:
+ * - Enhances the security of the application by setting various HTTP headers.
+ */
+io.engine.use(helmet());
+
+/**
  * Assigning session middleware to socket.io engine
- * This middleware ensures that session data is available for each incoming socket connection.
+ *
+ * Purpose:
+ * - This middleware ensures that session data is available for each incoming socket connection.
  */
 io.engine.use(sessionMiddleware);
 
 /**
- * Assigning user attachment middleware to socket.io
- * This middleware populates the socket with the authenticated user data, making it available
+ * Purpose:
+ * - This middleware ensures that the user is authenticated before establishing a socket connection.
+ */
+io.use(authorizeUser);
+
+/**
+ * Purpose:
+ * - This middleware populates the socket with the authenticated user data, making it available
  * for further socket operations.
  */
 io.use(attachUserToSocket);
-
-/**
- * Assigning user authorization middleware to socket.io
- * This middleware ensures that the user is authenticated before establishing a socket connection.
- */
-io.use(authorizeUser);
 
 /**
  * Handles new socket connections.
@@ -65,16 +82,31 @@ io.use(authorizeUser);
  * @param socket - The connected socket instance.
  */
 io.on('connect', (socket: ExtendedSocket) => {
-  console.log(socket.user);
-
+  console.log(
+    `[ socket ] ${socket.user.username} has connected`,
+    socket.request.session
+  );
   io.emit('user:connected', {
     message: `${socket.user.username} has connected`,
   });
 
-  socket.on('room:join', (payload) => {
-    socket.join(payload.roomId);
+  socket.on('room:join', (payload) => joinHandler(socket, payload));
+
+  socket.on('video:play', (payload) =>
+    videoEventHandler(socket, 'video:play', payload)
+  );
+  socket.on('video:pause', (payload) =>
+    videoEventHandler(socket, 'video:play', payload)
+  );
+  socket.on('video:seek', (payload) =>
+    videoEventHandler(socket, 'video:play', payload)
+  );
+
+  io.on('disconnect', () => {
+    io.emit('user:disconnected', {
+      message: `${socket.user.username} has disconnected`,
+    });
   });
-  
 });
 
 server.listen(port, () => {

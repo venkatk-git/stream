@@ -1,7 +1,9 @@
+import { redisClient } from '../redis';
+
 import Users from '../models/user.model';
 
 import { RequestHandler, Response, NextFunction } from 'express';
-import { ExtendedRequest } from '../lib/types';
+import { ExtendedRequest, ExtendedSocket } from '../lib/types';
 
 export function isAuthenticated(): RequestHandler {
   return (req: ExtendedRequest, res: Response, next: NextFunction) => {
@@ -11,6 +13,31 @@ export function isAuthenticated(): RequestHandler {
 
     return next();
   };
+}
+
+/**
+ * Middleware to authorize a user by verifying the presence of a user in the socket request.
+ *
+ * This middleware checks if a user session exists in the socket request. If no valid
+ * user session is found, it passes an error to the next function in the middleware chain.
+ * If a user is authorized, their details are added to the socket object, and
+ * the user's socket ID is stored in Redis.
+ *
+ * @param socket - The connected socket instance, extended with session data.
+ * @param next - Callback to pass control to the next middleware or function.
+ */
+export function authorizeUser(socket: ExtendedSocket, next: NextFunction) {
+  if (
+    !socket.request.session ||
+    !socket.request.session.passport ||
+    !socket.request.session.passport.user
+  ) {
+    return next(new Error('User not authorized'));
+  }
+
+  socket.user = { ...socket.request.session.user };
+  redisClient.hset(`userid:${socket.user.id}`, 'socketid', socket.id);
+  return next();
 }
 
 /**
