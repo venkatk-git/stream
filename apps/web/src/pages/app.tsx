@@ -12,6 +12,7 @@ export function App() {
           }
         />
         <Route path="/connectSocket" element={<SocketIo />} />
+        <Route path="/r" />
       </Routes>
     </BrowserRouter>
   );

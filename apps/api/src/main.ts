@@ -7,6 +7,7 @@ dotenv.config({ path: '../.env.local' });
 import { authorizeUser } from './middlewares/auth.middleware';
 import { attachUserToSocket } from './middlewares/socket.middleware';
 import { sessionMiddleware } from './middlewares/session.middleware.';
+
 import { joinHandler } from './socket/handlers/room.handler';
 import { videoEventHandler } from './socket/handlers/video.handler';
 
