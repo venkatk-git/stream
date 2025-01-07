@@ -15,7 +15,8 @@ import { attachUserToRequest } from './middlewares/auth.middleware';
 
 import AppError from './lib/utils/AppError';
 
-import { Response, Request, NextFunction } from 'express';
+import { ExtendedRequest } from './lib/types';
+import { Response, NextFunction } from 'express';
 
 const app = express();
 
@@ -52,7 +53,7 @@ app.use(express.json());
  *
  * Purpose:
  * - Manages session data for incoming requests, integrating with Passport.js
- */
+ */ 
 app.use(sessionMiddleware);
 
 // Passport Initialization
@@ -79,7 +80,7 @@ app.use('/', testRouter);
 
 app.use('/r', roomRouter);
 
-app.all('*', (req: Request, res: Response, next: NextFunction) => {
+app.all('*', (req: ExtendedRequest, res: Response, next: NextFunction) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
 });
 
