@@ -4,7 +4,7 @@ import { Home } from './home';
 
 export function App() {
   return (
-    <div className="bg-black-400 h-dvh w-full">
+    <div className="h-dvh w-full bg-black-400 text-gray-200">
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />
