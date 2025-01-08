@@ -13,11 +13,21 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+        // black
         "black-100": "#FFFFFF0d",
         "black-200": "#262626",
         "black-300": "#171717",
         "black-400": "#0A0A0A",
-
+        // gray
+        "gray-900": "#1A1A1A",
+        "gray-800": "#333333",
+        "gray-700": "#4D4D4D",
+        "gray-600": "#666666",
+        "gray-500": "#808080",
+        "gray-400": "#999999",
+        "gray-300": "#B3B3B3",
+        "gray-200": "#CCCCCC",
+        "gray-100": "#E6E6E6",
       },
     },
   },
