@@ -5,10 +5,9 @@ export function useAccountContext() {
   const context = useContext(AccountContext);
 
   if (!context) {
-    console.error(
-      'Accont Context cannot be used outside of Accoun Context Provider'
+    throw new Error(
+      'Account Context cannot be used outside of Account Context Provider'
     );
-    return;
   }
 
   return context;
