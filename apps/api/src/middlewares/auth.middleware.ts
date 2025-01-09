@@ -4,6 +4,7 @@ import Users from '../models/user.model';
 
 import { RequestHandler, Response, NextFunction } from 'express';
 import { ExtendedRequest, ExtendedSocket } from '../lib/types';
+import console from 'console';
 
 export function isAuthenticated(): RequestHandler {
   return (req: ExtendedRequest, res: Response, next: NextFunction) => {
@@ -86,6 +87,8 @@ export async function attachUserToRequest(
       username: user.username,
       googleId: user.googleId,
     };
+
+    console.log('user');
 
     next(); // Proceed to the next middleware or route handler
   } catch (error) {

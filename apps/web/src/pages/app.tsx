@@ -1,15 +1,16 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import SocketIo from './socket.io';
 import { Home } from './home';
+import PrivateRoute from '../components/private-route';
 
 export function App() {
   return (
-    <div className="bg-black-400 h-dvh w-full">
+    <div className="h-dvh w-full bg-black-400 text-gray-200">
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/connectSocket" element={<SocketIo />} />
-          <Route path="/r" />
+          <Route element={<PrivateRoute />}>
+            <Route path="/r" />
+          </Route>
         </Routes>
       </BrowserRouter>
     </div>

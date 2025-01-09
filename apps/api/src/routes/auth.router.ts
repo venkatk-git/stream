@@ -4,6 +4,8 @@ import passport from '../config/passport.config';
 import Users from '../models/user.model';
 
 import { ExtendedRequest } from '../lib/types';
+import { isAuthenticated } from '../middlewares/auth.middleware';
+import { successResponse } from '../lib/utils/response.utils';
 
 const router = Router();
 
@@ -54,8 +56,16 @@ router.get(
     req.session.user = req.user;
 
     // res.redirect('/protected');
-    res.redirect('http://localhost:4200/connectSocket');
+    res.redirect('http://localhost:4200/');
   }
 );
+
+/**
+ *
+ */
+router.get('/', isAuthenticated(), (req: ExtendedRequest, res) => {
+  const user = req.session.user;
+  res.status(200).json(successResponse(user));
+});
 
 export default router;
