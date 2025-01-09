@@ -2,6 +2,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import passport from 'passport';
 
+import cors from 'cors';
 import helmet from 'helmet';
 
 import authRouter from './routes/auth.router';
@@ -19,6 +20,22 @@ import { ExtendedRequest } from './lib/types';
 import { Response, NextFunction } from 'express';
 
 const app = express();
+
+// CORS
+const allowedOrigins = ['http://localhost:4200']; // Add allowed origins here
+
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      if (allowedOrigins.includes(origin) || !origin) {
+        callback(null, origin);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
+    credentials: true, // Allow cookies and credentials
+  })
+);
 
 // Connect to Mongodb
 mongoose
@@ -53,7 +70,7 @@ app.use(express.json());
  *
  * Purpose:
  * - Manages session data for incoming requests, integrating with Passport.js
- */ 
+ */
 app.use(sessionMiddleware);
 
 // Passport Initialization

@@ -11,11 +11,11 @@ export default function TagLine({ children }: TagLineProps) {
       <span
         className="absolute -top-px left-[2.5rem] h-px w-[calc(100%-5rem)] bg-gradient-to-r from-red-600/0 
         via-red-600/80 to-red-600/0 opacity-0 group-hover:opacity-100 transition-opacity"
-      ></span>
+      />
       <span
         className="absolute -top-px left-1/2 -translate-x-1/2 h-px w-[60px] bg-gradient-to-r from-red-300/0 
             via-red-300/50 to-red-300/0 mix-blend-overlay opacity-0 group-hover:opacity-100 transition-opacity"
-      ></span>
+      />
       {children}
     </div>
   );

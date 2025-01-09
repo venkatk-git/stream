@@ -1,6 +1,6 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import SocketIo from './socket.io';
 import { Home } from './home';
+import PrivateRoute from '../components/private-route';
 
 export function App() {
   return (
@@ -8,8 +8,9 @@ export function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/connectSocket" element={<SocketIo />} />
-          <Route path="/r" />
+          <Route element={<PrivateRoute />}>
+            <Route path="/r" />
+          </Route>
         </Routes>
       </BrowserRouter>
     </div>
