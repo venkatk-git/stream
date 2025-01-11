@@ -88,8 +88,6 @@ export async function attachUserToRequest(
       googleId: user.googleId,
     };
 
-    console.log('user');
-
     next(); // Proceed to the next middleware or route handler
   } catch (error) {
     console.error('Error attaching user to request:', error);
