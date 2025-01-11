@@ -1,23 +1,28 @@
 import React from 'react';
-import axios from 'axios';
 
-import { API_BASE_URL } from '../lib/constants';
+import useGetAccount from '../hooks/use-get-account';
 
-type AccountContextType = {
-  username: string;
-  googleId: string;
-  id: string;
-};
+import { UserData } from '../lib/types';
 
-type ApiResponse = {
-  success: boolean;
-  error: string | null;
-  data: AccountContextType;
+export type AccountContextType = {
+  user: UserData | null;
 };
 
 export const AccountContext = React.createContext<AccountContextType | null>(
   null
 );
+
+export function useAccountContext() {
+  const context = React.useContext(AccountContext);
+
+  if (!context) {
+    console.error(
+      'Account Context cannot be used outside of Account Context Provider'
+    );
+  }
+
+  return context;
+}
 
 interface AccountContextProps {
   children: React.ReactNode;
@@ -26,27 +31,10 @@ interface AccountContextProps {
 export default function AccountContextProvider({
   children,
 }: AccountContextProps) {
-  const [account, setAccount] = React.useState<AccountContextType | null>(null);
-
-  React.useEffect(() => {
-    async function fetchData() {
-      console.log();
-      try {
-        const response: ApiResponse = await axios.get(`${API_BASE_URL}/auth`);
-        if (!response.success) {
-          return;
-        }
-        const data = response.data;
-        setAccount(data);
-      } catch (error) {
-        console.error(error);
-      }
-    }
-    fetchData();
-  }, [account]);
+  const account = useGetAccount();
 
   return (
-    <AccountContext.Provider value={account}>
+    <AccountContext.Provider value={{ user: account }}>
       {children}
     </AccountContext.Provider>
   );

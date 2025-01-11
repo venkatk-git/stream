@@ -12,12 +12,17 @@ import roomRouter from './routes/room.router';
 import { globalErrorHandler } from './controllers/error.controller';
 
 import { sessionMiddleware } from './middlewares/session.middleware.';
-import { attachUserToRequest } from './middlewares/auth.middleware';
+import {
+  attachUserToRequest,
+  isAuthenticated,
+} from './middlewares/auth.middleware';
 
 import AppError from './lib/utils/AppError';
 
 import { ExtendedRequest } from './lib/types';
 import { Response, NextFunction } from 'express';
+import { successResponse } from './lib/utils/response.utils';
+import router from './routes/auth.router';
 
 const app = express();
 
@@ -88,6 +93,12 @@ app.use('/auth', authRouter);
  * - Attaches the authenticated user to the request object for easy access in subsequent middleware and routes.
  */
 app.use(attachUserToRequest);
+
+app.get('/reqAuth', isAuthenticated(), (req: ExtendedRequest, res) => {
+  const user = req.session.user;
+
+  res.status(200).json(successResponse(user));
+});
 
 app.get('/', (req, res) => {
   res.send('Home');

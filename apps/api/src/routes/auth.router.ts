@@ -60,12 +60,4 @@ router.get(
   }
 );
 
-/**
- *
- */
-router.get('/', isAuthenticated(), (req: ExtendedRequest, res) => {
-  const user = req.session.user;
-  res.status(200).json(successResponse(user));
-});
-
 export default router;

@@ -1,18 +1,21 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
+
 import { Home } from './home';
+import Layout from './layout';
 import PrivateRoute from '../components/private-route';
 
 export function App() {
   return (
     <div className="h-dvh w-full bg-black-400 text-gray-200">
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Home />} />
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<Home />} />
           <Route element={<PrivateRoute />}>
-            <Route path="/r" />
+            <Route path="/r/:roomid" element={<h1>Room Page</h1>} />
           </Route>
-        </Routes>
-      </BrowserRouter>
+          <Route path="*" element={<h1>Page not found</h1>} />
+        </Route>
+      </Routes>
     </div>
   );
 }

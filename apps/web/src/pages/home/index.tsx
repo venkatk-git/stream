@@ -1,29 +1,8 @@
-import axios from 'axios';
-import React from 'react';
-import Footer from '../../components/footer';
-import Header from '../../components/header';
 import TagLine from '../../components/tag-line';
-import { API_BASE_URL } from '../../lib/constants';
 
 export function Home() {
-  React.useEffect(() => {
-    async function fetchData() {
-      console.log();
-      try {
-        const response = await axios.get(`${API_BASE_URL}/auth`, {
-          withCredentials: true,
-        });
-        const data = response.data;
-        console.log(data);
-      } catch (error) {
-        console.error('Not Authorized');
-      }
-    }
-    fetchData();
-  }, []);
   return (
-    <h1 className="h-full w-full px-8 py-2 font-bold flex flex-col">
-      <Header />
+    <div className="h-full w-full font-bold flex flex-col overflow-hidden">
       <div className="self-center mt-7">
         <TagLine>
           <div className="flex gap-2 items-center">
@@ -85,9 +64,6 @@ export function Home() {
           </form>
         </div>
       </main>
-      <div className="mt-auto">
-        <Footer />
-      </div>
-    </h1>
+    </div>
   );
 }
