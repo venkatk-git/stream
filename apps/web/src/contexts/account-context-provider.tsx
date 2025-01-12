@@ -2,18 +2,23 @@ import React from 'react';
 
 import useGetAccount from '../hooks/use-get-account';
 
-import { UserData } from '../lib/types';
+import { AccountState } from '../lib/types';
 
-export type AccountContextType = {
-  user: UserData | null;
-};
-
-export const AccountContext = React.createContext<AccountContextType | null>(
-  null
-);
+export const AccountContext = React.createContext<AccountState | null>(null);
 
 export function useAccountContext() {
   const context = React.useContext(AccountContext);
+
+  /**
+   * TODO: Make the context error handling better.
+   */
+
+  /**
+   * TODO: Do delete this if statement and figure out another way to handle `Account Context cannot be used outside of Account Context Provider` error
+   */
+  if (context == null) {
+    return context;
+  }
 
   if (!context) {
     console.error(
@@ -34,7 +39,7 @@ export default function AccountContextProvider({
   const account = useGetAccount();
 
   return (
-    <AccountContext.Provider value={{ user: account }}>
+    <AccountContext.Provider value={account}>
       {children}
     </AccountContext.Provider>
   );

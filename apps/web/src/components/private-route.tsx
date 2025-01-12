@@ -8,11 +8,11 @@ import { Spinner } from './spinner';
 export default function PrivateRoute() {
   const isAuth = useAuth();
 
-  if (isAuth === null) {
+  if (isAuth.isLoading) {
     return <Spinner />;
   }
 
-  if (!isAuth) {
+  if (isAuth.account == null) {
     window.location.href = `${API_BASE_URL}/auth/google`;
     return null;
   }

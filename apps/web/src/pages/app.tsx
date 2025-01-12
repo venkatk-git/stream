@@ -6,7 +6,7 @@ import PrivateRoute from '../components/private-route';
 
 export function App() {
   return (
-    <div className="h-dvh w-full bg-black-400 text-gray-200">
+    <div className="h-dvh w-full bg-black-400 text-gray-200 transition-all">
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
