@@ -8,3 +8,8 @@ export type ApiResponse = {
   error: string | null;
   data: UserData;
 };
+
+export type AccountState = {
+  isValid: boolean;
+  account: UserData | null;
+};
