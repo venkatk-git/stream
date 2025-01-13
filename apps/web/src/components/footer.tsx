@@ -1,13 +1,13 @@
 export default function Footer() {
   return (
     <footer
-      className="h-full w-full flex justify-end items-center font-semibold text-sm text-gray-600
+      className="h-full w-full my-1 flex justify-end items-center font-semibold text-sm text-gray-600
     "
     >
       {/* Profile links */}
       <div className="flex gap-1 text-xs">
         <a
-          href="https://github.com/venkatk-git/venkatk-git/stream"
+          href="https://github.com/venkatk-git/stream"
           target="_blank"
           rel="noreferrer"
         >
