@@ -9,6 +9,9 @@ export default function HomeRoomActions() {
       <div className="h-12 w-full md:w-96">
         <button
           disabled={!isAuth}
+          onClick={() =>
+            window.location.replace('http://localhost:4200/r/something')
+          }
           className={`h-full w-full transition bg-red-600 hover:bg-red-500 text-gray-200 text-sm px-4 py-1.5 rounded-md outline-accent-500 border border-red-500 ${
             isAuth ? 'cursor-pointer' : 'cursor-not-allowed'
           }`}

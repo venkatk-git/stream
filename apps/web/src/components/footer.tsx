@@ -7,7 +7,7 @@ export default function Footer() {
       {/* Profile links */}
       <div className="flex gap-1 text-xs">
         <a
-          href="https://github.com/venkatk-git/venkatk-git/stream"
+          href="https://github.com/venkatk-git/stream"
           target="_blank"
           rel="noreferrer"
         >
