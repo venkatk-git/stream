@@ -83,27 +83,34 @@ io.use(attachUserToSocket);
  * @param socket - The connected socket instance.
  */
 io.on('connect', (socket: ExtendedSocket) => {
-  console.log(
-    `[ socket ] ${socket.user.username} has connected`,
-    socket.request.session
-  );
+  // console.log(
+  //   `[ socket ] ${socket.user.username} has connected`,
+  //   socket.request.session
+  // );
+  console.log(`[socket] ${socket.user.username} has connected`);
+
   io.emit('user:connected', {
     message: `${socket.user.username} has connected`,
   });
 
-  socket.on('room:join', (payload) => joinHandler(socket, payload));
+  socket.on('room:join', ({ roomId }: { roomId: string }) => {
+    const isJoined = joinHandler(socket, roomId);
+    console.log(isJoined);
 
-  socket.on('video:play', (payload) =>
-    videoEventHandler(socket, 'video:play', payload)
-  );
-  socket.on('video:pause', (payload) =>
-    videoEventHandler(socket, 'video:play', payload)
-  );
-  socket.on('video:seek', (payload) =>
-    videoEventHandler(socket, 'video:play', payload)
-  );
+    if (isJoined) io.emit('room:joined', { name: socket.user.username });
+  });
 
-  io.on('disconnect', () => {
+  // socket.on('video:play', (payload) =>
+  //   videoEventHandler(socket, 'video:play', payload)
+  // );
+  // socket.on('video:pause', (payload) =>
+  //   videoEventHandler(socket, 'video:play', payload)
+  // );
+  // socket.on('video:seek', (payload) =>
+  //   videoEventHandler(socket, 'video:play', payload)
+  // );
+
+  socket.on('disconnect', () => {
     io.emit('user:disconnected', {
       message: `${socket.user.username} has disconnected`,
     });

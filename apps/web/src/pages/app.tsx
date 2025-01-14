@@ -4,6 +4,7 @@ import { Home } from './home';
 import Layout from './layout';
 import PrivateRoute from '../components/private-route';
 import RoomPage from './room';
+import RoomContextProvider from '../contexts/room-context-provider';
 
 export function App() {
   return (
@@ -12,7 +13,14 @@ export function App() {
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
           <Route element={<PrivateRoute />}>
-            <Route path="/r/:roomid" element={<RoomPage />} />
+            <Route
+              path="/r/:roomId"
+              element={
+                <RoomContextProvider>
+                  <RoomPage />
+                </RoomContextProvider>
+              }
+            />
           </Route>
           <Route path="*" element={<h1>Page not found</h1>} />
         </Route>

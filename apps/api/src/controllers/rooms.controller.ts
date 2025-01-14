@@ -90,7 +90,7 @@ export const joinRoom = catchAsync(
 
 /**
  * !!IMPORTANT!! This function is not used in the application and is provided as a reference.
- * 
+ *
  * @desc Allows an authenticated user to connect to an existing room by its room ID.
  * The function performs the following actions:
  * - Retrieves the room ID from the URL parameters and the authenticated user's ID from the request.

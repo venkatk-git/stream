@@ -13,3 +13,11 @@ export type AccountState = {
   isValid: boolean;
   account: UserData | null;
 };
+
+export type ApiResponseRoom = {
+  success: boolean;
+  error: string | null;
+  data: {
+    roomId: string;
+  } | null;
+};

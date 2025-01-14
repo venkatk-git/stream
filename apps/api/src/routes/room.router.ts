@@ -19,7 +19,7 @@ router.get('/', isAuthenticated(), createNewRoom);
  * @route GET /r/:id
  * @desc Allows an authenticated user to join an existing room by its room ID.
  */
-router.get('/:id', isAuthenticated(), joinRoom);
+router.get('/join/:id', isAuthenticated(), joinRoom);
 
 /**
  * @route GET /r/connect/:id
