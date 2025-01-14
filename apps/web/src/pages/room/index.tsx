@@ -5,6 +5,8 @@ import useSocket from '../../hooks/useSocket';
 import Details from './details';
 import { useRoomContext } from '../../contexts/room-context-provider';
 import socket from '../socket';
+import { useToast } from '../../hooks/use-toast';
+import { title } from 'process';
 
 export default function RoomPage() {
   /**
@@ -19,6 +21,7 @@ export default function RoomPage() {
   /**
    * Room page Initializer
    */
+  const { toast } = useToast();
   const roomContext = useRoomContext();
   const { roomId } = useParams();
 
@@ -41,12 +44,16 @@ export default function RoomPage() {
 
     socket.on('room:joined', ({ name }: { name: string }) => {
       console.log('USER JOINED: ', name);
+      toast({
+        title: 'New user connected',
+        description: name,
+      });
     });
 
     return () => {
       socket.off('room:joined');
     };
-  }, [roomContext, roomId]);
+  }, [roomContext, roomId, toast]);
 
   return (
     <section className="py-2 h-full w-full flex flex-col lg:flex-row gap-4">
