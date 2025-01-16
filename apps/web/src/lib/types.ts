@@ -21,3 +21,8 @@ export type ApiResponseRoom = {
     roomId: string;
   } | null;
 };
+
+export type Member = {
+  name: string;
+  memberId: string;
+};

@@ -1,10 +1,14 @@
 import { Route, Routes } from 'react-router-dom';
 
-import { Home } from './home';
 import Layout from './layout';
-import PrivateRoute from '../components/private-route';
+
+import { Home } from './home';
 import RoomPage from './room';
+
+import PrivateRoute from '../components/private-route';
+
 import RoomContextProvider from '../contexts/room-context-provider';
+import SocketContextProvider from '../contexts/socket-context-provider';
 
 export function App() {
   return (
@@ -16,9 +20,11 @@ export function App() {
             <Route
               path="/r/:roomId"
               element={
-                <RoomContextProvider>
-                  <RoomPage />
-                </RoomContextProvider>
+                <SocketContextProvider>
+                  <RoomContextProvider>
+                    <RoomPage />
+                  </RoomContextProvider>
+                </SocketContextProvider>
               }
             />
           </Route>
