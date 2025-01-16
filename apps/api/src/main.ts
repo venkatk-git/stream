@@ -9,7 +9,10 @@ import { attachUserToSocket } from './middlewares/socket.middleware';
 import { sessionMiddleware } from './middlewares/session.middleware.';
 
 import { joinHandler, membersList } from './socket/handlers/room.handler';
-import { videoEventHandler } from './socket/handlers/video.handler';
+import {
+  loadVideoHandler,
+  videoEventHandler,
+} from './socket/handlers/video.handler';
 
 import { ExtendedSocket } from './lib/types';
 
@@ -95,9 +98,13 @@ io.on('connect', (socket: ExtendedSocket) => {
 
     if (isJoined) io.emit('room:joined', { name: socket.user.username });
 
+    // Send Member list on join
     const memberList = await membersList(socket);
+    io.to(roomId).emit('room:members_list', memberList);
 
-    io.emit('room:members_list', memberList);
+    // Load initial video on join
+    const videoId = await loadVideoHandler(socket);
+    if (videoId) socket.emit('video:load', videoId);
   });
 
   socket.on('disconnect', () => {

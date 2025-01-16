@@ -243,3 +243,33 @@ export async function getRoomMembers(roomId: string) {
     return null;
   }
 }
+
+export async function getVideo(roomId: string) {
+  try {
+    if (!roomId) {
+      console.error(`Room not found: { roomId: ${roomId} }`);
+      return null;
+    }
+
+    // Check if room exists
+    const isRoomValid = await isValidRoomService(roomId);
+    if (!isRoomValid) {
+      console.error(`Room not found: { roomId: ${roomId} }`);
+      return null;
+    }
+
+    const room = await Room.findOne({ roomId });
+    const videoQueue = room?.videoQueue;
+
+    // console.log(videoQueue);
+
+    if (!videoQueue || videoQueue.length === 0) return null;
+
+    // console.log('it has');
+
+    return videoQueue[0];
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+}

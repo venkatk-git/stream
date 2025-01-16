@@ -1,4 +1,6 @@
+import console from 'console';
 import { ExtendedSocket } from '../../lib/types';
+import { getVideo } from '../../services/room.service';
 
 type VideoEvents = 'video:play' | 'video:pause' | 'video:seek';
 
@@ -22,4 +24,11 @@ export function videoEventHandler(
 
   // Emit the play event to all users in the room
   socket.to(socket.request.session.roomId).emit(event, payload);
+}
+export async function loadVideoHandler(socket: ExtendedSocket) {
+  const roomId = socket.request.session.roomId;
+
+  const videoId = await getVideo(roomId);
+
+  return videoId;
 }

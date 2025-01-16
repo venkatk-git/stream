@@ -1,4 +1,5 @@
 import Details from './details';
+import Player from './player';
 
 export default function RoomPage() {
   /**
@@ -20,6 +21,7 @@ export default function RoomPage() {
           {/**
            * TODO: Insert the video
            */}
+          <Player />
         </div>
       </div>
       <Details />

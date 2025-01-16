@@ -6,7 +6,9 @@ export function Layout() {
   return (
     <div className="h-dvh w-full px-8 py-2 flex flex-col bg-black-400 text-gray-200">
       <Header />
-      <Outlet />
+      <div className="w-full h-full py-2">
+        <Outlet />
+      </div>
       <div className="mt-auto">
         <Footer />
       </div>
