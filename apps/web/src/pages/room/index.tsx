@@ -1,3 +1,4 @@
+import { useRoomContext } from '../../contexts/room-context-provider';
 import Details from './details';
 import Player from './player';
 
@@ -14,6 +15,8 @@ export default function RoomPage() {
   /**
    * Room page Initializer
    */
+  const { video } = useRoomContext();
+
   return (
     <section className="py-2 h-full w-full flex flex-col lg:flex-row gap-4">
       <div className="h-full w-full lg:flex-1 flex flex-col">
@@ -21,10 +24,10 @@ export default function RoomPage() {
           {/**
            * TODO: Insert the video
            */}
-          <Player />
+          <Player videoId={video?.videoId || ''} />
         </div>
       </div>
-      <Details />
+      <Details title={video?.title || ''} />
     </section>
   );
 }

@@ -34,6 +34,7 @@ export async function attachUserToSocket(
       id: user._id.toString(),
       username: user.username,
       googleId: user.googleId,
+      profileImg: user.profileImg,
     };
 
     next();

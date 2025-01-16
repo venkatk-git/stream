@@ -104,7 +104,12 @@ io.on('connect', (socket: ExtendedSocket) => {
 
     // Load initial video on join
     const videoId = await loadVideoHandler(socket);
-    if (videoId) socket.emit('video:load', videoId);
+    if (videoId)
+      socket.emit('video:load', {
+        videoId,
+        title:
+          'Full Video: MATTA | The Greatest Of All Time | Thalapathy Vijay | Venkat Prabhu |Yuvan Shankar Raja',
+      });
   });
 
   socket.on('disconnect', () => {

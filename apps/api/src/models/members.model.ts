@@ -19,6 +19,7 @@ const membersSchema = new mongoose.Schema({
           ref: 'User',
           required: true,
         },
+        profileImg: String,
         _id: false,
       },
     ],
