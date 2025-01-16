@@ -1,7 +1,7 @@
 export default function Footer() {
   return (
     <footer
-      className="h-full w-full my-1 flex justify-end items-center font-semibold text-sm text-gray-600
+      className="h-full w-full flex justify-end items-center font-semibold text-sm text-gray-600
     "
     >
       {/* Profile links */}

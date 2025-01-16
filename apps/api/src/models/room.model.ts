@@ -25,7 +25,7 @@ const roomSchema = new mongoose.Schema({
   },
   videoQueue: {
     type: [String],
-    default: [],
+    default: ['IZHGcU0U_W0'],
   },
   roomType: {
     type: String,

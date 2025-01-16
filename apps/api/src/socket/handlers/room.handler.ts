@@ -1,5 +1,6 @@
 import { ExtendedSocket } from '../../lib/types';
-import { joinMemberService } from '../../services/room.service';
+import { getRoomMembers, joinMemberService } from '../../services/room.service';
+import { emitError } from '../lib/utils';
 
 // Define the joinHandler function
 export async function joinHandler(socket: ExtendedSocket, roomId: string) {
@@ -28,4 +29,18 @@ export async function joinHandler(socket: ExtendedSocket, roomId: string) {
     socket.emit('socket:error', error.message);
     return false;
   }
+}
+
+export async function membersList(socket: ExtendedSocket) {
+  const roomId = socket.request.session.roomId;
+
+  if (!roomId) {
+    emitError(socket, 'There is no roomId to send members list');
+    return null;
+  }
+
+  // Fetch the members list
+  const members_list = await getRoomMembers(roomId);
+
+  return members_list;
 }

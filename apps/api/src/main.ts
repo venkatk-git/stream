@@ -8,12 +8,16 @@ import { authorizeUser } from './middlewares/auth.middleware';
 import { attachUserToSocket } from './middlewares/socket.middleware';
 import { sessionMiddleware } from './middlewares/session.middleware.';
 
-import { joinHandler } from './socket/handlers/room.handler';
-import { videoEventHandler } from './socket/handlers/video.handler';
+import { joinHandler, membersList } from './socket/handlers/room.handler';
+import {
+  loadVideoHandler,
+  videoEventHandler,
+} from './socket/handlers/video.handler';
 
 import { ExtendedSocket } from './lib/types';
 
 import app from './app';
+import console from 'console';
 
 const host = process.env.HOST ?? 'localhost';
 const port = process.env.PORT ? Number(process.env.PORT) : 3000;
@@ -83,32 +87,25 @@ io.use(attachUserToSocket);
  * @param socket - The connected socket instance.
  */
 io.on('connect', (socket: ExtendedSocket) => {
-  // console.log(
-  //   `[ socket ] ${socket.user.username} has connected`,
-  //   socket.request.session
-  // );
   console.log(`[socket] ${socket.user.username} has connected`);
 
   io.emit('user:connected', {
     message: `${socket.user.username} has connected`,
   });
 
-  socket.on('room:join', ({ roomId }: { roomId: string }) => {
-    const isJoined = joinHandler(socket, roomId);
-    console.log(isJoined);
+  socket.on('room:join', async ({ roomId }: { roomId: string }) => {
+    const isJoined = await joinHandler(socket, roomId);
 
     if (isJoined) io.emit('room:joined', { name: socket.user.username });
-  });
 
-  // socket.on('video:play', (payload) =>
-  //   videoEventHandler(socket, 'video:play', payload)
-  // );
-  // socket.on('video:pause', (payload) =>
-  //   videoEventHandler(socket, 'video:play', payload)
-  // );
-  // socket.on('video:seek', (payload) =>
-  //   videoEventHandler(socket, 'video:play', payload)
-  // );
+    // Send Member list on join
+    const memberList = await membersList(socket);
+    io.to(roomId).emit('room:members_list', memberList);
+
+    // Load initial video on join
+    const videoId = await loadVideoHandler(socket);
+    if (videoId) socket.emit('video:load', videoId);
+  });
 
   socket.on('disconnect', () => {
     io.emit('user:disconnected', {
@@ -120,3 +117,13 @@ io.on('connect', (socket: ExtendedSocket) => {
 server.listen(port, () => {
   console.log(`[ ready ] http://${host}:${port}`);
 });
+
+// socket.on('video:play', (payload) =>
+//   videoEventHandler(socket, 'video:play', payload)
+// );
+// socket.on('video:pause', (payload) =>
+//   videoEventHandler(socket, 'video:play', payload)
+// );
+// socket.on('video:seek', (payload) =>
+//   videoEventHandler(socket, 'video:play', payload)
+// );

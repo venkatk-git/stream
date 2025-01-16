@@ -3,6 +3,8 @@ import mongoose, { Types } from 'mongoose';
 
 import Room from '../models/room.model';
 import User from '../models/user.model';
+import Members from '../models/members.model';
+import { Socket } from 'socket.io';
 
 /**
  * Creates a new room with the specified owner.
@@ -33,12 +35,21 @@ export async function createRoomService(
   const roomId = uuidV4();
 
   const newRoom = new Room({
-    roomId: roomId,
+    roomId,
     ownerId,
     members: [ownerId],
   });
 
+  const newMembersList = new Members({
+    roomId,
+    members: {
+      name: owner.username,
+      memberId: owner.id,
+    },
+  });
+
   await newRoom.save();
+  await newMembersList.save();
 
   console.info(`Room created: { roomId: ${roomId}, ownerId: ${ownerId} }`);
   return roomId;
@@ -130,8 +141,27 @@ export async function joinMemberService(
   }
 
   // Add the user to the room's members list
-  room.members.push(userObjectId);
-  await room.save();
+  await Room.findOneAndUpdate(
+    { roomId },
+    { $addToSet: { members: userObjectId } } // Add only if the user is not already in the list
+  );
+
+  const membersList = await Members.findOneAndUpdate(
+    { roomId },
+    {
+      $addToSet: {
+        members: {
+          name: user.username,
+          memberId: user._id,
+        },
+      },
+    }
+  );
+
+  if (!membersList) {
+    console.error(`Failed to update members list for roomId: ${roomId}`);
+    return false;
+  }
 
   console.info(`User joined room: { roomId: ${roomId}, userId: ${userId} }`);
   return true;
@@ -185,4 +215,61 @@ export async function connectMemberService(
 
   // If not already connected, delegate to the `joinMemberService` to add the user to the room
   return joinMemberService(roomId, userId);
+}
+
+export async function getRoomMembers(roomId: string) {
+  try {
+    if (!roomId) {
+      console.error(`Room not found: { roomId: ${roomId} }`);
+      return null;
+    }
+
+    // Check if room exists
+    const isRoomValid = await isValidRoomService(roomId);
+    if (!isRoomValid) {
+      console.error(`Room not found: { roomId: ${roomId} }`);
+      return null;
+    }
+
+    const members_list = await Members.findOne({ roomId }).select('members');
+    if (!members_list) {
+      console.error(`Member list not found with room id : ${roomId}`);
+      return null;
+    }
+
+    return members_list.members;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+}
+
+export async function getVideo(roomId: string) {
+  try {
+    if (!roomId) {
+      console.error(`Room not found: { roomId: ${roomId} }`);
+      return null;
+    }
+
+    // Check if room exists
+    const isRoomValid = await isValidRoomService(roomId);
+    if (!isRoomValid) {
+      console.error(`Room not found: { roomId: ${roomId} }`);
+      return null;
+    }
+
+    const room = await Room.findOne({ roomId });
+    const videoQueue = room?.videoQueue;
+
+    // console.log(videoQueue);
+
+    if (!videoQueue || videoQueue.length === 0) return null;
+
+    // console.log('it has');
+
+    return videoQueue[0];
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
 }
