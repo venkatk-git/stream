@@ -2,6 +2,7 @@ export type UserData = {
   username: string;
   googleId: string;
   id: string;
+  profileImg: string;
 };
 export type ApiResponse = {
   success: boolean;
@@ -25,4 +26,5 @@ export type ApiResponseRoom = {
 export type Member = {
   name: string;
   memberId: string;
+  profileImg: string;
 };

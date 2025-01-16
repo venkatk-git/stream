@@ -4,8 +4,6 @@ import passport from '../config/passport.config';
 import Users from '../models/user.model';
 
 import { ExtendedRequest } from '../lib/types';
-import { isAuthenticated } from '../middlewares/auth.middleware';
-import { successResponse } from '../lib/utils/response.utils';
 
 const router = Router();
 
@@ -51,6 +49,7 @@ router.get(
       id: user._id.toString(),
       username: user.username,
       googleId: user.googleId,
+      profileImg: user.profileImg,
     };
 
     req.session.user = req.user;

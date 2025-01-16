@@ -10,6 +10,11 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+
+  profileImg: {
+    type: String,
+    required: true,
+  },
 });
 
 export default mongoose.model('User', userSchema);

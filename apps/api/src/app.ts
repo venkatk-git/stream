@@ -95,7 +95,7 @@ app.use('/auth', authRouter);
 app.use(attachUserToRequest);
 
 app.get('/reqAuth', isAuthenticated(), (req: ExtendedRequest, res) => {
-  const user = req.session.user;
+  const user = req.user;
 
   res.status(200).json(successResponse(user));
 });

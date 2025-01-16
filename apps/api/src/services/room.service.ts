@@ -45,6 +45,7 @@ export async function createRoomService(
     members: {
       name: owner.username,
       memberId: owner.id,
+      profileImg: owner.profileImg,
     },
   });
 
@@ -153,6 +154,7 @@ export async function joinMemberService(
         members: {
           name: user.username,
           memberId: user._id,
+          profileImg: user.profileImg,
         },
       },
     }

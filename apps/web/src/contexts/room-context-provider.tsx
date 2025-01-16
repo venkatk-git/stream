@@ -2,7 +2,7 @@ import React from 'react';
 
 import { useSocketContext } from './socket-context-provider';
 
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { toast } from '../hooks/use-toast';
 
 import { Member } from '../lib/types';
@@ -10,7 +10,10 @@ import { Member } from '../lib/types';
 type RoomContextType = {
   roomId?: string;
   members: Member[];
-  videoId: string | null;
+  video: {
+    videoId: string;
+    title: string;
+  } | null;
 };
 
 export const RoomContext = React.createContext<RoomContextType | null>(null);
@@ -26,14 +29,16 @@ export default function RoomContextProvider({
    * Hooks
    */
   const { roomId } = useParams();
-  const navigator = useNavigate();
   const { socket } = useSocketContext();
 
   /**
    * States
    */
   const [members, setMembers] = React.useState<Member[]>([]);
-  const [videoId, setVideo] = React.useState<string | null>(null);
+  const [video, setVideo] = React.useState<{
+    videoId: string;
+    title: string;
+  } | null>(null);
 
   React.useEffect(() => {
     // After Join
@@ -50,8 +55,8 @@ export default function RoomContextProvider({
       setMembers(members);
     });
 
-    socket.on('video:load', (videoId) => {
-      setVideo(videoId);
+    socket.on('video:load', (video) => {
+      setVideo(video);
     });
 
     return () => {
@@ -60,7 +65,7 @@ export default function RoomContextProvider({
   }, [roomId, socket]);
 
   return (
-    <RoomContext.Provider value={{ roomId, members, videoId }}>
+    <RoomContext.Provider value={{ roomId, members, video }}>
       {children}
     </RoomContext.Provider>
   );

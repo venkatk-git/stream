@@ -11,6 +11,7 @@ export type RequestUser = {
   id: string;
   username: string;
   googleId: string;
+  profileImg: string;
 };
 
 export type ExtendedRequest = Request & {

@@ -1,11 +1,12 @@
 import ReactPlayer from 'react-player';
 
 import { OnProgressProps } from 'react-player/base';
-import { useRoomContext } from '../../contexts/room-context-provider';
 
-export default function Player() {
-  const { videoId } = useRoomContext();
+interface PlayerProps {
+  videoId: string;
+}
 
+export default function Player({ videoId }: PlayerProps) {
   if (!videoId) {
     return (
       <div className="w-full h-full flex justify-center items-center">

@@ -74,6 +74,7 @@ passport.use(
       const newUser = await new Users({
         username: profile.displayName,
         googleId: profile.id,
+        profileImg: profile.photos[0].value,
       }).save();
 
       const serializeUserPayload = newUser._id.toString();

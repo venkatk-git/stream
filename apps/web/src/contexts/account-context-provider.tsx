@@ -21,7 +21,7 @@ export function useAccountContext() {
   }
 
   if (!context) {
-    console.error(
+    throw new Error(
       'Account Context cannot be used outside of Account Context Provider'
     );
   }

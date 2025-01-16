@@ -86,6 +86,7 @@ export async function attachUserToRequest(
       id: user._id.toString(),
       username: user.username,
       googleId: user.googleId,
+      profileImg: user.profileImg,
     };
 
     next(); // Proceed to the next middleware or route handler
