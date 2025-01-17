@@ -40,6 +40,7 @@ export default function RoomContextProvider({
     title: string;
   } | null>(null);
 
+  // For initial joining and loading
   React.useEffect(() => {
     // After Join
     socket.emit('room:join', { roomId });

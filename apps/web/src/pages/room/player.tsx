@@ -1,12 +1,28 @@
+import React from 'react';
 import ReactPlayer from 'react-player';
 
-import { OnProgressProps } from 'react-player/base';
+import { usePlayerContext } from '../../contexts/player-context-provider';
+
+import Duration from '../../components/duration';
+import { Pause, Play } from 'lucide-react';
 
 interface PlayerProps {
   videoId: string;
 }
 
 export default function Player({ videoId }: PlayerProps) {
+  const {
+    playing,
+    playerRef,
+    handleSetDuration,
+    handleProgress,
+    handleTriggerPlay,
+    handleTriggerPause,
+  } = usePlayerContext();
+
+  /**
+   * !!!! Temporary Error Handling For In Case No `videoId` Provided
+   */
   if (!videoId) {
     return (
       <div className="w-full h-full flex justify-center items-center">
@@ -17,26 +33,91 @@ export default function Player({ videoId }: PlayerProps) {
     );
   }
 
-  const handleSeek = (seconds: number) => {
-    // console.log(`Seeked to ${seconds} seconds`);
-  };
-
-  const handleProgress = (obj: OnProgressProps) => {
-    // console.log(obj);
-  };
-
   return (
     <div className="p-1 w-full h-full flex items-center">
-      <div className="w-full h-full rounded-md overflow-hidden">
+      <div className="w-full h-full relative bottom-0 rounded-md overflow-hidden">
         <ReactPlayer
+          ref={playerRef}
           url={`https://www.youtube.com/watch?v=${videoId}`}
           width={'100%'}
           height={'100%'}
-          controls={true}
+          controls={false}
+          playing={playing}
+          onReady={() => console.log('Ready')}
+          onBuffer={() => console.log('Bufferring')}
+          onBufferEnd={() => console.log('Buffer Ended')}
+          onDuration={handleSetDuration}
           onProgress={handleProgress}
-          onSeek={handleSeek} // Handles user seek
-          onPlay={() => console.log('Playing')}
+          onPlay={handleTriggerPlay}
+          onPause={handleTriggerPause}
+          onSeek={(e) => console.log('Seeking', e)}
         />
+        <Controller />
+      </div>
+    </div>
+  );
+}
+
+function Controller() {
+  const {
+    playerRef,
+    duration,
+    playing,
+    played,
+    handleSetSeeking,
+    handleTriggerPlay,
+    handleTriggerPause,
+    handleTriggerSeek,
+  } = usePlayerContext();
+
+  const handleSeek = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (playerRef.current) {
+      handleSetSeeking(false);
+      const seekTo = parseFloat(e.target.value);
+      handleTriggerSeek(seekTo);
+    }
+  };
+
+  const handlePlayPause = () => {
+    if (playing) {
+      handleTriggerPause();
+    } else {
+      handleTriggerPlay();
+    }
+  };
+
+  return (
+    <div className="w-full p-3 pt-0 absolute flex flex-col bottom-0 left-0 backdrop-blur-md">
+      <div className="w-full">
+        <input
+          type="range"
+          className="h-[3px] w-full appearance-none range-thumb cursor-pointer bg-gray-800"
+          min="0"
+          max={duration} // Adjust based on video duration
+          value={played}
+          onMouseDown={() => handleSetSeeking(true)}
+          onChange={handleSeek}
+          step="0.1"
+        />
+      </div>
+      <div className="h-10 flex items-center gap-3">
+        <button className="appearance-none" onClick={handlePlayPause}>
+          {playing ? (
+            <Pause fill="white" className="border-0" />
+          ) : (
+            <Play fill="white" className="border-0" />
+          )}
+        </button>
+
+        <ul className="appearance-none flex gap-1 text-sm font-semibold">
+          <li>
+            <Duration seconds={played} />
+          </li>
+          <li>/</li>
+          <li>
+            <Duration seconds={duration} />
+          </li>
+        </ul>
       </div>
     </div>
   );
