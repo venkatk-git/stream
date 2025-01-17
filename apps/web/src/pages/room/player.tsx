@@ -4,10 +4,7 @@ import ReactPlayer from 'react-player';
 import { usePlayerContext } from '../../contexts/player-context-provider';
 
 import Duration from '../../components/duration';
-import {
-  Pause,
-  Play,
-} from 'lucide-react';
+import { Pause, Play } from 'lucide-react';
 
 interface PlayerProps {
   videoId: string;
@@ -70,13 +67,14 @@ function Controller() {
     handleSetSeeking,
     handleTriggerPlay,
     handleTriggerPause,
+    handleTriggerSeek,
   } = usePlayerContext();
 
   const handleSeek = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (playerRef.current) {
       handleSetSeeking(false);
       const seekTo = parseFloat(e.target.value);
-      playerRef.current?.seekTo(seekTo);
+      handleTriggerSeek(seekTo);
     }
   };
 
@@ -89,7 +87,7 @@ function Controller() {
   };
 
   return (
-    <div className="w-full p-3 absolute flex flex-col bottom-0 left-0 backdrop-blur-md">
+    <div className="w-full p-3 pt-0 absolute flex flex-col bottom-0 left-0 backdrop-blur-md">
       <div className="w-full">
         <input
           type="range"

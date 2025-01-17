@@ -108,11 +108,23 @@ io.on('connect', (socket: ExtendedSocket) => {
       });
   });
 
+  /**
+   * Video State Changes
+   */
   socket.on('video:play', () => {
-    io.to(socket.request.session.roomId).emit('video:play');
+    io.to(socket.request.session.roomId).emit(
+      'video:play',
+      socket.user.username
+    );
   });
   socket.on('video:pause', () => {
-    io.to(socket.request.session.roomId).emit('video:pause');
+    io.to(socket.request.session.roomId).emit(
+      'video:pause',
+      socket.user.username
+    );
+  });
+  socket.on('video:seek', (seekTo: number) => {
+    io.to(socket.request.session.roomId).emit('video:seek', seekTo);
   });
 
   socket.on('disconnect', () => {

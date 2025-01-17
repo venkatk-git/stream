@@ -2,6 +2,7 @@ import React from 'react';
 import { useSocketContext } from './socket-context-provider';
 import ReactPlayer from 'react-player';
 import { OnProgressProps } from 'react-player/base';
+import { useToast } from '../hooks/use-toast';
 
 type PlayerContextType = {
   playerRef: React.RefObject<ReactPlayer>;
@@ -13,6 +14,7 @@ type PlayerContextType = {
   handleProgress: (state: OnProgressProps) => void;
   handleTriggerPlay: () => void;
   handleTriggerPause: () => void;
+  handleTriggerSeek: (seekTo: number) => void;
 };
 
 export const PlayerContext = React.createContext<PlayerContextType | null>(
@@ -32,6 +34,7 @@ export default function PlayerContextProvinder({
   /**
    * States
    */
+  const { toast } = useToast();
   const [playing, setPlaying] = React.useState(false);
   const [duration, setDuration] = React.useState(0);
   const [seeking, setSeeking] = React.useState(false);
@@ -39,56 +42,68 @@ export default function PlayerContextProvinder({
 
   const playerRef = React.useRef<ReactPlayer>(null);
 
-  // Handlers for Setters
+  /**
+   * Handlers for Setters
+   */
   const handleSetDuration = (duration: number) => {
     setDuration(duration);
   };
-
   const handleSetSeeking = (isSeeking: boolean) => {
     setSeeking(isSeeking);
   };
-
   const handleProgress = (state: OnProgressProps) => {
     if (!seeking) setPlayed(state.playedSeconds);
   };
 
-  // Triggering Handlers
+  /**
+   * Triggering Handlers
+   */
   const handleTriggerPlay = () => {
     socket.emit('video:play');
   };
-
   const handleTriggerPause = () => {
     socket.emit('video:pause');
   };
-
-  // Listening Handlers
-  const handleOnPlay = () => {
-    setPlaying(true);
-  };
-
-  const handleOnPause = () => {
-    setPlaying(false);
+  const handleTriggerSeek = (seekTo: number) => {
+    socket.emit('video:seek', seekTo);
   };
 
   /**
    * Socket Event Handling
    */
   React.useEffect(() => {
-    socket.on('video:play', () => {
-      handleOnPlay();
-      console.log('Play');
-    });
+    /**
+     * Listening Handlers
+     */
+    const handleOnPlay = (initiator: string) => {
+      toast({
+        title: 'Played by',
+        description: initiator,
+      });
+      setPlaying(true);
+    };
+    const handleOnPause = (initiator: string) => {
+      toast({
+        title: 'Paused by',
+        description: initiator,
+      });
+      setPlaying(false);
+    };
+    const handleOnSeek = (seekTo: number) => {
+      playerRef.current?.seekTo(seekTo);
+    };
 
+    socket.on('video:play', handleOnPlay);
     socket.on('video:pause', handleOnPause);
-    // socket.on('video:seek', handleOnSeek);
+    socket.on('video:seek', handleOnSeek);
 
     // Clean up
     return () => {
       socket.off('video:play', handleOnPlay);
       socket.off('video:pause', handleOnPause);
-      //   socket.off('video:seek');
+      socket.off('video:seek', handleOnSeek);
     };
-  }, [socket]);
+  }, [socket, toast]);
 
   return (
     <PlayerContext.Provider
@@ -102,6 +117,7 @@ export default function PlayerContextProvinder({
         handleProgress,
         handleTriggerPlay,
         handleTriggerPause,
+        handleTriggerSeek,
       }}
     >
       {children}
