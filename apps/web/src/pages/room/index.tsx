@@ -1,3 +1,4 @@
+import PlayerContextProvinder from '../../contexts/player-context-provider';
 import { useRoomContext } from '../../contexts/room-context-provider';
 import Details from './details';
 import Player from './player';
@@ -24,7 +25,9 @@ export default function RoomPage() {
           {/**
            * TODO: Insert the video
            */}
-          <Player videoId={video?.videoId || ''} />
+          <PlayerContextProvinder>
+            <Player videoId={video?.videoId || ''} />
+          </PlayerContextProvinder>
         </div>
       </div>
       <Details title={video?.title || ''} />

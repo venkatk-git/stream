@@ -9,15 +9,11 @@ import { attachUserToSocket } from './middlewares/socket.middleware';
 import { sessionMiddleware } from './middlewares/session.middleware.';
 
 import { joinHandler, membersList } from './socket/handlers/room.handler';
-import {
-  loadVideoHandler,
-  videoEventHandler,
-} from './socket/handlers/video.handler';
+import { loadVideoHandler } from './socket/handlers/video.handler';
 
 import { ExtendedSocket } from './lib/types';
 
 import app from './app';
-import console from 'console';
 
 const host = process.env.HOST ?? 'localhost';
 const port = process.env.PORT ? Number(process.env.PORT) : 3000;
@@ -110,6 +106,13 @@ io.on('connect', (socket: ExtendedSocket) => {
         title:
           'Full Video: MATTA | The Greatest Of All Time | Thalapathy Vijay | Venkat Prabhu |Yuvan Shankar Raja',
       });
+  });
+
+  socket.on('video:play', () => {
+    io.to(socket.request.session.roomId).emit('video:play');
+  });
+  socket.on('video:pause', () => {
+    io.to(socket.request.session.roomId).emit('video:pause');
   });
 
   socket.on('disconnect', () => {
