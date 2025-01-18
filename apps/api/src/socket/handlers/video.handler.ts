@@ -25,6 +25,7 @@ export function videoEventHandler(
   // Emit the play event to all users in the room
   socket.to(socket.request.session.roomId).emit(event, payload);
 }
+
 export async function loadVideoHandler(socket: ExtendedSocket) {
   const roomId = socket.request.session.roomId;
 

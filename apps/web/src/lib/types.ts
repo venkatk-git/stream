@@ -28,3 +28,8 @@ export type Member = {
   memberId: string;
   profileImg: string;
 };
+
+export type VideoQueue = {
+  id: string;
+  title: string;
+};

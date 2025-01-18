@@ -5,15 +5,17 @@ import { useSocketContext } from './socket-context-provider';
 import { useParams } from 'react-router-dom';
 import { toast } from '../hooks/use-toast';
 
-import { Member } from '../lib/types';
+import { Member, VideoQueue } from '../lib/types';
 
 type RoomContextType = {
   roomId?: string;
   members: Member[];
+  videoQueue: VideoQueue[];
   video: {
     videoId: string;
     title: string;
   } | null;
+  handleAddVideoInQueue: (videoId: string) => void;
 };
 
 export const RoomContext = React.createContext<RoomContextType | null>(null);
@@ -34,11 +36,16 @@ export default function RoomContextProvider({
   /**
    * States
    */
-  const [members, setMembers] = React.useState<Member[]>([]);
   const [video, setVideo] = React.useState<{
     videoId: string;
     title: string;
   } | null>(null);
+  const [members, setMembers] = React.useState<Member[]>([]);
+  const [videoQueue, setVideoQueue] = React.useState<VideoQueue[]>([]);
+
+  const handleAddVideoInQueue = (videoId: string) => {
+    socket.emit('video_queue:add', videoId);
+  };
 
   // For initial joining and loading
   React.useEffect(() => {
@@ -65,8 +72,23 @@ export default function RoomContextProvider({
     };
   }, [roomId, socket]);
 
+  /**
+   * For Video Queue State Changes
+   */
+  React.useEffect(() => {
+    socket.on('video_queue:update', (videoQueue: VideoQueue[]) => {
+      setVideoQueue(videoQueue);
+    });
+
+    return () => {
+      socket.off('video_queue:update');
+    };
+  }, [socket]);
+
   return (
-    <RoomContext.Provider value={{ roomId, members, video }}>
+    <RoomContext.Provider
+      value={{ roomId, members, videoQueue, video, handleAddVideoInQueue }}
+    >
       {children}
     </RoomContext.Provider>
   );

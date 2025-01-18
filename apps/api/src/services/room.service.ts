@@ -266,9 +266,35 @@ export async function getVideo(roomId: string) {
 
     if (!videoQueue || videoQueue.length === 0) return null;
 
-    // console.log('it has');
-
     return videoQueue[0];
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+}
+
+export async function addVideoToQueue(roomId: string, videoId: string) {
+  try {
+    if (!roomId) {
+      console.error(`Room not found: { roomId: ${roomId} }`);
+      return null;
+    }
+
+    // Check if room exists
+    const isRoomValid = await isValidRoomService(roomId);
+    if (!isRoomValid) {
+      console.error(`Room not found: { roomId: ${roomId} }`);
+      return null;
+    }
+
+    const room = await Room.findOne({ roomId });
+    /**
+     * TODO: Fetch the title of the video with videoId and append it to the video queue
+     */
+    const videoQueue = room?.videoQueue;
+    await room.save();
+
+    return videoQueue;
   } catch (error) {
     console.error(error);
     return null;

@@ -14,6 +14,7 @@ import { loadVideoHandler } from './socket/handlers/video.handler';
 import { ExtendedSocket } from './lib/types';
 
 import app from './app';
+import { addVideoToQueue } from './services/room.service';
 
 const host = process.env.HOST ?? 'localhost';
 const port = process.env.PORT ? Number(process.env.PORT) : 3000;
@@ -102,9 +103,8 @@ io.on('connect', (socket: ExtendedSocket) => {
     const videoId = await loadVideoHandler(socket);
     if (videoId)
       socket.emit('video:load', {
-        videoId,
-        title:
-          'Full Video: MATTA | The Greatest Of All Time | Thalapathy Vijay | Venkat Prabhu |Yuvan Shankar Raja',
+        videoId: videoId.id,
+        title: videoId.title,
       });
   });
 
@@ -125,6 +125,18 @@ io.on('connect', (socket: ExtendedSocket) => {
   });
   socket.on('video:seek', (seekTo: number) => {
     io.to(socket.request.session.roomId).emit('video:seek', seekTo);
+  });
+
+  /**
+   * Video Queue
+   */
+  socket.on('video_queue:add', async (videoId: string) => {
+    const videoQueue = await addVideoToQueue(
+      socket.request.session.roomId,
+      videoId
+    );
+
+    socket.emit('video_queue:update', videoQueue);
   });
 
   socket.on('disconnect', () => {

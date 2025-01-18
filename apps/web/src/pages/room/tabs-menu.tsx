@@ -1,8 +1,6 @@
-import { Tabs, TabsList, TabsTrigger, TabsContent } from '@radix-ui/react-tabs';
-import { useRoomContext } from '../../contexts/room-context-provider';
-
-import { Plus } from 'lucide-react';
-import ProfileIcon from '../../components/profile';
+import { Tabs, TabsTrigger, TabsContent, TabsList } from '@radix-ui/react-tabs';
+import VideoQueueTab from './video-queue-tab';
+import MembersTab from './member-tab';
 
 export default function TabsMenu() {
   return (
@@ -30,90 +28,5 @@ export default function TabsMenu() {
         </TabsContent>
       </div>
     </Tabs>
-  );
-}
-
-function MembersTab() {
-  const { members } = useRoomContext();
-
-  return (
-    <div className="p-3 pt-0 flex flex-col">
-      {members.map((member) => (
-        <Member key={member.name} profileImg={member.profileImg}>
-          {member.name}
-        </Member>
-      ))}
-    </div>
-  );
-}
-
-function VideoQueueTab() {
-  return (
-    <div className="h-full p-3 pt-0 flex flex-col overflow-y-auto">
-      <div className="mb-3">
-        <Video>
-          Full Video: MATTA | The Greatest Of All Time | Thalapathy Vijay |
-          Venkat Prabhu |Yuvan Shankar Raja
-        </Video>
-        <Video>
-          Full Video: MATTA | The Greatest Of All Time | Thalapathy Vijay |
-          Venkat Prabhu |Yuvan Shankar Raja
-        </Video>
-        <Video>
-          Full Video: MATTA | The Greatest Of All Time | Thalapathy Vijay |
-          Venkat Prabhu |Yuvan Shankar Raja
-        </Video>
-        <Video>
-          Full Video: MATTA | The Greatest Of All Time | Thalapathy Vijay |
-          Venkat Prabhu |Yuvan Shankar Raja
-        </Video>
-        <Video>
-          Full Video: MATTA | The Greatest Of All Time | Thalapathy Vijay |
-          Venkat Prabhu |Yuvan Shankar Raja
-        </Video>
-        <Video>
-          Full Video: MATTA | The Greatest Of All Time | Thalapathy Vijay |
-          Venkat Prabhu |Yuvan Shankar Raja
-        </Video>
-      </div>
-      <div className="h-10 p-0 m-0 rounded-sm flex items-center justify-center bg-red-700 font-medium text-xl">
-        <Plus />
-      </div>
-    </div>
-  );
-}
-
-interface MemberProps {
-  children: string;
-  profileImg: string;
-}
-
-function Member({ children, profileImg }: MemberProps) {
-  return (
-    <div
-      className="py-3 flex items-center gap-4 border-b border-gray-800
-    "
-    >
-      <ProfileIcon profileImg={profileImg} />
-      <div className="truncate text-sm font-medium">{children}</div>
-    </div>
-  );
-}
-
-interface VideoProps {
-  children: string;
-}
-
-function Video({ children }: VideoProps) {
-  return (
-    <div className="flex py-3 gap-2 border-b border-gray-800">
-      <div className="aspect-video w-60 flex items-center rounded-sm border border-gray-800 bg-gray-700 overflow-hidden">
-        <img
-          src="https://i.ytimg.com/vi/IZHGcU0U_W0/default.jpg"
-          alt="thumbnail"
-        />
-      </div>
-      <p className="line-clamp-3 text-sm">{children}</p>
-    </div>
   );
 }
