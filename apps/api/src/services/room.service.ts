@@ -1,10 +1,9 @@
-import { v4 as uuidV4 } from 'uuid';
+import { str10_36 } from 'hyperdyperid/lib/str10_36';
 import mongoose, { Types } from 'mongoose';
 
 import Room from '../models/room.model';
 import User from '../models/user.model';
 import Members from '../models/members.model';
-import { Socket } from 'socket.io';
 
 /**
  * Creates a new room with the specified owner.
@@ -32,7 +31,7 @@ export async function createRoomService(
     return null;
   }
 
-  const roomId = uuidV4();
+  const roomId = str10_36();
 
   const newRoom = new Room({
     roomId,

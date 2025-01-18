@@ -19,8 +19,8 @@ export default function RoomPage() {
   const { video } = useRoomContext();
 
   return (
-    <section className="py-2 h-full w-full flex flex-col lg:flex-row gap-4">
-      <div className="h-full w-full lg:flex-1 flex flex-col">
+    <section className="h-full w-full flex flex-col lg:flex-row gap-3">
+      <div className="h-full w-full flex-1 flex flex-col">
         <div className="h-full border border-gray-800 rounded-lg bg-gray-900">
           {/**
            * TODO: Insert the video
@@ -30,7 +30,9 @@ export default function RoomPage() {
           </PlayerContextProvinder>
         </div>
       </div>
-      <Details title={video?.title || ''} />
+      <div className="flex-1 lg:flex-none">
+        <Details title={video?.title || ''} />
+      </div>
     </section>
   );
 }

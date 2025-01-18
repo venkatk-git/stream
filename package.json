@@ -28,6 +28,7 @@
     "express": "^4.21.2",
     "express-session": "^1.18.1",
     "helmet": "^8.0.0",
+    "hyperdyperid": "^1.2.0",
     "ioredis": "^5.4.1",
     "lucide-react": "^0.471.1",
     "mongodb": "^6.12.0",

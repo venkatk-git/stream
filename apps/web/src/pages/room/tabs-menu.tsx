@@ -6,7 +6,7 @@ import ProfileIcon from '../../components/profile';
 
 export default function TabsMenu() {
   return (
-    <Tabs defaultValue="members" className="w-full">
+    <Tabs defaultValue="video_queue" className="w-full h-full flex flex-col">
       <TabsList className="p-3 h-16 w-full flex gap-2 border-b border-gray-800">
         <TabsTrigger
           value="members"
@@ -16,17 +16,19 @@ export default function TabsMenu() {
         </TabsTrigger>
         <TabsTrigger
           value="video_queue"
-        className="p-1 data-[state=active]:bg-red-700 border border-red-600 flex-1 rounded-md tracking-tight inline-flex items-center justify-center whitespace-nowrap  px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm"
+          className="p-1 data-[state=active]:bg-red-700 border border-red-600 flex-1 rounded-md tracking-tight inline-flex items-center justify-center whitespace-nowrap  px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm"
         >
           Videos
         </TabsTrigger>
       </TabsList>
-      <TabsContent value="members">
-        <MembersTab />
-      </TabsContent>
-      <TabsContent value="video_queue">
-        <VideoQueueTab />
-      </TabsContent>
+      <div className="h-full overflow-y-auto">
+        <TabsContent value="members">
+          <MembersTab />
+        </TabsContent>
+        <TabsContent value="video_queue">
+          <VideoQueueTab />
+        </TabsContent>
+      </div>
     </Tabs>
   );
 }
@@ -47,8 +49,28 @@ function MembersTab() {
 
 function VideoQueueTab() {
   return (
-    <div className="p-3 pt-0 flex flex-col">
+    <div className="h-full p-3 pt-0 flex flex-col overflow-y-auto">
       <div className="mb-3">
+        <Video>
+          Full Video: MATTA | The Greatest Of All Time | Thalapathy Vijay |
+          Venkat Prabhu |Yuvan Shankar Raja
+        </Video>
+        <Video>
+          Full Video: MATTA | The Greatest Of All Time | Thalapathy Vijay |
+          Venkat Prabhu |Yuvan Shankar Raja
+        </Video>
+        <Video>
+          Full Video: MATTA | The Greatest Of All Time | Thalapathy Vijay |
+          Venkat Prabhu |Yuvan Shankar Raja
+        </Video>
+        <Video>
+          Full Video: MATTA | The Greatest Of All Time | Thalapathy Vijay |
+          Venkat Prabhu |Yuvan Shankar Raja
+        </Video>
+        <Video>
+          Full Video: MATTA | The Greatest Of All Time | Thalapathy Vijay |
+          Venkat Prabhu |Yuvan Shankar Raja
+        </Video>
         <Video>
           Full Video: MATTA | The Greatest Of All Time | Thalapathy Vijay |
           Venkat Prabhu |Yuvan Shankar Raja

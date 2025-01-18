@@ -76,17 +76,9 @@ export default function PlayerContextProvinder({
      * Listening Handlers
      */
     const handleOnPlay = (initiator: string) => {
-      toast({
-        title: 'Played by',
-        description: initiator,
-      });
       setPlaying(true);
     };
     const handleOnPause = (initiator: string) => {
-      toast({
-        title: 'Paused by',
-        description: initiator,
-      });
       setPlaying(false);
     };
     const handleOnSeek = (seekTo: number) => {
