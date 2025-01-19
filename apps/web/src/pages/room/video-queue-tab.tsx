@@ -1,8 +1,9 @@
 import React from 'react';
 
-import { extractVideoIdFromUrl } from '../../lib/utils';
+import { cn, extractVideoIdFromUrl } from '../../lib/utils';
 
 import { useRoomContext } from '../../contexts/room-context-provider';
+import { usePlayerContext } from '../../contexts/player-context-provider';
 
 import {
   Dialog,
@@ -14,11 +15,14 @@ import {
   DialogFooter,
 } from '../../components/dialog';
 
+import { Video } from '../../lib/types';
+
 export default function VideoQueueTab() {
   /**
    * Context
    */
   const { videoQueue, handleAddVideoInQueue } = useRoomContext();
+  const { video, handleTriggerLoadVideo } = usePlayerContext();
 
   /**
    * States
@@ -33,41 +37,36 @@ export default function VideoQueueTab() {
     if (!videoId) return;
     handleAddVideoInQueue(videoId);
   };
+  const handleVideoQueueOnClick = (video: Video | null) => {
+    if (!video) return;
+
+    handleTriggerLoadVideo({
+      videoId: video.videoId,
+      title: video.title,
+    });
+  };
 
   /**
    * Component
    */
   return (
     <div className="h-full p-3 pt-0 flex flex-col overflow-y-auto">
-      <div className="mb-3">
-        {videoQueue?.map((video) => (
-          <Video key={video.id} videoId={video.id}>
-            {video.title}
-          </Video>
+      <div className="mb-3 -mx-3">
+        {videoQueue?.map((_video) => (
+          <button
+            className={cn(
+              'appearance-none px-3 text-left hover:bg-red-700/50 hover:text-gray-200 text-gray-200/50 transition',
+              video && video.videoId === _video.videoId ? 'text-gray-200' : ''
+            )}
+            key={_video.videoId}
+            onClick={() => handleVideoQueueOnClick(_video)}
+          >
+            <VideoCard videoId={_video.videoId}>{_video.title}</VideoCard>
+          </button>
         ))}
-        <Video videoId={'M8AEH02lzdA'}>
-          MATTA | The Greatest Of All Time | Thalapathy Vijay | Venkat Prabhu
-          |Yuvan Shankar Raja
-        </Video>
-        <Video videoId={'M8AEH02lzdA'}>
-          MATTA | The Greatest Of All Time | Thalapathy Vijay | Venkat Prabhu
-          |Yuvan Shankar Raja
-        </Video>
-        <Video videoId={'M8AEH02lzdA'}>
-          MATTA | The Greatest Of All Time | Thalapathy Vijay | Venkat Prabhu
-          |Yuvan Shankar Raja
-        </Video>
-        <Video videoId={'M8AEH02lzdA'}>
-          MATTA | The Greatest Of All Time | Thalapathy Vijay | Venkat Prabhu
-          |Yuvan Shankar Raja
-        </Video>
-        <Video videoId={'M8AEH02lzdA'}>
-          MATTA | The Greatest Of All Time | Thalapathy Vijay | Venkat Prabhu
-          |Yuvan Shankar Raja
-        </Video>
       </div>
       <Dialog>
-        <DialogTrigger className="h-14 w-full appearance-none p-2 rounded-md flex items-center justify-center bg-red-700 hover:bg-red-600 font-medium text-sm transition border border-red-600">
+        <DialogTrigger className="w-full appearance-none p-2 rounded-md flex items-center justify-center bg-red-700 hover:bg-red-600 font-medium text-sm transition border border-red-600">
           Add
         </DialogTrigger>
         <DialogContent className="bg-black-300 border-gray-800 text-gray-200">
@@ -110,7 +109,9 @@ interface VideoProps {
   children: string;
 }
 
-function Video({ videoId, children }: VideoProps) {
+function VideoCard({ videoId, children }: VideoProps) {
+  console.log(videoId);
+
   return (
     <div className="h-24 grid grid-cols-7 place-items-center py-3 gap-2 border-b border-gray-800">
       <div className="col-span-2 rounded-sm border border-gray-800 bg-gray-700 overflow-hidden">
@@ -121,7 +122,7 @@ function Video({ videoId, children }: VideoProps) {
           className="h-full w-full"
         />
       </div>
-      <p className="col-span-5 line-clamp-3 text-sm">{children}</p>
+      <p className={cn('col-span-5 line-clamp-3 text-sm')}>{children}</p>
     </div>
   );
 }

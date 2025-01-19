@@ -9,6 +9,7 @@ import PrivateRoute from '../components/private-route';
 
 import RoomContextProvider from '../contexts/room-context-provider';
 import SocketContextProvider from '../contexts/socket-context-provider';
+import PlayerContextProvinder from '../contexts/player-context-provider';
 
 export function App() {
   return (
@@ -22,7 +23,9 @@ export function App() {
               element={
                 <SocketContextProvider>
                   <RoomContextProvider>
-                    <RoomPage />
+                    <PlayerContextProvinder>
+                      <RoomPage />
+                    </PlayerContextProvinder>
                   </RoomContextProvider>
                 </SocketContextProvider>
               }

@@ -56,12 +56,9 @@ io.on("connect", (socket) => {
       io.emit("room:joined", { name: socket.user.username });
     const memberList = await (0, import_room.membersList)(socket);
     io.to(roomId).emit("room:members_list", memberList);
-    const videoId = await (0, import_video.loadVideoHandler)(socket);
-    if (videoId)
-      socket.emit("video:load", {
-        videoId: videoId.id,
-        title: videoId.title
-      });
+    const video = await (0, import_video.loadVideoHandler)(socket);
+    if (video)
+      socket.emit("video:load", video);
     const videoQueue = await (0, import_video.loadVideoQueueHandler)(
       socket.request.session.roomId
     );
@@ -82,6 +79,9 @@ io.on("connect", (socket) => {
   });
   socket.on("video:seek", (seekTo) => {
     io.to(socket.request.session.roomId).emit("video:seek", seekTo);
+  });
+  socket.on("video:load", (video) => {
+    io.to(socket.request.session.roomId).emit("video:load", video);
   });
   socket.on("video_queue:add", async (videoId) => {
     const videoQueue = await (0, import_video2.addVideoToQueue)(

@@ -6,12 +6,9 @@ import { usePlayerContext } from '../../contexts/player-context-provider';
 import Duration from '../../components/duration';
 import { Pause, Play } from 'lucide-react';
 
-interface PlayerProps {
-  videoId: string;
-}
-
-export default function Player({ videoId }: PlayerProps) {
+export default function Player() {
   const {
+    video,
     playing,
     playerRef,
     handleSetDuration,
@@ -23,7 +20,7 @@ export default function Player({ videoId }: PlayerProps) {
   /**
    * !!!! Temporary Error Handling For In Case No `videoId` Provided
    */
-  if (!videoId) {
+  if (!video) {
     return (
       <div className="w-full h-full flex justify-center items-center">
         <h1 className="text-lg text-red-700 font-medium">
@@ -38,7 +35,7 @@ export default function Player({ videoId }: PlayerProps) {
       <div className="w-full h-full relative bottom-0 rounded-md overflow-hidden">
         <ReactPlayer
           ref={playerRef}
-          url={`https://www.youtube.com/watch?v=${videoId}`}
+          url={`https://www.youtube.com/watch?v=${video.videoId}`}
           width={'100%'}
           height={'100%'}
           controls={false}

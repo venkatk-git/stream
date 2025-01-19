@@ -5,11 +5,6 @@ import Details from './details';
 import Player from './player';
 
 export default function RoomPage() {
-  /**
-   * Room page Initializer
-   */
-  const { video } = useRoomContext();
-
   return (
     <section
       className={cn(
@@ -23,13 +18,11 @@ export default function RoomPage() {
           {/**
            * TODO: Insert the video
            */}
-          <PlayerContextProvinder>
-            <Player videoId={video?.videoId || ''} />
-          </PlayerContextProvinder>
+          <Player />
         </div>
       </div>
       <div className="col-span-2">
-        <Details title={video?.title || ''} />
+        <Details />
       </div>
     </section>
   );

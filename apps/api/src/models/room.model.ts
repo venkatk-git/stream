@@ -26,14 +26,14 @@ const roomSchema = new mongoose.Schema({
   videoQueue: {
     type: [
       {
-        id: String,
+        videoId: String,
         title: String,
         _id: false,
       },
     ],
     default: [
       {
-        id: 'IZHGcU0U_W0',
+        videoId: 'IZHGcU0U_W0',
         title:
           'MATTA | The Greatest Of All Time | Thalapathy Vijay | Venkat Prabhu |Yuvan Shankar Raja',
       },

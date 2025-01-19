@@ -73,7 +73,7 @@ async function addVideoToQueue(roomId, videoId) {
     const title = ytResponse.data.items[0].snippet.title;
     const videoQueue = room?.videoQueue;
     videoQueue.push({
-      id: videoId,
+      videoId,
       title
     });
     await room.save();
