@@ -9,3 +9,51 @@ html,
 body {
   font-family: 'Inter', serif;
 }
+
+/* Apply to the root element */
+:root {
+  /* Variables for easy theme customization */
+  --scrollbar-width: 4px;
+  --scrollbar-track: rgb(51, 51, 51); /* gray-900 */
+  --scrollbar-thumb: rgb(185 28 28); /* red-700 */
+  --scrollbar-thumb-hover: rgb(220 38 38); /* red-600 */
+}
+
+/* General scrollbar styles */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+}
+
+/* Chrome, Edge, Safari scrollbar styles */
+/* Width */
+::-webkit-scrollbar {
+  width: var(--scrollbar-width);
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: var(--scrollbar-track);
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background-color: var(--scrollbar-thumb);
+  border-radius: 4px;
+  border: 2px solid var(--scrollbar-track);
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--scrollbar-thumb-hover);
+}
+
+/* Horizontal scrollbar */
+::-webkit-scrollbar:horizontal {
+  height: var(--scrollbar-width);
+}
+
+/* Dark corners where vertical and horizontal scrollbars meet */
+::-webkit-scrollbar-corner {
+  background-color: var(--scrollbar-track);
+}

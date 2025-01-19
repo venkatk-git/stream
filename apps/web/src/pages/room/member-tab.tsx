@@ -5,7 +5,7 @@ export default function MembersTab() {
   const { members } = useRoomContext();
 
   return (
-    <div className="p-3 pt-0 flex flex-col">
+    <div className="h-full p-3 pt-0 flex flex-col overflow-y-auto">
       {members.map((member) => (
         <Member key={member.name} profileImg={member.profileImg}>
           {member.name}

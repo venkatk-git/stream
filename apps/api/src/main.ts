@@ -9,12 +9,15 @@ import { attachUserToSocket } from './middlewares/socket.middleware';
 import { sessionMiddleware } from './middlewares/session.middleware.';
 
 import { joinHandler, membersList } from './socket/handlers/room.handler';
-import { loadVideoHandler } from './socket/handlers/video.handler';
+import {
+  loadVideoHandler,
+  loadVideoQueueHandler,
+} from './socket/handlers/video.handler';
 
 import { ExtendedSocket } from './lib/types';
 
 import app from './app';
-import { addVideoToQueue } from './services/room.service';
+import { addVideoToQueue } from './services/video.service';
 
 const host = process.env.HOST ?? 'localhost';
 const port = process.env.PORT ? Number(process.env.PORT) : 3000;
@@ -106,6 +109,11 @@ io.on('connect', (socket: ExtendedSocket) => {
         videoId: videoId.id,
         title: videoId.title,
       });
+
+    const videoQueue = await loadVideoQueueHandler(
+      socket.request.session.roomId
+    );
+    if (videoQueue) socket.emit('video_queue:update', videoQueue);
   });
 
   /**
@@ -136,7 +144,7 @@ io.on('connect', (socket: ExtendedSocket) => {
       videoId
     );
 
-    socket.emit('video_queue:update', videoQueue);
+    io.to(socket.request.session.roomId).emit('video_queue:update', videoQueue);
   });
 
   socket.on('disconnect', () => {
@@ -149,13 +157,3 @@ io.on('connect', (socket: ExtendedSocket) => {
 server.listen(port, () => {
   console.log(`[ ready ] http://${host}:${port}`);
 });
-
-// socket.on('video:play', (payload) =>
-//   videoEventHandler(socket, 'video:play', payload)
-// );
-// socket.on('video:pause', (payload) =>
-//   videoEventHandler(socket, 'video:play', payload)
-// );
-// socket.on('video:seek', (payload) =>
-//   videoEventHandler(socket, 'video:play', payload)
-// );

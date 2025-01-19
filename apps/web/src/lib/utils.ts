@@ -5,10 +5,8 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function extractVideoIdFromUrl(url: string) {
-  const videoid = url.match(
-    /(?:https?:\/{2})?(?:w{3}\.)?youtu(?:be)?\.(?:com|be)(?:\/watch\?v=|\/)([^\s&]+)/
-  );
-
-  if (!videoid) return null;
-  return videoid[1];
+  const regex =
+    /(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
+  const match = url.match(regex);
+  return match ? match[1] : null;
 }

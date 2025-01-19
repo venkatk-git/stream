@@ -45,9 +45,29 @@ export default function VideoQueueTab() {
             {video.title}
           </Video>
         ))}
+        <Video videoId={'M8AEH02lzdA'}>
+          MATTA | The Greatest Of All Time | Thalapathy Vijay | Venkat Prabhu
+          |Yuvan Shankar Raja
+        </Video>
+        <Video videoId={'M8AEH02lzdA'}>
+          MATTA | The Greatest Of All Time | Thalapathy Vijay | Venkat Prabhu
+          |Yuvan Shankar Raja
+        </Video>
+        <Video videoId={'M8AEH02lzdA'}>
+          MATTA | The Greatest Of All Time | Thalapathy Vijay | Venkat Prabhu
+          |Yuvan Shankar Raja
+        </Video>
+        <Video videoId={'M8AEH02lzdA'}>
+          MATTA | The Greatest Of All Time | Thalapathy Vijay | Venkat Prabhu
+          |Yuvan Shankar Raja
+        </Video>
+        <Video videoId={'M8AEH02lzdA'}>
+          MATTA | The Greatest Of All Time | Thalapathy Vijay | Venkat Prabhu
+          |Yuvan Shankar Raja
+        </Video>
       </div>
       <Dialog>
-        <DialogTrigger className="h-10 w-full appearance-none p-0 m-0 rounded-md flex items-center justify-center bg-red-700 hover:bg-red-600 font-medium text-sm transition border border-red-600">
+        <DialogTrigger className="h-14 w-full appearance-none p-2 rounded-md flex items-center justify-center bg-red-700 hover:bg-red-600 font-medium text-sm transition border border-red-600">
           Add
         </DialogTrigger>
         <DialogContent className="bg-black-300 border-gray-800 text-gray-200">
@@ -92,14 +112,16 @@ interface VideoProps {
 
 function Video({ videoId, children }: VideoProps) {
   return (
-    <div className="flex py-3 gap-2 border-b border-gray-800">
-      <div className="aspect-video w-60 flex items-center rounded-sm border border-gray-800 bg-gray-700 overflow-hidden">
+    <div className="h-24 grid grid-cols-7 place-items-center py-3 gap-2 border-b border-gray-800">
+      <div className="col-span-2 rounded-sm border border-gray-800 bg-gray-700 overflow-hidden">
         <img
           src={`https://i.ytimg.com/vi/${videoId}/default.jpg`}
+          srcSet={`https://i.ytimg.com/vi/${videoId}/default.jpg, https://i.ytimg.com/vi/${videoId}/mqdefault.jpg`}
           alt="thumbnail"
+          className="h-full w-full"
         />
       </div>
-      <p className="line-clamp-3 text-sm">{children}</p>
+      <p className="col-span-5 line-clamp-3 text-sm">{children}</p>
     </div>
   );
 }

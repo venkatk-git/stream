@@ -28,6 +28,7 @@ const roomSchema = new mongoose.Schema({
       {
         id: String,
         title: String,
+        _id: false,
       },
     ],
     default: [

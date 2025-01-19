@@ -77,6 +77,7 @@ export default function RoomContextProvider({
    */
   React.useEffect(() => {
     socket.on('video_queue:update', (videoQueue: VideoQueue[]) => {
+      console.log(videoQueue);
       setVideoQueue(videoQueue);
     });
 
