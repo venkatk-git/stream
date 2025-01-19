@@ -29,7 +29,9 @@ export type Member = {
   profileImg: string;
 };
 
-export type VideoQueue = {
-  id: string;
+export type VideoQueue = Video[];
+
+export type Video = {
+  videoId: string;
   title: string;
 };

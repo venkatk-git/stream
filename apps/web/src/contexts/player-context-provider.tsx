@@ -3,8 +3,10 @@ import { useSocketContext } from './socket-context-provider';
 import ReactPlayer from 'react-player';
 import { OnProgressProps } from 'react-player/base';
 import { useToast } from '../hooks/use-toast';
+import { Video } from '../lib/types';
 
 type PlayerContextType = {
+  video: Video | null;
   playerRef: React.RefObject<ReactPlayer>;
   playing: boolean;
   duration: number;
@@ -15,6 +17,7 @@ type PlayerContextType = {
   handleTriggerPlay: () => void;
   handleTriggerPause: () => void;
   handleTriggerSeek: (seekTo: number) => void;
+  handleTriggerLoadVideo: (video: Video) => void;
 };
 
 export const PlayerContext = React.createContext<PlayerContextType | null>(
@@ -28,18 +31,28 @@ interface PlayerContextProvinderProps {
 export default function PlayerContextProvinder({
   children,
 }: PlayerContextProvinderProps) {
-  // Context
+  /**
+   * Context
+   */
   const { socket } = useSocketContext();
+
+  /**
+   * Hooks
+   */
+  const { toast } = useToast();
 
   /**
    * States
    */
-  const { toast } = useToast();
+  const [video, setVideo] = React.useState<Video | null>(null);
   const [playing, setPlaying] = React.useState(false);
   const [duration, setDuration] = React.useState(0);
   const [seeking, setSeeking] = React.useState(false);
   const [played, setPlayed] = React.useState(0);
 
+  /**
+   * Ref
+   */
   const playerRef = React.useRef<ReactPlayer>(null);
 
   /**
@@ -67,6 +80,9 @@ export default function PlayerContextProvinder({
   const handleTriggerSeek = (seekTo: number) => {
     socket.emit('video:seek', seekTo);
   };
+  const handleTriggerLoadVideo = (video: Video) => {
+    socket.emit('video:load', video);
+  };
 
   /**
    * Socket Event Handling
@@ -84,13 +100,19 @@ export default function PlayerContextProvinder({
     const handleOnSeek = (seekTo: number) => {
       playerRef.current?.seekTo(seekTo);
     };
+    const handleOnLoadVideo = (video: Video) => {
+      setVideo(video);
+      console.log(video);
+    };
 
+    socket.on('video:load', handleOnLoadVideo);
     socket.on('video:play', handleOnPlay);
     socket.on('video:pause', handleOnPause);
     socket.on('video:seek', handleOnSeek);
 
     // Clean up
     return () => {
+      socket.off('video:load', handleOnLoadVideo);
       socket.off('video:play', handleOnPlay);
       socket.off('video:pause', handleOnPause);
       socket.off('video:seek', handleOnSeek);
@@ -100,6 +122,7 @@ export default function PlayerContextProvinder({
   return (
     <PlayerContext.Provider
       value={{
+        video,
         playerRef,
         playing,
         duration,
@@ -110,6 +133,7 @@ export default function PlayerContextProvinder({
         handleTriggerPlay,
         handleTriggerPause,
         handleTriggerSeek,
+        handleTriggerLoadVideo,
       }}
     >
       {children}

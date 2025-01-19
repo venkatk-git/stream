@@ -10,11 +10,7 @@ import { Member, VideoQueue } from '../lib/types';
 type RoomContextType = {
   roomId?: string;
   members: Member[];
-  videoQueue: VideoQueue[];
-  video: {
-    videoId: string;
-    title: string;
-  } | null;
+  videoQueue: VideoQueue;
   handleAddVideoInQueue: (videoId: string) => void;
 };
 
@@ -36,12 +32,8 @@ export default function RoomContextProvider({
   /**
    * States
    */
-  const [video, setVideo] = React.useState<{
-    videoId: string;
-    title: string;
-  } | null>(null);
   const [members, setMembers] = React.useState<Member[]>([]);
-  const [videoQueue, setVideoQueue] = React.useState<VideoQueue[]>([]);
+  const [videoQueue, setVideoQueue] = React.useState<VideoQueue>([]);
 
   const handleAddVideoInQueue = (videoId: string) => {
     socket.emit('video_queue:add', videoId);
@@ -63,10 +55,6 @@ export default function RoomContextProvider({
       setMembers(members);
     });
 
-    socket.on('video:load', (video) => {
-      setVideo(video);
-    });
-
     return () => {
       socket.off('room:joined');
     };
@@ -76,8 +64,7 @@ export default function RoomContextProvider({
    * For Video Queue State Changes
    */
   React.useEffect(() => {
-    socket.on('video_queue:update', (videoQueue: VideoQueue[]) => {
-      console.log(videoQueue);
+    socket.on('video_queue:update', (videoQueue: VideoQueue) => {
       setVideoQueue(videoQueue);
     });
 
@@ -88,7 +75,7 @@ export default function RoomContextProvider({
 
   return (
     <RoomContext.Provider
-      value={{ roomId, members, videoQueue, video, handleAddVideoInQueue }}
+      value={{ roomId, members, videoQueue, handleAddVideoInQueue }}
     >
       {children}
     </RoomContext.Provider>

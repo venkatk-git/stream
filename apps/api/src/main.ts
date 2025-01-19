@@ -103,12 +103,8 @@ io.on('connect', (socket: ExtendedSocket) => {
     io.to(roomId).emit('room:members_list', memberList);
 
     // Load initial video on join
-    const videoId = await loadVideoHandler(socket);
-    if (videoId)
-      socket.emit('video:load', {
-        videoId: videoId.id,
-        title: videoId.title,
-      });
+    const video = await loadVideoHandler(socket);
+    if (video) socket.emit('video:load', video);
 
     const videoQueue = await loadVideoQueueHandler(
       socket.request.session.roomId
@@ -133,6 +129,10 @@ io.on('connect', (socket: ExtendedSocket) => {
   });
   socket.on('video:seek', (seekTo: number) => {
     io.to(socket.request.session.roomId).emit('video:seek', seekTo);
+  });
+
+  socket.on('video:load', (video) => {
+    io.to(socket.request.session.roomId).emit('video:load', video);
   });
 
   /**
