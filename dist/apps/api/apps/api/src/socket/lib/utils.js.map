@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../../../../../../../apps/api/src/socket/lib/utils.ts"],
+  "sourcesContent": ["import { ExtendedSocket } from '../../lib/types';\r\n\r\nexport function emitError(socket: ExtendedSocket, error: string) {\r\n  socket.emit('socket:error', {\r\n    error,\r\n  });\r\n}\r\n"],
+  "mappings": ";;;;;;;;;;;;;;;;;AAAA;AAAA;AAAA;AAAA;AAAA;AAEO,SAAS,UAAU,QAAwB,OAAe;AAC/D,SAAO,KAAK,gBAAgB;AAAA,IAC1B;AAAA,EACF,CAAC;AACH;",
+  "names": []
+}

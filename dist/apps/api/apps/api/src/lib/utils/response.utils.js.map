@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../../../../../../../apps/api/src/lib/utils/response.utils.ts"],
+  "sourcesContent": ["// utils/response.utils.ts\r\n\r\nexport function successResponse<T>(data: T): {\r\n  success: true;\r\n  error: null;\r\n  data: T;\r\n} {\r\n  return {\r\n    success: true,\r\n    error: null,\r\n    data,\r\n  };\r\n}\r\n\r\nexport function errorResponse(\r\n  status: string,\r\n  message: string,\r\n  statusCode = 500\r\n): {\r\n  status: string;\r\n  success: false;\r\n  error: { message: string; statusCode: number };\r\n} {\r\n  return {\r\n    success: false,\r\n    status,\r\n    error: {\r\n      message,\r\n      statusCode,\r\n    },\r\n  };\r\n}\r\n"],
+  "mappings": ";;;;;;;;;;;;;;;;;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAEO,SAAS,gBAAmB,MAIjC;AACA,SAAO;AAAA,IACL,SAAS;AAAA,IACT,OAAO;AAAA,IACP;AAAA,EACF;AACF;AAEO,SAAS,cACd,QACA,SACA,aAAa,KAKb;AACA,SAAO;AAAA,IACL,SAAS;AAAA,IACT;AAAA,IACA,OAAO;AAAA,MACL;AAAA,MACA;AAAA,IACF;AAAA,EACF;AACF;",
+  "names": []
+}
