@@ -39,6 +39,15 @@ const roomSchema = new mongoose.Schema({
       },
     ],
   },
+  playingVideo: {
+    type: {
+      videoId: String,
+      timeStamp: {
+        type: Number,
+        default: 0,
+      },
+    },
+  },
   roomType: {
     type: String,
     enum: ['public', 'private'],

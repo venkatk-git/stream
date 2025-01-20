@@ -17,7 +17,7 @@ import {
 import { ExtendedSocket } from './lib/types';
 
 import app from './app';
-import { addVideoToQueue } from './services/video.service';
+import { addVideoToQueueService } from './services/video.service';
 
 const host = process.env.HOST ?? 'localhost';
 const port = process.env.PORT ? Number(process.env.PORT) : 3000;
@@ -103,7 +103,7 @@ io.on('connect', (socket: ExtendedSocket) => {
     io.to(roomId).emit('room:members_list', memberList);
 
     // Load initial video on join
-    const video = await loadVideoHandler(socket);
+    const video = await loadVideoHandler(socket.request.session.roomId);
     if (video) socket.emit('video:load', video);
 
     const videoQueue = await loadVideoQueueHandler(
@@ -130,7 +130,6 @@ io.on('connect', (socket: ExtendedSocket) => {
   socket.on('video:seek', (seekTo: number) => {
     io.to(socket.request.session.roomId).emit('video:seek', seekTo);
   });
-
   socket.on('video:load', (video) => {
     io.to(socket.request.session.roomId).emit('video:load', video);
   });
@@ -139,7 +138,7 @@ io.on('connect', (socket: ExtendedSocket) => {
    * Video Queue
    */
   socket.on('video_queue:add', async (videoId: string) => {
-    const videoQueue = await addVideoToQueue(
+    const videoQueue = await addVideoToQueueService(
       socket.request.session.roomId,
       videoId
     );

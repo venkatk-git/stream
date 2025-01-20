@@ -218,7 +218,7 @@ export async function connectMemberService(
   return joinMemberService(roomId, userId);
 }
 
-export async function getRoomMembers(roomId: string) {
+export async function getRoomMembersService(roomId: string) {
   try {
     if (!roomId) {
       console.error(`Room not found: { roomId: ${roomId} }`);
@@ -245,7 +245,13 @@ export async function getRoomMembers(roomId: string) {
   }
 }
 
-export async function getVideo(roomId: string) {
+/**
+ * !!! TEMPORARY SOLUTION FOR LOADING RECENT PLAYING VIDEO
+ *
+ * @param roomId
+ * @returns
+ */
+export async function getVideoService(roomId: string) {
   try {
     if (!roomId) {
       console.error(`Room not found: { roomId: ${roomId} }`);
@@ -273,4 +279,34 @@ export async function getVideo(roomId: string) {
   }
 }
 
+export async function getPlayingVideoService(roomId: string) {
+  try {
+    if (!roomId) {
+      console.error(`Room not found: { roomId: ${roomId} }`);
+      return null;
+    }
 
+    // Check if room exists
+    const isRoomValid = await isValidRoomService(roomId);
+    if (!isRoomValid) {
+      console.error(`Room not found: { roomId: ${roomId} }`);
+      return null;
+    }
+
+    const room = await Room.findOne({ roomId });
+
+    if (room.videoQueue.length == 0) return null;
+
+    const video = room.videoQueue.filter(
+      (video) => video.videoId === room.playingVideo.videoId
+    );
+
+    return {
+      ...room.playingVideo,
+      title: video[0].title,
+    };
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+}

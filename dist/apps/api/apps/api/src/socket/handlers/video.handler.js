@@ -31,16 +31,15 @@ function videoEventHandler(socket, event, payload) {
   }
   socket.to(socket.request.session.roomId).emit(event, payload);
 }
-async function loadVideoHandler(socket) {
-  const roomId = socket.request.session.roomId;
-  const videoId = await (0, import_room.getVideo)(roomId);
-  return videoId;
+async function loadVideoHandler(roomId) {
+  const video = await (0, import_room.getPlayingVideoService)(roomId);
+  return video;
 }
 async function loadVideoQueueHandler(roomId) {
   if (!roomId) {
     return;
   }
-  const videoQueue = await (0, import_video.getVideoQueue)(roomId);
+  const videoQueue = await (0, import_video.getVideoQueueService)(roomId);
   return videoQueue;
 }
 // Annotate the CommonJS export names for ESM import in node:

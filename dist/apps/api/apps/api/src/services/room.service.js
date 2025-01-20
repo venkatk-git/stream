@@ -29,8 +29,9 @@ var room_service_exports = {};
 __export(room_service_exports, {
   connectMemberService: () => connectMemberService,
   createRoomService: () => createRoomService,
-  getRoomMembers: () => getRoomMembers,
-  getVideo: () => getVideo,
+  getPlayingVideoService: () => getPlayingVideoService,
+  getRoomMembersService: () => getRoomMembersService,
+  getVideoService: () => getVideoService,
   isValidRoomService: () => isValidRoomService,
   joinMemberService: () => joinMemberService
 });
@@ -154,7 +155,7 @@ async function connectMemberService(roomId, userId) {
   }
   return joinMemberService(roomId, userId);
 }
-async function getRoomMembers(roomId) {
+async function getRoomMembersService(roomId) {
   try {
     if (!roomId) {
       console.error(`Room not found: { roomId: ${roomId} }`);
@@ -176,7 +177,7 @@ async function getRoomMembers(roomId) {
     return null;
   }
 }
-async function getVideo(roomId) {
+async function getVideoService(roomId) {
   try {
     if (!roomId) {
       console.error(`Room not found: { roomId: ${roomId} }`);
@@ -197,12 +198,39 @@ async function getVideo(roomId) {
     return null;
   }
 }
+async function getPlayingVideoService(roomId) {
+  try {
+    if (!roomId) {
+      console.error(`Room not found: { roomId: ${roomId} }`);
+      return null;
+    }
+    const isRoomValid = await isValidRoomService(roomId);
+    if (!isRoomValid) {
+      console.error(`Room not found: { roomId: ${roomId} }`);
+      return null;
+    }
+    const room = await import_room.default.findOne({ roomId });
+    if (room.videoQueue.length == 0)
+      return null;
+    const video = room.videoQueue.filter(
+      (video2) => video2.videoId === room.playingVideo.videoId
+    );
+    return {
+      ...room.playingVideo,
+      title: video[0].title
+    };
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+}
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
   connectMemberService,
   createRoomService,
-  getRoomMembers,
-  getVideo,
+  getPlayingVideoService,
+  getRoomMembersService,
+  getVideoService,
   isValidRoomService,
   joinMemberService
 });

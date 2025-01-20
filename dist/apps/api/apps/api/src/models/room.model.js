@@ -66,6 +66,15 @@ const roomSchema = new import_mongoose.default.Schema({
       }
     ]
   },
+  playingVideo: {
+    type: {
+      videoId: String,
+      timeStamp: {
+        type: Number,
+        default: 0
+      }
+    }
+  },
   roomType: {
     type: String,
     enum: ["public", "private"],

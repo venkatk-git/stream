@@ -3,7 +3,7 @@ import { useSocketContext } from './socket-context-provider';
 import ReactPlayer from 'react-player';
 import { OnProgressProps } from 'react-player/base';
 import { useToast } from '../hooks/use-toast';
-import { Video } from '../lib/types';
+import { LoadVideo, Video } from '../lib/types';
 
 type PlayerContextType = {
   video: Video | null;
@@ -44,7 +44,7 @@ export default function PlayerContextProvinder({
   /**
    * States
    */
-  const [video, setVideo] = React.useState<Video | null>(null);
+  const [video, setVideo] = React.useState<LoadVideo | null>(null);
   const [playing, setPlaying] = React.useState(false);
   const [duration, setDuration] = React.useState(0);
   const [seeking, setSeeking] = React.useState(false);
@@ -100,7 +100,7 @@ export default function PlayerContextProvinder({
     const handleOnSeek = (seekTo: number) => {
       playerRef.current?.seekTo(seekTo);
     };
-    const handleOnLoadVideo = (video: Video) => {
+    const handleOnLoadVideo = (video: LoadVideo) => {
       setVideo(video);
       console.log(video);
     };

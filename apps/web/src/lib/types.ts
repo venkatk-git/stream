@@ -31,7 +31,11 @@ export type Member = {
 
 export type VideoQueue = Video[];
 
-export type Video = {
+export interface Video {
   videoId: string;
   title: string;
-};
+}
+
+export interface LoadVideo extends Video {
+  timpStamp: number;
+}

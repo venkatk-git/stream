@@ -1,6 +1,6 @@
 import { ExtendedSocket } from '../../lib/types';
-import { getVideo } from '../../services/room.service';
-import { getVideoQueue } from '../../services/video.service';
+import { getPlayingVideoService, getVideoService } from '../../services/room.service';
+import { getVideoQueueService } from '../../services/video.service';
 
 type VideoEvents = 'video:play' | 'video:pause' | 'video:seek';
 
@@ -26,12 +26,9 @@ export function videoEventHandler(
   socket.to(socket.request.session.roomId).emit(event, payload);
 }
 
-export async function loadVideoHandler(socket: ExtendedSocket) {
-  const roomId = socket.request.session.roomId;
-
-  const videoId = await getVideo(roomId);
-
-  return videoId;
+export async function loadVideoHandler(roomId: string) {
+  const video = await getPlayingVideoService(roomId);
+  return video;
 }
 
 /**
@@ -42,7 +39,7 @@ export async function loadVideoQueueHandler(roomId: string) {
     return;
   }
 
-  const videoQueue = await getVideoQueue(roomId);
+  const videoQueue = await getVideoQueueService(roomId);
 
   return videoQueue;
 }

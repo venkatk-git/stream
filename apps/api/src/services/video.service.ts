@@ -10,7 +10,7 @@ import { isValidRoomService } from './room.service';
  * @param roomId - The unique identifier of the room.
  * @returns The video queue of the room if it exists, otherwise `null`.
  */
-export async function getVideoQueue(roomId: string) {
+export async function getVideoQueueService(roomId: string) {
   try {
     // Validate the input parameter
     if (!roomId) {
@@ -44,7 +44,7 @@ export async function getVideoQueue(roomId: string) {
  * @param videoId - The unique identifier of the YouTube video to be added.
  * @returns The updated video queue if successful, otherwise `null`.
  */
-export async function addVideoToQueue(roomId: string, videoId: string) {
+export async function addVideoToQueueService(roomId: string, videoId: string) {
   try {
     // Validate the roomId parameter
     if (!roomId) {
@@ -81,6 +81,50 @@ export async function addVideoToQueue(roomId: string, videoId: string) {
       videoId,
       title,
     });
+
+    // Save the updated room information in the database
+    await room.save();
+
+    // Return the updated video queue
+    return videoQueue;
+  } catch (error) {
+    // Log and handle any errors that occur during execution
+    console.error(error);
+    return null;
+  }
+}
+
+export async function updatePlayingVideoService(
+  roomId: string,
+  videoId: string
+) {
+  try {
+    // Validate the roomId parameter
+    if (!roomId) {
+      console.error(`Room not found: { roomId: ${roomId} }`);
+      return null;
+    }
+
+    // Check if the room exists by validating its ID
+    const isRoomValid = await isValidRoomService(roomId);
+    if (!isRoomValid) {
+      console.error(`Room not found: { roomId: ${roomId} }`);
+      return null;
+    }
+
+    // Retrieve the room from the database
+    const room = await Room.findOne({ roomId });
+
+    // Add the video details to the room's video queue
+    const videoQueue = room?.videoQueue;
+
+    /**
+     * Updating playing video
+     */
+    room.playingVideo = {
+      videoId,
+      timeStamp: 0,
+    };
 
     // Save the updated room information in the database
     await room.save();

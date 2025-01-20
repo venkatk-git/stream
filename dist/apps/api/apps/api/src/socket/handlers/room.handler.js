@@ -50,7 +50,7 @@ async function membersList(socket) {
     (0, import_utils.emitError)(socket, "There is no roomId to send members list");
     return null;
   }
-  const members_list = await (0, import_room.getRoomMembers)(roomId);
+  const members_list = await (0, import_room.getRoomMembersService)(roomId);
   return members_list;
 }
 // Annotate the CommonJS export names for ESM import in node:

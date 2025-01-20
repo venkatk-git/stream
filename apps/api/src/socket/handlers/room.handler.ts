@@ -1,5 +1,8 @@
 import { ExtendedSocket } from '../../lib/types';
-import { getRoomMembers, joinMemberService } from '../../services/room.service';
+import {
+  getRoomMembersService,
+  joinMemberService,
+} from '../../services/room.service';
 import { emitError } from '../lib/utils';
 
 // Define the joinHandler function
@@ -40,7 +43,7 @@ export async function membersList(socket: ExtendedSocket) {
   }
 
   // Fetch the members list
-  const members_list = await getRoomMembers(roomId);
+  const members_list = await getRoomMembersService(roomId);
 
   return members_list;
 }

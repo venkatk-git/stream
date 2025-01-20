@@ -27,14 +27,15 @@ var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__ge
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 var video_service_exports = {};
 __export(video_service_exports, {
-  addVideoToQueue: () => addVideoToQueue,
-  getVideoQueue: () => getVideoQueue
+  addVideoToQueueService: () => addVideoToQueueService,
+  getVideoQueueService: () => getVideoQueueService,
+  updatePlayingVideoService: () => updatePlayingVideoService
 });
 module.exports = __toCommonJS(video_service_exports);
 var import_axios = __toESM(require("axios"));
 var import_room = __toESM(require("../models/room.model"));
 var import_room2 = require("./room.service");
-async function getVideoQueue(roomId) {
+async function getVideoQueueService(roomId) {
   try {
     if (!roomId) {
       console.error(`Room not found: { roomId: ${roomId} }`);
@@ -52,7 +53,7 @@ async function getVideoQueue(roomId) {
     return null;
   }
 }
-async function addVideoToQueue(roomId, videoId) {
+async function addVideoToQueueService(roomId, videoId) {
   try {
     if (!roomId) {
       console.error(`Room not found: { roomId: ${roomId} }`);
@@ -83,9 +84,34 @@ async function addVideoToQueue(roomId, videoId) {
     return null;
   }
 }
+async function updatePlayingVideoService(roomId, videoId) {
+  try {
+    if (!roomId) {
+      console.error(`Room not found: { roomId: ${roomId} }`);
+      return null;
+    }
+    const isRoomValid = await (0, import_room2.isValidRoomService)(roomId);
+    if (!isRoomValid) {
+      console.error(`Room not found: { roomId: ${roomId} }`);
+      return null;
+    }
+    const room = await import_room.default.findOne({ roomId });
+    const videoQueue = room?.videoQueue;
+    room.playingVideo = {
+      videoId,
+      timeStamp: 0
+    };
+    await room.save();
+    return videoQueue;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+}
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
-  addVideoToQueue,
-  getVideoQueue
+  addVideoToQueueService,
+  getVideoQueueService,
+  updatePlayingVideoService
 });
 //# sourceMappingURL=video.service.js.map

@@ -1,5 +1,3 @@
-import PlayerContextProvinder from '../../contexts/player-context-provider';
-import { useRoomContext } from '../../contexts/room-context-provider';
 import { cn } from '../../lib/utils';
 import Details from './details';
 import Player from './player';
