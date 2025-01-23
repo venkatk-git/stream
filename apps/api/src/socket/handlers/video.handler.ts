@@ -1,5 +1,5 @@
 import { ExtendedSocket } from '../../lib/types';
-import { getPlayingVideoService, getVideoService } from '../../services/room.service';
+import { getPlayingVideo, getVideo } from '../../services/room.service';
 import { getVideoQueueService } from '../../services/video.service';
 
 type VideoEvents = 'video:play' | 'video:pause' | 'video:seek';
@@ -27,7 +27,7 @@ export function videoEventHandler(
 }
 
 export async function loadVideoHandler(roomId: string) {
-  const video = await getPlayingVideoService(roomId);
+  const video = await getPlayingVideo(roomId);
   return video;
 }
 

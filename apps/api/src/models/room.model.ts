@@ -47,6 +47,10 @@ const roomSchema = new mongoose.Schema({
         default: 0,
       },
     },
+    default: {
+      videoId: 'IZHGcU0U_W0',
+      timeStamp: 0,
+    },
   },
   roomType: {
     type: String,

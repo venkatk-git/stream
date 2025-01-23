@@ -11,6 +11,7 @@ export default function Player() {
     video,
     playing,
     playerRef,
+    timeStamp,
     handleSetDuration,
     handleProgress,
     handleTriggerPlay,
@@ -30,6 +31,13 @@ export default function Player() {
     );
   }
 
+  const handleOnLoadSeek = (timeStamp: number) => {
+    if (playerRef.current) {
+      playerRef.current.seekTo(timeStamp);
+    }
+    handleTriggerPause();
+  };
+
   return (
     <div className="p-1 w-full h-full flex items-center">
       <div className="w-full h-full relative bottom-0 rounded-md overflow-hidden">
@@ -40,7 +48,7 @@ export default function Player() {
           height={'100%'}
           controls={false}
           playing={playing}
-          onReady={() => console.log('Ready')}
+          onReady={() => handleOnLoadSeek(timeStamp)}
           onBuffer={() => console.log('Bufferring')}
           onBufferEnd={() => console.log('Buffer Ended')}
           onDuration={handleSetDuration}

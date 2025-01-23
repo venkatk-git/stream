@@ -41,7 +41,7 @@ async function getVideoQueueService(roomId) {
       console.error(`Room not found: { roomId: ${roomId} }`);
       return null;
     }
-    const isRoomValid = await (0, import_room2.isValidRoomService)(roomId);
+    const isRoomValid = await (0, import_room2.isValidRoom)(roomId);
     if (!isRoomValid) {
       console.error(`Room not found: { roomId: ${roomId} }`);
       return null;
@@ -59,7 +59,7 @@ async function addVideoToQueueService(roomId, videoId) {
       console.error(`Room not found: { roomId: ${roomId} }`);
       return null;
     }
-    const isRoomValid = await (0, import_room2.isValidRoomService)(roomId);
+    const isRoomValid = await (0, import_room2.isValidRoom)(roomId);
     if (!isRoomValid) {
       console.error(`Room not found: { roomId: ${roomId} }`);
       return null;
@@ -90,7 +90,7 @@ async function updatePlayingVideoService(roomId, videoId) {
       console.error(`Room not found: { roomId: ${roomId} }`);
       return null;
     }
-    const isRoomValid = await (0, import_room2.isValidRoomService)(roomId);
+    const isRoomValid = await (0, import_room2.isValidRoom)(roomId);
     if (!isRoomValid) {
       console.error(`Room not found: { roomId: ${roomId} }`);
       return null;

@@ -2,7 +2,7 @@ import axios from 'axios';
 
 import Room from '../models/room.model';
 
-import { isValidRoomService } from './room.service';
+import { isValidRoom } from './room.service';
 
 /**
  * Retrieves the video queue for a specific room.
@@ -19,7 +19,7 @@ export async function getVideoQueueService(roomId: string) {
     }
 
     // Check if the room exists by validating its ID
-    const isRoomValid = await isValidRoomService(roomId);
+    const isRoomValid = await isValidRoom(roomId);
     if (!isRoomValid) {
       console.error(`Room not found: { roomId: ${roomId} }`);
       return null;
@@ -53,7 +53,7 @@ export async function addVideoToQueueService(roomId: string, videoId: string) {
     }
 
     // Check if the room exists by validating its ID
-    const isRoomValid = await isValidRoomService(roomId);
+    const isRoomValid = await isValidRoom(roomId);
     if (!isRoomValid) {
       console.error(`Room not found: { roomId: ${roomId} }`);
       return null;
@@ -106,7 +106,7 @@ export async function updatePlayingVideoService(
     }
 
     // Check if the room exists by validating its ID
-    const isRoomValid = await isValidRoomService(roomId);
+    const isRoomValid = await isValidRoom(roomId);
     if (!isRoomValid) {
       console.error(`Room not found: { roomId: ${roomId} }`);
       return null;

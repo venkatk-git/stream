@@ -15,9 +15,7 @@ import Members from '../models/members.model';
  * @param ownerId - The ID of the user who will own the room.
  * @returns The unique room ID if the room is created successfully, or `null` if an error occurs.
  */
-export async function createRoomService(
-  ownerId: string
-): Promise<string | null> {
+export async function createRoom(ownerId: string): Promise<string | null> {
   // Validate ownerId
   if (!mongoose.Types.ObjectId.isValid(ownerId)) {
     console.error('Invalid ownerId');
@@ -71,7 +69,7 @@ export async function createRoomService(
  * - If an error occurs during the validation process (e.g., database connectivity issues),
  *   it logs the error and returns `false`.
  */
-export async function isValidRoomService(roomId: string): Promise<boolean> {
+export async function isValidRoom(roomId: string): Promise<boolean> {
   // Check if room exists
   const room = await Room.exists({ roomId });
 
@@ -93,7 +91,7 @@ export async function isValidRoomService(roomId: string): Promise<boolean> {
  * Usage:
  * - Use this function to allow users to join a room while ensuring they are not added more than once.
  */
-export async function joinMemberService(
+export async function joinMember(
   roomId: string,
   userId: string
 ): Promise<boolean> {
@@ -111,7 +109,7 @@ export async function joinMemberService(
   }
 
   // Check if room exists
-  const isRoomValid = await isValidRoomService(roomId);
+  const isRoomValid = await isValidRoom(roomId);
   if (!isRoomValid) {
     console.error(`Room not found: { roomId: ${roomId} }`);
     return false;
@@ -124,20 +122,20 @@ export async function joinMemberService(
     return false;
   }
 
-  const userObjectId = new Types.ObjectId(userId);
-
-  // Add user to the room if not already a member
-  if (room.members.includes(userObjectId)) {
-    console.info(`User joined room: { roomId: ${roomId}, userId: ${userId} }`);
-    return true;
-  }
-
   // Prevent joining if the room is private
   if (room.roomType === 'private') {
     console.info(
       `User cannot connect to private room: { roomId: ${roomId}, userId: ${userId} }`
     );
     return false;
+  }
+
+  const userObjectId = new Types.ObjectId(userId);
+
+  // Add user to the room if not already a member
+  if (room.members.includes(userObjectId)) {
+    console.info(`User joined room: { roomId: ${roomId}, userId: ${userId} }`);
+    return true;
   }
 
   // Add the user to the room's members list
@@ -178,7 +176,7 @@ export async function joinMemberService(
  * @returns {Promise<boolean>} - Returns true if the user is successfully
  *                               connected or already connected, false otherwise.
  */
-export async function connectMemberService(
+export async function connectMember(
   roomId: string,
   userId: string
 ): Promise<boolean> {
@@ -199,7 +197,7 @@ export async function connectMemberService(
   }
 
   // Check if room exists
-  const room = await isValidRoomService(roomId);
+  const room = await isValidRoom(roomId);
   if (!room) {
     console.error(`Room not found: { roomId: ${roomId} }`);
     return false;
@@ -215,7 +213,7 @@ export async function connectMemberService(
   }
 
   // If not already connected, delegate to the `joinMemberService` to add the user to the room
-  return joinMemberService(roomId, userId);
+  return joinMember(roomId, userId);
 }
 
 export async function getRoomMembersService(roomId: string) {
@@ -226,7 +224,7 @@ export async function getRoomMembersService(roomId: string) {
     }
 
     // Check if room exists
-    const isRoomValid = await isValidRoomService(roomId);
+    const isRoomValid = await isValidRoom(roomId);
     if (!isRoomValid) {
       console.error(`Room not found: { roomId: ${roomId} }`);
       return null;
@@ -251,7 +249,7 @@ export async function getRoomMembersService(roomId: string) {
  * @param roomId
  * @returns
  */
-export async function getVideoService(roomId: string) {
+export async function getVideo(roomId: string) {
   try {
     if (!roomId) {
       console.error(`Room not found: { roomId: ${roomId} }`);
@@ -259,7 +257,7 @@ export async function getVideoService(roomId: string) {
     }
 
     // Check if room exists
-    const isRoomValid = await isValidRoomService(roomId);
+    const isRoomValid = await isValidRoom(roomId);
     if (!isRoomValid) {
       console.error(`Room not found: { roomId: ${roomId} }`);
       return null;
@@ -279,7 +277,12 @@ export async function getVideoService(roomId: string) {
   }
 }
 
-export async function getPlayingVideoService(roomId: string) {
+/**
+ *
+ * @param roomId
+ * @returns
+ */
+export async function getPlayingVideo(roomId: string) {
   try {
     if (!roomId) {
       console.error(`Room not found: { roomId: ${roomId} }`);
@@ -287,7 +290,7 @@ export async function getPlayingVideoService(roomId: string) {
     }
 
     // Check if room exists
-    const isRoomValid = await isValidRoomService(roomId);
+    const isRoomValid = await isValidRoom(roomId);
     if (!isRoomValid) {
       console.error(`Room not found: { roomId: ${roomId} }`);
       return null;
@@ -302,11 +305,71 @@ export async function getPlayingVideoService(roomId: string) {
     );
 
     return {
-      ...room.playingVideo,
+      videoId: video[0].videoId,
+      timeStamp: room.playingVideo.timeStamp,
       title: video[0].title,
     };
   } catch (error) {
     console.error(error);
     return null;
+  }
+}
+
+/**
+ * 
+ * 
+ * @param roomId
+ * @returns
+ */
+export async function handleRoomLock(roomId: string) {
+  try {
+    if (!roomId) {
+      console.error(`Room not found: { roomId: ${roomId} }`);
+      return null;
+    }
+
+    // Check if room exists
+    const isRoomValid = await isValidRoom(roomId);
+    if (!isRoomValid) {
+      console.error(`Room not found: { roomId: ${roomId} }`);
+      return null;
+    }
+
+    await Room.findOneAndUpdate(
+      { roomId },
+      { roomType: 'private' },
+      { new: true }
+    );
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+/**
+ *
+ * @param roomId
+ * @param played
+ * @returns
+ */
+export async function handleRoomUnlock(roomId: string, played: number) {
+  try {
+    if (!roomId) {
+      console.error(`Room not found: { roomId: ${roomId} }`);
+      return null;
+    }
+
+    // Check if room exists
+    const isRoomValid = await isValidRoom(roomId);
+    if (!isRoomValid) {
+      console.error(`Room not found: { roomId: ${roomId} }`);
+      return null;
+    }
+
+    const room = await Room.findOne({ roomId });
+    room.roomType = 'public';
+    room.playingVideo.timeStamp = played;
+    await room.save();
+  } catch (error) {
+    console.error(error);
   }
 }

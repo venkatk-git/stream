@@ -32,7 +32,7 @@ function videoEventHandler(socket, event, payload) {
   socket.to(socket.request.session.roomId).emit(event, payload);
 }
 async function loadVideoHandler(roomId) {
-  const video = await (0, import_room.getPlayingVideoService)(roomId);
+  const video = await (0, import_room.getPlayingVideo)(roomId);
   return video;
 }
 async function loadVideoQueueHandler(roomId) {

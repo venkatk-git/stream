@@ -1,15 +1,12 @@
 import { ExtendedSocket } from '../../lib/types';
-import {
-  getRoomMembersService,
-  joinMemberService,
-} from '../../services/room.service';
+import { getRoomMembersService, joinMember } from '../../services/room.service';
 import { emitError } from '../lib/utils';
 
 // Define the joinHandler function
 export async function joinHandler(socket: ExtendedSocket, roomId: string) {
   try {
     // Attempt to add the user as a member of the room
-    const isMemberJoined = await joinMemberService(
+    const isMemberJoined = await joinMember(
       roomId,
       socket.request.session.user.id
     );

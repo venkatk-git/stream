@@ -25,7 +25,7 @@ var import_room = require("../../services/room.service");
 var import_utils = require("../lib/utils");
 async function joinHandler(socket, roomId) {
   try {
-    const isMemberJoined = await (0, import_room.joinMemberService)(
+    const isMemberJoined = await (0, import_room.joinMember)(
       roomId,
       socket.request.session.user.id
     );

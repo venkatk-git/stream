@@ -37,5 +37,5 @@ export interface Video {
 }
 
 export interface LoadVideo extends Video {
-  timpStamp: number;
+  timeStamp: number;
 }

@@ -18,6 +18,7 @@ import { ExtendedSocket } from './lib/types';
 
 import app from './app';
 import { addVideoToQueueService } from './services/video.service';
+import { handleRoomLock, handleRoomUnlock } from './services/room.service';
 
 const host = process.env.HOST ?? 'localhost';
 const port = process.env.PORT ? Number(process.env.PORT) : 3000;
@@ -96,21 +97,38 @@ io.on('connect', (socket: ExtendedSocket) => {
   socket.on('room:join', async ({ roomId }: { roomId: string }) => {
     const isJoined = await joinHandler(socket, roomId);
 
-    if (isJoined) io.emit('room:joined', { name: socket.user.username });
+    if (isJoined) {
+      io.emit('room:joined', { name: socket.user.username });
+
+      const memberList = await membersList(socket);
+      io.to(roomId).emit('room:members_list', memberList);
+
+      // Load initial video on join
+      const video = await loadVideoHandler(socket.request.session.roomId);
+      if (video) {
+        socket.emit('video:load', video);
+      }
+
+      const videoQueue = await loadVideoQueueHandler(
+        socket.request.session.roomId
+      );
+      if (videoQueue) socket.emit('video_queue:update', videoQueue);
+    } else {
+      socket.emit('room:join_error', {
+        message: 'Failed to join room',
+      });
+    }
 
     // Send Member list on join
-    const memberList = await membersList(socket);
-    io.to(roomId).emit('room:members_list', memberList);
-
-    // Load initial video on join
-    const video = await loadVideoHandler(socket.request.session.roomId);
-    if (video) socket.emit('video:load', video);
-
-    const videoQueue = await loadVideoQueueHandler(
-      socket.request.session.roomId
-    );
-    if (videoQueue) socket.emit('video_queue:update', videoQueue);
   });
+
+  /**
+   * Room State Changes
+   */
+  socket.on('room:lock', () => handleRoomLock(socket.request.session.roomId));
+  socket.on('room:unlock', (played: number) =>
+    handleRoomUnlock(socket.request.session.roomId, played)
+  );
 
   /**
    * Video State Changes

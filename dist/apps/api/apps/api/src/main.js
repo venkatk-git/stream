@@ -31,6 +31,7 @@ var import_room = require("./socket/handlers/room.handler");
 var import_video = require("./socket/handlers/video.handler");
 var import_app = __toESM(require("./app"));
 var import_video2 = require("./services/video.service");
+var import_room2 = require("./services/room.service");
 import_dotenv.default.config({ path: "../.env.local" });
 const host = process.env.HOST ?? "localhost";
 const port = process.env.PORT ? Number(process.env.PORT) : 3e3;
@@ -52,19 +53,30 @@ io.on("connect", (socket) => {
   });
   socket.on("room:join", async ({ roomId }) => {
     const isJoined = await (0, import_room.joinHandler)(socket, roomId);
-    if (isJoined)
+    if (isJoined) {
       io.emit("room:joined", { name: socket.user.username });
-    const memberList = await (0, import_room.membersList)(socket);
-    io.to(roomId).emit("room:members_list", memberList);
-    const video = await (0, import_video.loadVideoHandler)(socket.request.session.roomId);
-    if (video)
-      socket.emit("video:load", video);
-    const videoQueue = await (0, import_video.loadVideoQueueHandler)(
-      socket.request.session.roomId
-    );
-    if (videoQueue)
-      socket.emit("video_queue:update", videoQueue);
+      const memberList = await (0, import_room.membersList)(socket);
+      io.to(roomId).emit("room:members_list", memberList);
+      const video = await (0, import_video.loadVideoHandler)(socket.request.session.roomId);
+      if (video) {
+        socket.emit("video:load", video);
+      }
+      const videoQueue = await (0, import_video.loadVideoQueueHandler)(
+        socket.request.session.roomId
+      );
+      if (videoQueue)
+        socket.emit("video_queue:update", videoQueue);
+    } else {
+      socket.emit("room:join_error", {
+        message: "Failed to join room"
+      });
+    }
   });
+  socket.on("room:lock", () => (0, import_room2.handleRoomLock)(socket.request.session.roomId));
+  socket.on(
+    "room:unlock",
+    (played) => (0, import_room2.handleRoomUnlock)(socket.request.session.roomId, played)
+  );
   socket.on("video:play", () => {
     io.to(socket.request.session.roomId).emit(
       "video:play",

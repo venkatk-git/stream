@@ -27,13 +27,15 @@ var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__ge
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 var room_service_exports = {};
 __export(room_service_exports, {
-  connectMemberService: () => connectMemberService,
-  createRoomService: () => createRoomService,
-  getPlayingVideoService: () => getPlayingVideoService,
+  connectMember: () => connectMember,
+  createRoom: () => createRoom,
+  getPlayingVideo: () => getPlayingVideo,
   getRoomMembersService: () => getRoomMembersService,
-  getVideoService: () => getVideoService,
-  isValidRoomService: () => isValidRoomService,
-  joinMemberService: () => joinMemberService
+  getVideo: () => getVideo,
+  handleRoomLock: () => handleRoomLock,
+  handleRoomUnlock: () => handleRoomUnlock,
+  isValidRoom: () => isValidRoom,
+  joinMember: () => joinMember
 });
 module.exports = __toCommonJS(room_service_exports);
 var import_str10_36 = require("hyperdyperid/lib/str10_36");
@@ -41,7 +43,7 @@ var import_mongoose = __toESM(require("mongoose"));
 var import_room = __toESM(require("../models/room.model"));
 var import_user = __toESM(require("../models/user.model"));
 var import_members = __toESM(require("../models/members.model"));
-async function createRoomService(ownerId) {
+async function createRoom(ownerId) {
   if (!import_mongoose.default.Types.ObjectId.isValid(ownerId)) {
     console.error("Invalid ownerId");
     return null;
@@ -70,12 +72,12 @@ async function createRoomService(ownerId) {
   console.info(`Room created: { roomId: ${roomId}, ownerId: ${ownerId} }`);
   return roomId;
 }
-async function isValidRoomService(roomId) {
+async function isValidRoom(roomId) {
   const room = await import_room.default.exists({ roomId });
   console.info(`Room validation: { roomId: ${roomId}, isValid: ${room} }`);
   return room !== null;
 }
-async function joinMemberService(roomId, userId) {
+async function joinMember(roomId, userId) {
   if (!import_mongoose.default.Types.ObjectId.isValid(userId)) {
     console.error("Invalid userId");
     return false;
@@ -85,7 +87,7 @@ async function joinMemberService(roomId, userId) {
     console.error(`User not found: { userId: ${userId} }`);
     return false;
   }
-  const isRoomValid = await isValidRoomService(roomId);
+  const isRoomValid = await isValidRoom(roomId);
   if (!isRoomValid) {
     console.error(`Room not found: { roomId: ${roomId} }`);
     return false;
@@ -95,16 +97,16 @@ async function joinMemberService(roomId, userId) {
     console.error(`Room not found: { roomId: ${roomId} }`);
     return false;
   }
-  const userObjectId = new import_mongoose.Types.ObjectId(userId);
-  if (room.members.includes(userObjectId)) {
-    console.info(`User joined room: { roomId: ${roomId}, userId: ${userId} }`);
-    return true;
-  }
   if (room.roomType === "private") {
     console.info(
       `User cannot connect to private room: { roomId: ${roomId}, userId: ${userId} }`
     );
     return false;
+  }
+  const userObjectId = new import_mongoose.Types.ObjectId(userId);
+  if (room.members.includes(userObjectId)) {
+    console.info(`User joined room: { roomId: ${roomId}, userId: ${userId} }`);
+    return true;
   }
   await import_room.default.findOneAndUpdate(
     { roomId },
@@ -130,7 +132,7 @@ async function joinMemberService(roomId, userId) {
   console.info(`User joined room: { roomId: ${roomId}, userId: ${userId} }`);
   return true;
 }
-async function connectMemberService(roomId, userId) {
+async function connectMember(roomId, userId) {
   if (!import_mongoose.default.Types.ObjectId.isValid(userId)) {
     console.error("Invalid userId");
     return false;
@@ -141,7 +143,7 @@ async function connectMemberService(roomId, userId) {
     console.error(`User not found: { userId: ${userId} }`);
     return false;
   }
-  const room = await isValidRoomService(roomId);
+  const room = await isValidRoom(roomId);
   if (!room) {
     console.error(`Room not found: { roomId: ${roomId} }`);
     return false;
@@ -153,7 +155,7 @@ async function connectMemberService(roomId, userId) {
     );
     return true;
   }
-  return joinMemberService(roomId, userId);
+  return joinMember(roomId, userId);
 }
 async function getRoomMembersService(roomId) {
   try {
@@ -161,7 +163,7 @@ async function getRoomMembersService(roomId) {
       console.error(`Room not found: { roomId: ${roomId} }`);
       return null;
     }
-    const isRoomValid = await isValidRoomService(roomId);
+    const isRoomValid = await isValidRoom(roomId);
     if (!isRoomValid) {
       console.error(`Room not found: { roomId: ${roomId} }`);
       return null;
@@ -177,13 +179,13 @@ async function getRoomMembersService(roomId) {
     return null;
   }
 }
-async function getVideoService(roomId) {
+async function getVideo(roomId) {
   try {
     if (!roomId) {
       console.error(`Room not found: { roomId: ${roomId} }`);
       return null;
     }
-    const isRoomValid = await isValidRoomService(roomId);
+    const isRoomValid = await isValidRoom(roomId);
     if (!isRoomValid) {
       console.error(`Room not found: { roomId: ${roomId} }`);
       return null;
@@ -198,13 +200,13 @@ async function getVideoService(roomId) {
     return null;
   }
 }
-async function getPlayingVideoService(roomId) {
+async function getPlayingVideo(roomId) {
   try {
     if (!roomId) {
       console.error(`Room not found: { roomId: ${roomId} }`);
       return null;
     }
-    const isRoomValid = await isValidRoomService(roomId);
+    const isRoomValid = await isValidRoom(roomId);
     if (!isRoomValid) {
       console.error(`Room not found: { roomId: ${roomId} }`);
       return null;
@@ -216,7 +218,8 @@ async function getPlayingVideoService(roomId) {
       (video2) => video2.videoId === room.playingVideo.videoId
     );
     return {
-      ...room.playingVideo,
+      videoId: video[0].videoId,
+      timeStamp: room.playingVideo.timeStamp,
       title: video[0].title
     };
   } catch (error) {
@@ -224,14 +227,55 @@ async function getPlayingVideoService(roomId) {
     return null;
   }
 }
+async function handleRoomLock(roomId) {
+  try {
+    if (!roomId) {
+      console.error(`Room not found: { roomId: ${roomId} }`);
+      return null;
+    }
+    const isRoomValid = await isValidRoom(roomId);
+    if (!isRoomValid) {
+      console.error(`Room not found: { roomId: ${roomId} }`);
+      return null;
+    }
+    await import_room.default.findOneAndUpdate(
+      { roomId },
+      { roomType: "private" },
+      { new: true }
+    );
+  } catch (error) {
+    console.error(error);
+  }
+}
+async function handleRoomUnlock(roomId, played) {
+  try {
+    if (!roomId) {
+      console.error(`Room not found: { roomId: ${roomId} }`);
+      return null;
+    }
+    const isRoomValid = await isValidRoom(roomId);
+    if (!isRoomValid) {
+      console.error(`Room not found: { roomId: ${roomId} }`);
+      return null;
+    }
+    const room = await import_room.default.findOne({ roomId });
+    room.roomType = "public";
+    room.playingVideo.timeStamp = played;
+    await room.save();
+  } catch (error) {
+    console.error(error);
+  }
+}
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
-  connectMemberService,
-  createRoomService,
-  getPlayingVideoService,
+  connectMember,
+  createRoom,
+  getPlayingVideo,
   getRoomMembersService,
-  getVideoService,
-  isValidRoomService,
-  joinMemberService
+  getVideo,
+  handleRoomLock,
+  handleRoomUnlock,
+  isValidRoom,
+  joinMember
 });
 //# sourceMappingURL=room.service.js.map

@@ -27,15 +27,15 @@ var import_catchAsync = require("../lib/utils/catchAsync");
 var import_response = require("../lib/utils/response.utils");
 const createNewRoom = (0, import_catchAsync.catchAsync)(
   async (req, res, next) => {
-    const roomId = await (0, import_room.createRoomService)(req.user.id);
+    const roomId = await (0, import_room.createRoom)(req.user.id);
     res.status(201).json((0, import_response.successResponse)({ roomId }));
   }
 );
 const joinRoom = (0, import_catchAsync.catchAsync)(
   async (req, res, next) => {
     const roomId = req.params.id;
-    const isValidRoom = await (0, import_room.isValidRoomService)(roomId);
-    if (!isValidRoom) {
+    const isValidRoom2 = await isValidRoom2(roomId);
+    if (!isValidRoom2) {
       return res.status(400).json(
         (0, import_response.errorResponse)(
           "",
@@ -44,7 +44,7 @@ const joinRoom = (0, import_catchAsync.catchAsync)(
         )
       );
     }
-    const isMemberJoined = (0, import_room.joinMemberService)(roomId, req.user.id);
+    const isMemberJoined = (0, import_room.joinMember)(roomId, req.user.id);
     if (!isMemberJoined) {
       return res.status(400).json(
         (0, import_response.errorResponse)(
@@ -61,7 +61,7 @@ const connectToRoom = (0, import_catchAsync.catchAsync)(
   async (req, res, next) => {
     const roomId = req.params.id;
     const userId = req.user.id;
-    const canConnect = await (0, import_room.connectMemberService)(roomId, userId);
+    const canConnect = await (0, import_room.connectMember)(roomId, userId);
     if (!canConnect) {
       return res.status(400).json(
         (0, import_response.errorResponse)(

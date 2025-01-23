@@ -11,6 +11,7 @@ type PlayerContextType = {
   playing: boolean;
   duration: number;
   played: number;
+  timeStamp: number;
   handleSetDuration: (duration: number) => void;
   handleSetSeeking: (isSeeking: boolean) => void;
   handleProgress: (state: OnProgressProps) => void;
@@ -49,6 +50,7 @@ export default function PlayerContextProvinder({
   const [duration, setDuration] = React.useState(0);
   const [seeking, setSeeking] = React.useState(false);
   const [played, setPlayed] = React.useState(0);
+  const [timeStamp, setTimeStamp] = React.useState(0);
 
   /**
    * Ref
@@ -67,6 +69,17 @@ export default function PlayerContextProvinder({
   const handleProgress = (state: OnProgressProps) => {
     if (!seeking) setPlayed(state.playedSeconds);
   };
+
+  /**
+   * Sepical Room Handlers
+   */
+  React.useEffect(() => {
+    if (playing) {
+      socket.emit('room:lock');
+    } else {
+      socket.emit('room:unlock', played);
+    }
+  }, [played, playing, socket]);
 
   /**
    * Triggering Handlers
@@ -102,7 +115,7 @@ export default function PlayerContextProvinder({
     };
     const handleOnLoadVideo = (video: LoadVideo) => {
       setVideo(video);
-      console.log(video);
+      setTimeStamp(video.timeStamp);
     };
 
     socket.on('video:load', handleOnLoadVideo);
@@ -127,6 +140,7 @@ export default function PlayerContextProvinder({
         playing,
         duration,
         played,
+        timeStamp,
         handleSetDuration,
         handleSetSeeking,
         handleProgress,

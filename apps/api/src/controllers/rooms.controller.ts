@@ -1,8 +1,8 @@
 import {
-  connectMemberService,
-  createRoomService,
-  isValidRoomService,
-  joinMemberService,
+  connectMember,
+  createRoom,
+  isValidRoom,
+  joinMember,
 } from '../services/room.service';
 
 import { catchAsync } from '../lib/utils/catchAsync';
@@ -28,7 +28,7 @@ import { Response, NextFunction } from 'express';
 export const createNewRoom = catchAsync(
   async (req: ExtendedRequest, res: Response, next: NextFunction) => {
     // Call the service function to create a room using the authenticated user's ID
-    const roomId = await createRoomService(req.user.id);
+    const roomId = await createRoom(req.user.id);
 
     // Send a successful response with the generated roomId
     res.status(201).json(successResponse({ roomId }));
@@ -56,7 +56,7 @@ export const joinRoom = catchAsync(
     const roomId = req.params.id;
 
     // Check if the room ID is valid
-    const isValidRoom = await isValidRoomService(roomId);
+    const isValidRoom = await isValidRoom(roomId);
     if (!isValidRoom) {
       return res
         .status(400)
@@ -70,7 +70,7 @@ export const joinRoom = catchAsync(
     }
 
     // Attempt to add the user as a member of the room
-    const isMemberJoined = joinMemberService(roomId, req.user.id);
+    const isMemberJoined = joinMember(roomId, req.user.id);
     if (!isMemberJoined) {
       return res
         .status(400)
@@ -108,7 +108,7 @@ export const connectToRoom = catchAsync(
     const roomId = req.params.id;
     const userId = req.user.id;
 
-    const canConnect = await connectMemberService(roomId, userId);
+    const canConnect = await connectMember(roomId, userId);
     if (!canConnect) {
       return res
         .status(400)
