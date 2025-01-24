@@ -6,7 +6,7 @@ export default function Details() {
 
   return (
     <section className="h-full flex flex-col w-full border border-gray-800 rounded-lg bg-gray-900">
-      <div className="min-h-36 max-h-52 p-3 border-b border-gray-800 text-gray-300">
+      <div className="min-h-24 max-h-36 p-3 border-b border-gray-800 text-gray-300">
         <p className="line-clamp-3 text-sm font-medium">
           {video ? video.title : 'Load a video'}
         </p>

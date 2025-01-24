@@ -56,8 +56,8 @@ export const joinRoom = catchAsync(
     const roomId = req.params.id;
 
     // Check if the room ID is valid
-    const isValidRoom = await isValidRoom(roomId);
-    if (!isValidRoom) {
+    const _isValidRoom = await isValidRoom(roomId);
+    if (!_isValidRoom) {
       return res
         .status(400)
         .json(

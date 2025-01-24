@@ -51,7 +51,7 @@ export default function PlayerContextProvinder({
   const [seeking, setSeeking] = React.useState(false);
   const [played, setPlayed] = React.useState(0);
   const [timeStamp, setTimeStamp] = React.useState(0);
-
+  
   /**
    * Ref
    */

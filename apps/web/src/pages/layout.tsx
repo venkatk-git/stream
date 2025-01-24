@@ -6,7 +6,7 @@ export function Layout() {
   return (
     <div className="h-dvh w-full px-8 py-2 flex flex-col bg-black-400 text-gray-200">
       <Header />
-      <div className="flex-1 h-full w-full flex-grow my-2 overflow-hidden">
+      <div className="flex-1 h-full w-full flex-grow my-2 overflow-auto md:overflow-hidden">
         <Outlet />
       </div>
       <div className="mt-auto">

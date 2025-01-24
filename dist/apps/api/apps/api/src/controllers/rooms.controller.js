@@ -34,8 +34,8 @@ const createNewRoom = (0, import_catchAsync.catchAsync)(
 const joinRoom = (0, import_catchAsync.catchAsync)(
   async (req, res, next) => {
     const roomId = req.params.id;
-    const isValidRoom2 = await isValidRoom2(roomId);
-    if (!isValidRoom2) {
+    const _isValidRoom = await (0, import_room.isValidRoom)(roomId);
+    if (!_isValidRoom) {
       return res.status(400).json(
         (0, import_response.errorResponse)(
           "",
