@@ -1,5 +1,3 @@
-Here's a clean, professional README.md for your **Stream** repository:
-
 # Stream: Real-Time Collaborative Video Platform 🎥
 
 [![Project Status](https://img.shields.io/badge/status-active-%23success.svg)](https://github.com/venkatk-git/stream)
