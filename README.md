@@ -1,82 +1,94 @@
-# 
+Here's a clean, professional README.md for your **Stream** repository:
 
-<a alt="Nx logo" href="https://nx.dev" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="45"></a>
+```markdown
+# Stream: Real-Time Collaborative Video Platform 🎥
 
-✨ Your new, shiny [Nx workspace](https://nx.dev) is almost ready ✨.
+[![Project Status](https://img.shields.io/badge/status-active-%23success.svg)](https://github.com/venkatk-git/stream)
+[![GitHub Issues](https://img.shields.io/github/issues/venkatk-git/stream)](https://github.com/venkatk-git/stream/issues)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
-[Learn more about this workspace setup and its capabilities](https://nx.dev/getting-started/tutorials/react-monorepo-tutorial?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects) or run `npx nx graph` to visually explore what was created. Now, let's get you up to speed!
+A platform for watching YouTube videos with friends in real-time, synchronized across all devices. Built with modern web technologies.
 
-## Finish your remote caching setup
-
-[Click here to finish setting up your workspace!](https://cloud.nx.app/connect/qEIyrIBTnP)
+**Live Demo:** [Coming Soon]  
 
 
-## Run tasks
+## Features ✨
+- **Real-Time Video Sync** 🕒  
+  Simultaneous playback using WebSocket communication
+- **Session Management** 🔐  
+  Persistent rooms with Redis-backed storage
+- **Responsive UI** 📱  
+  Mobile-friendly interface with Tailwind CSS
 
-To run the dev server for your app, use:
+## Tech Stack 🛠️
+**Frontend**  
+![React](https://img.shields.io/badge/-React-61DAFB?logo=react&logoColor=white)
+![Tailwind CSS](https://img.shields.io/badge/-Tailwind_CSS-38B2AC?logo=tailwind-css&logoColor=white)
 
-```sh
-npx nx serve web
+**Backend**  
+![Node.js](https://img.shields.io/badge/-Node.js-339933?logo=node.js&logoColor=white)
+![Socket.IO](https://img.shields.io/badge/-Socket.IO-010101?logo=socket.io)
+
+**Database**  
+![Redis](https://img.shields.io/badge/-Redis-DC382D?logo=redis&logoColor=white)
+
+## Installation ⚙️
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/venkatk-git/stream.git
+   cd stream
+   ```
+
+2. Set up backend:
+   ```bash
+   cd server
+   npm install
+   cp .env.example .env # Add your Redis/YouTube API credentials
+   npm start
+   ```
+
+3. Set up frontend:
+   ```bash
+   cd ../client
+   npm install
+   npm run dev
+   ```
+
+## Usage 🚀
+1. Visit `http://localhost:4200`
+2. Create a new room or join existing one
+3. Paste YouTube URL and watch with friends!
+4. Use chat for real-time communication
+
+## API Reference 🌐
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/api/rooms` | POST | Create new viewing room |
+
+## Roadmap 🗺️
+- [ ] User authentication system
+- [ ] Video queue management
+- [ ] Screen sharing capability
+
+## Contributing 🤝
+1. Fork the project
+2. Create your feature branch:
+   ```bash
+   git checkout -b feature/amazing-feature
+   ```
+3. Commit changes:
+   ```bash
+   git commit -m 'Add amazing feature'
+   ```
+4. Push to branch:
+   ```bash
+   git push origin feature/amazing-feature
+   ```
+5. Open a Pull Request
+
+---
+**Connect with me:**  
+[![GitHub](https://img.shields.io/badge/-GitHub-181717?logo=github)](https://github.com/venkatk-git)
+[![LinkedIn](https://img.shields.io/badge/-LinkedIn-0A66C2?logo=linkedin)](https://linkedin.com/in/venkatkumar-m-77ba842a7)
+[![Portfolio](https://img.shields.io/badge/-Portfolio-000000?logo=vercel)](https://v3nkat.vercel.app)
 ```
-
-To create a production bundle:
-
-```sh
-npx nx build web
-```
-
-To see all available targets to run for a project, run:
-
-```sh
-npx nx show project web
-```
-
-These targets are either [inferred automatically](https://nx.dev/concepts/inferred-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) or defined in the `project.json` or `package.json` files.
-
-[More about running tasks in the docs &raquo;](https://nx.dev/features/run-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-## Add new projects
-
-While you could add new projects to your workspace manually, you might want to leverage [Nx plugins](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) and their [code generation](https://nx.dev/features/generate-code?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) feature.
-
-Use the plugin's generator to create new projects.
-
-To generate a new application, use:
-
-```sh
-npx nx g @nx/react:app demo
-```
-
-To generate a new library, use:
-
-```sh
-npx nx g @nx/react:lib mylib
-```
-
-You can use `npx nx list` to get a list of installed plugins. Then, run `npx nx list <plugin-name>` to learn about more specific capabilities of a particular plugin. Alternatively, [install Nx Console](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) to browse plugins and generators in your IDE.
-
-[Learn more about Nx plugins &raquo;](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) | [Browse the plugin registry &raquo;](https://nx.dev/plugin-registry?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-
-[Learn more about Nx on CI](https://nx.dev/ci/intro/ci-with-nx#ready-get-started-with-your-provider?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-## Install Nx Console
-
-Nx Console is an editor extension that enriches your developer experience. It lets you run tasks, generate code, and improves code autocompletion in your IDE. It is available for VSCode and IntelliJ.
-
-[Install Nx Console &raquo;](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-## Useful links
-
-Learn more:
-
-- [Learn more about this workspace setup](https://nx.dev/getting-started/tutorials/react-monorepo-tutorial?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects)
-- [Learn about Nx on CI](https://nx.dev/ci/intro/ci-with-nx?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Releasing Packages with Nx release](https://nx.dev/features/manage-releases?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [What are Nx plugins?](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-And join the Nx community:
-- [Discord](https://go.nx.dev/community)
-- [Follow us on X](https://twitter.com/nxdevtools) or [LinkedIn](https://www.linkedin.com/company/nrwl)
-- [Our Youtube channel](https://www.youtube.com/@nxdevtools)
-- [Our blog](https://nx.dev/blog?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
