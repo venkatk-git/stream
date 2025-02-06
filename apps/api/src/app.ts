@@ -22,7 +22,6 @@ import AppError from './lib/utils/AppError';
 import { ExtendedRequest } from './lib/types';
 import { Response, NextFunction } from 'express';
 import { successResponse } from './lib/utils/response.utils';
-import router from './routes/auth.router';
 
 const app = express();
 
