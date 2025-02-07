@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../../../../../../apps/api/src/lib/types.ts"],
+  "sourcesContent": ["import { Request } from 'express';\r\nimport { Socket } from 'socket.io';\r\n\r\nexport type User = {\r\n  id: string;\r\n  username: string;\r\n  googleId: string;\r\n};\r\n\r\nexport type RequestUser = {\r\n  id: string;\r\n  username: string;\r\n  googleId: string;\r\n  profileImg: string;\r\n};\r\n\r\nexport type ExtendedRequest = Request & {\r\n  session: {\r\n    passport?: {\r\n      user: string;\r\n    };\r\n    user: RequestUser;\r\n  };\r\n\r\n  user: RequestUser;\r\n};\r\n\r\nexport type ExtendedSocket = Socket & {\r\n  request: {\r\n    sessionID: string;\r\n\r\n    session: {\r\n      passport?: {\r\n        user: string;\r\n      };\r\n      user: RequestUser;\r\n      roomId?: string;\r\n    };\r\n  };\r\n\r\n  user: RequestUser;\r\n};\r\n\r\nexport interface ApiResponse {\r\n  success: boolean;\r\n  error: null | {\r\n    message: string;\r\n  };\r\n}\r\n"],
+  "mappings": ";;;;;;;;;;;;;AAAA;AAAA;",
+  "names": []
+}

@@ -46,3 +46,4 @@ const userSchema = new import_mongoose.default.Schema({
   }
 });
 var user_model_default = import_mongoose.default.model("User", userSchema);
+//# sourceMappingURL=user.model.js.map

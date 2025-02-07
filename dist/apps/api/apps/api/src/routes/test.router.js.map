@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../../../../../../apps/api/src/routes/test.router.ts"],
+  "sourcesContent": ["import { Router } from 'express';\r\nimport { ExtendedRequest } from '../lib/types';\r\n\r\nconst router = Router();\r\n\r\nrouter.get('/protected', (req: ExtendedRequest, res) => {\r\n  console.log(req.session.user);\r\n\r\n  if (req.session.user) {\r\n    res.send(`Hello, ${req.session.user.username}`);\r\n  } else {\r\n    console.error('Not Working');\r\n    res.status(401).redirect('/auth/google');\r\n  }\r\n});\r\n\r\nexport default router;\r\n"],
+  "mappings": ";;;;;;;;;;;;;;;;;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA,qBAAuB;AAGvB,MAAM,aAAS,uBAAO;AAEtB,OAAO,IAAI,cAAc,CAAC,KAAsB,QAAQ;AACtD,UAAQ,IAAI,IAAI,QAAQ,IAAI;AAE5B,MAAI,IAAI,QAAQ,MAAM;AACpB,QAAI,KAAK,UAAU,IAAI,QAAQ,KAAK,QAAQ,EAAE;AAAA,EAChD,OAAO;AACL,YAAQ,MAAM,aAAa;AAC3B,QAAI,OAAO,GAAG,EAAE,SAAS,cAAc;AAAA,EACzC;AACF,CAAC;AAED,IAAO,sBAAQ;",
+  "names": []
+}

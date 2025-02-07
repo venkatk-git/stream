@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../../../../../../../apps/api/src/lib/utils/catchAsync.ts"],
+  "sourcesContent": ["import { NextFunction, Response } from 'express';\r\nimport { ExtendedRequest } from '../types';\r\n\r\n/**\r\n * CatchAsync Utility\r\n * Wraps an asynchronous route handler function to catch and forward errors to the next middleware.\r\n *\r\n * This utility eliminates repetitive try-catch blocks in asynchronous route handlers by\r\n * automatically passing any errors to the `next` function.\r\n *\r\n * @template T - The return type of the asynchronous function.\r\n * @param fn - An asynchronous function that handles an HTTP request.\r\n * @returns A function that wraps the provided `fn` and ensures errors are forwarded to the error-handling middleware.\r\n *\r\n * Usage:\r\n * app.get('/', catchAsync(async (req, res, next) => {\r\n *   const data = await someAsyncOperation();\r\n *   res.status(200).json(data);\r\n * }));\r\n */\r\nexport function catchAsync(\r\n  fn: (\r\n    req: ExtendedRequest,\r\n    res: Response,\r\n    next: NextFunction\r\n  ) => Promise<unknown>\r\n): (req: ExtendedRequest, res: Response, next: NextFunction) => void {\r\n  return function (req: ExtendedRequest, res: Response, next: NextFunction) {\r\n    fn(req, res, next).catch((err) => next(err));\r\n  };\r\n}\r\n"],
+  "mappings": ";;;;;;;;;;;;;;;;;AAAA;AAAA;AAAA;AAAA;AAAA;AAoBO,SAAS,WACd,IAKmE;AACnE,SAAO,SAAU,KAAsB,KAAe,MAAoB;AACxE,OAAG,KAAK,KAAK,IAAI,EAAE,MAAM,CAAC,QAAQ,KAAK,GAAG,CAAC;AAAA,EAC7C;AACF;",
+  "names": []
+}

@@ -86,3 +86,4 @@ const roomSchema = new import_mongoose.default.Schema({
   }
 });
 var room_model_default = import_mongoose.default.model("Room", roomSchema);
+//# sourceMappingURL=room.model.js.map

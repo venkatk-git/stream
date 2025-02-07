@@ -60,3 +60,4 @@ const membersSchema = new import_mongoose.default.Schema({
   }
 });
 var members_model_default = import_mongoose.default.model("Member", membersSchema);
+//# sourceMappingURL=members.model.js.map

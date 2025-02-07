@@ -48,3 +48,4 @@ async function loadVideoQueueHandler(roomId) {
   loadVideoQueueHandler,
   videoEventHandler
 });
+//# sourceMappingURL=video.handler.js.map

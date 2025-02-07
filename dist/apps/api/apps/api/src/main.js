@@ -34,7 +34,7 @@ var import_video2 = require("./services/video.service");
 var import_room2 = require("./services/room.service");
 import_dotenv.default.config({ path: "../.env.local" });
 const host = process.env.HOST ?? "localhost";
-const port = process.env.PORT ? Number(process.env.PORT) : 3e3;
+const port = process.env.PORT || 3e3;
 const server = import_http.default.createServer(import_app.default);
 const io = new import_socket.Server(server, {
   cors: {
@@ -111,3 +111,4 @@ io.on("connect", (socket) => {
 server.listen(port, () => {
   console.log(`[ ready ] http://${host}:${port}`);
 });
+//# sourceMappingURL=main.js.map

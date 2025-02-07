@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../../../../../../apps/api/src/routes/room.router.ts"],
+  "sourcesContent": ["import { Router } from 'express';\r\n\r\nimport { isAuthenticated } from '../middlewares/auth.middleware';\r\nimport {\r\n  connectToRoom,\r\n  createNewRoom,\r\n  joinRoom,\r\n} from '../controllers/rooms.controller';\r\n\r\nconst router = Router();\r\n\r\n/**\r\n * @route GET /r/\r\n * @desc Creates a new room for the authenticated user and returns the generated room ID.\r\n */\r\nrouter.get('/', isAuthenticated(), createNewRoom);\r\n\r\n/**\r\n * @route GET /r/:id\r\n * @desc Allows an authenticated user to join an existing room by its room ID.\r\n */\r\nrouter.get('/join/:id', isAuthenticated(), joinRoom);\r\n\r\n/**\r\n * @route GET /r/connect/:id\r\n * @desc Connects an authenticated user to an existing room by its room ID.\r\n */\r\nrouter.get('/connect/:id', isAuthenticated(), connectToRoom);\r\n\r\nexport default router;\r\n"],
+  "mappings": ";;;;;;;;;;;;;;;;;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA,qBAAuB;AAEvB,kBAAgC;AAChC,mBAIO;AAEP,MAAM,aAAS,uBAAO;AAMtB,OAAO,IAAI,SAAK,6BAAgB,GAAG,0BAAa;AAMhD,OAAO,IAAI,iBAAa,6BAAgB,GAAG,qBAAQ;AAMnD,OAAO,IAAI,oBAAgB,6BAAgB,GAAG,0BAAa;AAE3D,IAAO,sBAAQ;",
+  "names": []
+}

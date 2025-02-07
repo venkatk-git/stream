@@ -46,3 +46,4 @@ class InMemorySessionStore {
 0 && (module.exports = {
   InMemorySessionStore
 });
+//# sourceMappingURL=InMemorySessionStore.js.map

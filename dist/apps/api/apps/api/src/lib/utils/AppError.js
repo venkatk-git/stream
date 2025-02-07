@@ -33,3 +33,4 @@ class AppError extends Error {
     Error.captureStackTrace(this, this.constructor);
   }
 }
+//# sourceMappingURL=AppError.js.map

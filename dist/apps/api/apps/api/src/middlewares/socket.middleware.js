@@ -53,3 +53,4 @@ async function attachUserToSocket(socket, next) {
 0 && (module.exports = {
   attachUserToSocket
 });
+//# sourceMappingURL=socket.middleware.js.map
