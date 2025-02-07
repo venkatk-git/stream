@@ -114,4 +114,3 @@ async function updatePlayingVideoService(roomId, videoId) {
   getVideoQueueService,
   updatePlayingVideoService
 });
-//# sourceMappingURL=video.service.js.map

@@ -32,4 +32,3 @@ router.get("/protected", (req, res) => {
   }
 });
 var test_router_default = router;
-//# sourceMappingURL=test.router.js.map

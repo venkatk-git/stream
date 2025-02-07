@@ -62,4 +62,3 @@ router.get(
   }
 );
 var auth_router_default = router;
-//# sourceMappingURL=auth.router.js.map

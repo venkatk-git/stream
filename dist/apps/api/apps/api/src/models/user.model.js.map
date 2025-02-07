@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["../../../../../../../apps/api/src/models/user.model.ts"],
-  "sourcesContent": ["import mongoose from 'mongoose';\r\n\r\nconst userSchema = new mongoose.Schema({\r\n  username: {\r\n    type: String,\r\n    required: true,\r\n  },\r\n\r\n  googleId: {\r\n    type: String,\r\n    required: true,\r\n  },\r\n\r\n  profileImg: {\r\n    type: String,\r\n    required: true,\r\n  },\r\n});\r\n\r\nexport default mongoose.model('User', userSchema);\r\n"],
-  "mappings": ";;;;;;;;;;;;;;;;;;;;;;;;;;;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA,sBAAqB;AAErB,MAAM,aAAa,IAAI,gBAAAA,QAAS,OAAO;AAAA,EACrC,UAAU;AAAA,IACR,MAAM;AAAA,IACN,UAAU;AAAA,EACZ;AAAA,EAEA,UAAU;AAAA,IACR,MAAM;AAAA,IACN,UAAU;AAAA,EACZ;AAAA,EAEA,YAAY;AAAA,IACV,MAAM;AAAA,IACN,UAAU;AAAA,EACZ;AACF,CAAC;AAED,IAAO,qBAAQ,gBAAAA,QAAS,MAAM,QAAQ,UAAU;",
-  "names": ["mongoose"]
-}

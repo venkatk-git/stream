@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["../../../../../../../apps/api/src/middlewares/session.middleware..ts"],
-  "sourcesContent": ["import session from 'express-session';\r\nimport { RedisStore } from 'connect-redis';\r\nimport { redisClient } from '../redis';\r\n\r\n/**\r\n * Configures a scalable session store using ioredis and connect-redis.\r\n *\r\n * This setup replaces the default InMemoryStore of express-session with Redis\r\n * for managing session data. Using Redis improves scalability and performance,\r\n * particularly in distributed environments where session data must be shared\r\n * across multiple instances of the application.\r\n */\r\n\r\n/**\r\n * Express session middleware configuration.\r\n */\r\nconst sessionMiddleware = session({\r\n  name: 'session_id',\r\n  store: new RedisStore({ client: redisClient }),\r\n  resave: false,\r\n  saveUninitialized: false,\r\n  secret: process.env.COOKIE_SECRET,\r\n  cookie: {\r\n    maxAge: 1000 * 60 * 60 * 24,\r\n    secure: false,\r\n    httpOnly: true,\r\n    sameSite: 'lax',\r\n  },\r\n});\r\n\r\nexport { sessionMiddleware };\r\n"],
-  "mappings": ";;;;;;;;;;;;;;;;;;;;;;;;;;;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA,6BAAoB;AACpB,2BAA2B;AAC3B,mBAA4B;AAc5B,MAAM,wBAAoB,uBAAAA,SAAQ;AAAA,EAChC,MAAM;AAAA,EACN,OAAO,IAAI,gCAAW,EAAE,QAAQ,yBAAY,CAAC;AAAA,EAC7C,QAAQ;AAAA,EACR,mBAAmB;AAAA,EACnB,QAAQ,QAAQ,IAAI;AAAA,EACpB,QAAQ;AAAA,IACN,QAAQ,MAAO,KAAK,KAAK;AAAA,IACzB,QAAQ;AAAA,IACR,UAAU;AAAA,IACV,UAAU;AAAA,EACZ;AACF,CAAC;",
-  "names": ["session"]
-}

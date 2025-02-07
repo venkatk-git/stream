@@ -58,4 +58,3 @@ async function membersList(socket) {
   joinHandler,
   membersList
 });
-//# sourceMappingURL=room.handler.js.map

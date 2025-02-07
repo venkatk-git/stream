@@ -28,4 +28,3 @@ router.get("/", (0, import_auth.isAuthenticated)(), import_rooms.createNewRoom);
 router.get("/join/:id", (0, import_auth.isAuthenticated)(), import_rooms.joinRoom);
 router.get("/connect/:id", (0, import_auth.isAuthenticated)(), import_rooms.connectToRoom);
 var room_router_default = router;
-//# sourceMappingURL=room.router.js.map

@@ -88,4 +88,3 @@ async function attachUserToRequest(req, res, next) {
   authorizeUser,
   isAuthenticated
 });
-//# sourceMappingURL=auth.middleware.js.map

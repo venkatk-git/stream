@@ -39,4 +39,3 @@ function globalErrorHandler(err, _req, res, _next) {
 0 && (module.exports = {
   globalErrorHandler
 });
-//# sourceMappingURL=error.controller.js.map

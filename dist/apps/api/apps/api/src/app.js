@@ -84,4 +84,3 @@ app.all("*", (req, res, next) => {
 });
 app.use(import_error.globalErrorHandler);
 var app_default = app;
-//# sourceMappingURL=app.js.map

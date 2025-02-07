@@ -29,4 +29,3 @@ function emitError(socket, error) {
 0 && (module.exports = {
   emitError
 });
-//# sourceMappingURL=utils.js.map

@@ -111,4 +111,3 @@ io.on("connect", (socket) => {
 server.listen(port, () => {
   console.log(`[ ready ] http://${host}:${port}`);
 });
-//# sourceMappingURL=main.js.map

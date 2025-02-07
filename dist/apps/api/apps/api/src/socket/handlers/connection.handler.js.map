@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["../../../../../../../../apps/api/src/socket/handlers/connection.handler.ts"],
-  "sourcesContent": ["import { ExtendedSocket } from '../../lib/types';\r\n\r\n/**\r\n * Handles a new socket connection.\r\n *\r\n * This function is called whenever a new socket connection is established.\r\n *\r\n * @param socket - The new socket connection.\r\n */\r\nfunction connectionHandler(socket: ExtendedSocket) {\r\n  console.log(`New socket connection: ${socket.id} : ${socket.user.username}`);\r\n\r\n  socket.emit('user:new', {\r\n    message: `${socket.user.username} has joined`,\r\n  });\r\n}\r\n\r\nexport default connectionHandler;\r\n"],
-  "mappings": ";;;;;;;;;;;;;;;;;AAAA;AAAA;AAAA;AAAA;AAAA;AASA,SAAS,kBAAkB,QAAwB;AACjD,UAAQ,IAAI,0BAA0B,OAAO,EAAE,MAAM,OAAO,KAAK,QAAQ,EAAE;AAE3E,SAAO,KAAK,YAAY;AAAA,IACtB,SAAS,GAAG,OAAO,KAAK,QAAQ;AAAA,EAClC,CAAC;AACH;AAEA,IAAO,6BAAQ;",
-  "names": []
-}

@@ -27,4 +27,3 @@ function connectionHandler(socket) {
   });
 }
 var connection_handler_default = connectionHandler;
-//# sourceMappingURL=connection.handler.js.map

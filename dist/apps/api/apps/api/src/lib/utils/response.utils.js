@@ -43,4 +43,3 @@ function errorResponse(status, message, statusCode = 500) {
   errorResponse,
   successResponse
 });
-//# sourceMappingURL=response.utils.js.map

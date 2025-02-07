@@ -83,4 +83,3 @@ const connectToRoom = (0, import_catchAsync.catchAsync)(
   createNewRoom,
   joinRoom
 });
-//# sourceMappingURL=rooms.controller.js.map
