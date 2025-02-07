@@ -1,7 +1,7 @@
 {
   "version": 3,
   "sources": ["../../../../../../apps/api/src/redis.ts"],
-  "sourcesContent": ["import Redis from 'ioredis';\r\n\r\n/**\r\n * Initializes a Redis client to interact with the Redis database.\r\n *\r\n * This client is used to store and retrieve data from Redis. It provides\r\n * a connection to the Redis server for performing various Redis operations\r\n * such as setting, getting, and managing key-value pairs.\r\n */\r\nconst redisClient = new Redis();\r\n\r\nexport { redisClient };\r\n"],
-  "mappings": ";;;;;;;;;;;;;;;;;;;;;;;;;;;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA,qBAAkB;AASlB,MAAM,cAAc,IAAI,eAAAA,QAAM;",
+  "sourcesContent": ["import Redis from 'ioredis';\r\n\r\n/**\r\n * Initializes a Redis client to interact with the Redis database.\r\n *\r\n * This client is used to store and retrieve data from Redis. It provides\r\n * a connection to the Redis server for performing various Redis operations\r\n * such as setting, getting, and managing key-value pairs.\r\n */\r\nconst redisClient = new Redis(6379, '127.0.0.1');\r\nexport { redisClient };\r\n"],
+  "mappings": ";;;;;;;;;;;;;;;;;;;;;;;;;;;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA,qBAAkB;AASlB,MAAM,cAAc,IAAI,eAAAA,QAAM,MAAM,WAAW;",
   "names": ["Redis"]
 }

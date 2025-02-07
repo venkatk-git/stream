@@ -16,6 +16,7 @@ export default function Player() {
     handleProgress,
     handleTriggerPlay,
     handleTriggerPause,
+    handleSetTimer,
   } = usePlayerContext();
 
   /**
@@ -39,7 +40,12 @@ export default function Player() {
   };
 
   return (
-    <div className="p-1 w-full h-full flex items-center">
+    <div
+      className="p-1 w-full h-full flex items-center"
+      onMouseOver={() => {
+        handleSetTimer(5);
+      }}
+    >
       <div className="w-full h-full relative bottom-0 rounded-md overflow-hidden">
         <ReactPlayer
           ref={playerRef}
@@ -64,6 +70,8 @@ export default function Player() {
 }
 
 function Controller() {
+  const { showControls } = usePlayerContext();
+
   const {
     playerRef,
     duration,
@@ -92,7 +100,11 @@ function Controller() {
   };
 
   return (
-    <div className="w-full p-3 pt-0 absolute flex flex-col bottom-0 left-0 backdrop-blur-md">
+    <div
+      className={`w-full p-3 pt-0 absolute flex flex-col bottom-0 left-0 backdrop-blur-md ${
+        showControls ? 'visible' : 'invisible'
+      } trainsition-all`}
+    >
       <div className="w-full">
         <input
           type="range"

@@ -12,6 +12,8 @@ type PlayerContextType = {
   duration: number;
   played: number;
   timeStamp: number;
+  timer: number;
+  showControls: boolean;
   handleSetDuration: (duration: number) => void;
   handleSetSeeking: (isSeeking: boolean) => void;
   handleProgress: (state: OnProgressProps) => void;
@@ -19,6 +21,8 @@ type PlayerContextType = {
   handleTriggerPause: () => void;
   handleTriggerSeek: (seekTo: number) => void;
   handleTriggerLoadVideo: (video: Video) => void;
+  handleShowControls: (showControls: boolean) => void;
+  handleSetTimer: (timer: number) => void;
 };
 
 export const PlayerContext = React.createContext<PlayerContextType | null>(
@@ -51,7 +55,8 @@ export default function PlayerContextProvinder({
   const [seeking, setSeeking] = React.useState(false);
   const [played, setPlayed] = React.useState(0);
   const [timeStamp, setTimeStamp] = React.useState(0);
-  
+  const [showControls, setShowControls] = React.useState(true);
+  const [timer, setTimer] = React.useState(5);
   /**
    * Ref
    */
@@ -68,6 +73,13 @@ export default function PlayerContextProvinder({
   };
   const handleProgress = (state: OnProgressProps) => {
     if (!seeking) setPlayed(state.playedSeconds);
+  };
+
+  const handleShowControls = (showControls: boolean) => {
+    setShowControls(showControls);
+  };
+  const handleSetTimer = (timer: number) => {
+    setTimer(timer);
   };
 
   /**
@@ -132,6 +144,23 @@ export default function PlayerContextProvinder({
     };
   }, [socket, toast]);
 
+  /**
+   * Handle hiding controllers
+   */
+  React.useEffect(() => {
+    let interval: NodeJS.Timeout;
+    if (showControls) {
+      interval = setInterval(() => {
+        setTimer((prev) => prev - 1);
+      }, 1000);
+    }
+
+    if (timer <= 0) setShowControls(false);
+    if (timer > 0) setShowControls(true);
+
+    return () => clearInterval(interval);
+  }, [showControls, timer]);
+
   return (
     <PlayerContext.Provider
       value={{
@@ -141,6 +170,8 @@ export default function PlayerContextProvinder({
         duration,
         played,
         timeStamp,
+        timer,
+        showControls,
         handleSetDuration,
         handleSetSeeking,
         handleProgress,
@@ -148,6 +179,8 @@ export default function PlayerContextProvinder({
         handleTriggerPause,
         handleTriggerSeek,
         handleTriggerLoadVideo,
+        handleShowControls,
+        handleSetTimer,
       }}
     >
       {children}

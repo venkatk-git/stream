@@ -110,8 +110,6 @@ interface VideoProps {
 }
 
 function VideoCard({ videoId, children }: VideoProps) {
-  console.log(videoId);
-
   return (
     <div className="h-24 grid grid-cols-7 place-items-center py-3 gap-2 border-b border-gray-800">
       <div className="col-span-2 rounded-sm border border-gray-800 bg-gray-700 overflow-hidden">

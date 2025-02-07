@@ -31,7 +31,7 @@ __export(redis_exports, {
 });
 module.exports = __toCommonJS(redis_exports);
 var import_ioredis = __toESM(require("ioredis"));
-const redisClient = new import_ioredis.default();
+const redisClient = new import_ioredis.default(6379, "127.0.0.1");
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
   redisClient
