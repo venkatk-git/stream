@@ -5,6 +5,7 @@ import { usePlayerContext } from '../../contexts/player-context-provider';
 
 import Duration from '../../components/duration';
 import { Pause, Play } from 'lucide-react';
+import { CONTROLLS_ALIVE_INTERVAL } from '../../lib/constants';
 
 export default function Player() {
   const {
@@ -43,7 +44,7 @@ export default function Player() {
     <div
       className="p-1 w-full h-full flex items-center"
       onMouseOver={() => {
-        handleSetTimer(5);
+        handleSetTimer(CONTROLLS_ALIVE_INTERVAL);
       }}
     >
       <div className="w-full h-full relative bottom-0 rounded-md overflow-hidden">

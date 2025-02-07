@@ -4,6 +4,7 @@ import ReactPlayer from 'react-player';
 import { OnProgressProps } from 'react-player/base';
 import { useToast } from '../hooks/use-toast';
 import { LoadVideo, Video } from '../lib/types';
+import { CONTROLLS_ALIVE_INTERVAL } from '../lib/constants';
 
 type PlayerContextType = {
   video: Video | null;
@@ -56,7 +57,7 @@ export default function PlayerContextProvinder({
   const [played, setPlayed] = React.useState(0);
   const [timeStamp, setTimeStamp] = React.useState(0);
   const [showControls, setShowControls] = React.useState(true);
-  const [timer, setTimer] = React.useState(5);
+  const [timer, setTimer] = React.useState(CONTROLLS_ALIVE_INTERVAL);
   /**
    * Ref
    */
