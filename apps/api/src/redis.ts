@@ -7,6 +7,5 @@ import Redis from 'ioredis';
  * a connection to the Redis server for performing various Redis operations
  * such as setting, getting, and managing key-value pairs.
  */
-const redisClient = new Redis();
-
+const redisClient = new Redis(6379, '127.0.0.1');
 export { redisClient };
