@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["../../../../../../../apps/api/src/temp/InMemorySessionStore.ts"],
-  "sourcesContent": ["import { v4 } from 'uuid';\r\n\r\nconst uuid = v4;\r\n\r\nexport class InMemorySessionStore {\r\n  private users: Map<string, string>;\r\n  private googleIds: Map<string, string>;\r\n\r\n  constructor() {\r\n    this.users = new Map<string, string>();\r\n    this.googleIds = new Map<string, string>();\r\n  }\r\n\r\n  public containsGoogleId(googleId: string): boolean {\r\n    return this.users.has(googleId);\r\n  }\r\n\r\n  public setGoogleId(googleId: string): void {\r\n    const _id = uuid();\r\n    this.users.set(googleId, _id);\r\n    this.googleIds.set(_id, googleId);\r\n  }\r\n\r\n  public getUser(googleId: string) {\r\n    return this.users.get(googleId);\r\n  }\r\n\r\n  public getGoogleId(_id: string) {\r\n    return this.googleIds.get(_id);\r\n  }\r\n}\r\n"],
-  "mappings": ";;;;;;;;;;;;;;;;;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA,kBAAmB;AAEnB,MAAM,OAAO;AAEN,MAAM,qBAAqB;AAAA,EAIhC,cAAc;AACZ,SAAK,QAAQ,oBAAI,IAAoB;AACrC,SAAK,YAAY,oBAAI,IAAoB;AAAA,EAC3C;AAAA,EAEO,iBAAiB,UAA2B;AACjD,WAAO,KAAK,MAAM,IAAI,QAAQ;AAAA,EAChC;AAAA,EAEO,YAAY,UAAwB;AACzC,UAAM,MAAM,KAAK;AACjB,SAAK,MAAM,IAAI,UAAU,GAAG;AAC5B,SAAK,UAAU,IAAI,KAAK,QAAQ;AAAA,EAClC;AAAA,EAEO,QAAQ,UAAkB;AAC/B,WAAO,KAAK,MAAM,IAAI,QAAQ;AAAA,EAChC;AAAA,EAEO,YAAY,KAAa;AAC9B,WAAO,KAAK,UAAU,IAAI,GAAG;AAAA,EAC/B;AACF;",
-  "names": []
-}

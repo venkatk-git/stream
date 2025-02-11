@@ -43,9 +43,7 @@ export default function Player() {
   return (
     <div
       className="p-1 w-full h-full flex items-center"
-      onMouseOver={() => {
-        handleSetTimer(CONTROLLS_ALIVE_INTERVAL);
-      }}
+      onMouseOver={() => handleSetTimer(CONTROLLS_ALIVE_INTERVAL)}
     >
       <div className="w-full h-full relative bottom-0 rounded-md overflow-hidden">
         <ReactPlayer

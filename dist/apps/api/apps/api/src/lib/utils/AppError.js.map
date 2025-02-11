@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["../../../../../../../../apps/api/src/lib/utils/AppError.ts"],
-  "sourcesContent": ["export default class AppError extends Error {\r\n  public statusCode: number;\r\n  public status: string;\r\n  public isOperational: boolean;\r\n\r\n  /**\r\n   * @param message - The error message to be sent to the client or logged.\r\n   * @param statusCode - The HTTP status code to indicate the type of error (default is 500 if not provided).\r\n   */\r\n  constructor(message: string, statusCode: number) {\r\n    super(message);\r\n\r\n    this.statusCode = statusCode;\r\n    this.status = `${statusCode}`.startsWith('4') ? 'fail' : 'error';\r\n    this.isOperational = true;\r\n\r\n    Error.captureStackTrace(this, this.constructor);\r\n  }\r\n}\r\n"],
-  "mappings": ";;;;;;;;;;;;;;;;;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA,MAAO,iBAA+B,MAAM;AAAA;AAAA;AAAA;AAAA;AAAA,EAS1C,YAAY,SAAiB,YAAoB;AAC/C,UAAM,OAAO;AAEb,SAAK,aAAa;AAClB,SAAK,SAAS,GAAG,UAAU,GAAG,WAAW,GAAG,IAAI,SAAS;AACzD,SAAK,gBAAgB;AAErB,UAAM,kBAAkB,MAAM,KAAK,WAAW;AAAA,EAChD;AACF;",
-  "names": []
-}

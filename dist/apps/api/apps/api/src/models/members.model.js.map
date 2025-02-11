@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["../../../../../../../apps/api/src/models/members.model.ts"],
-  "sourcesContent": ["import mongoose, { Schema } from 'mongoose';\r\n\r\n/**\r\n * TODO: Create the Room Schema for storing roomId, owner, members[], videoQueue[],...\r\n */\r\nconst membersSchema = new mongoose.Schema({\r\n  roomId: {\r\n    type: String,\r\n    unique: true,\r\n    required: true,\r\n  },\r\n\r\n  members: {\r\n    type: [\r\n      {\r\n        name: String,\r\n        memberId: {\r\n          type: Schema.Types.ObjectId,\r\n          ref: 'User',\r\n          required: true,\r\n        },\r\n        profileImg: String,\r\n        _id: false,\r\n      },\r\n    ],\r\n    ref: 'User',\r\n    default: [],\r\n    unique: true,\r\n    validate: {\r\n      validator: (members) => members.length <= 50,\r\n      message: 'A room cannot have more than 50 members',\r\n    },\r\n  },\r\n});\r\n\r\nexport default mongoose.model('Member', membersSchema);\r\n"],
-  "mappings": ";;;;;;;;;;;;;;;;;;;;;;;;;;;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA,sBAAiC;AAKjC,MAAM,gBAAgB,IAAI,gBAAAA,QAAS,OAAO;AAAA,EACxC,QAAQ;AAAA,IACN,MAAM;AAAA,IACN,QAAQ;AAAA,IACR,UAAU;AAAA,EACZ;AAAA,EAEA,SAAS;AAAA,IACP,MAAM;AAAA,MACJ;AAAA,QACE,MAAM;AAAA,QACN,UAAU;AAAA,UACR,MAAM,uBAAO,MAAM;AAAA,UACnB,KAAK;AAAA,UACL,UAAU;AAAA,QACZ;AAAA,QACA,YAAY;AAAA,QACZ,KAAK;AAAA,MACP;AAAA,IACF;AAAA,IACA,KAAK;AAAA,IACL,SAAS,CAAC;AAAA,IACV,QAAQ;AAAA,IACR,UAAU;AAAA,MACR,WAAW,CAAC,YAAY,QAAQ,UAAU;AAAA,MAC1C,SAAS;AAAA,IACX;AAAA,EACF;AACF,CAAC;AAED,IAAO,wBAAQ,gBAAAA,QAAS,MAAM,UAAU,aAAa;",
-  "names": ["mongoose"]
-}
