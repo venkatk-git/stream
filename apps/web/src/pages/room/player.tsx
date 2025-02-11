@@ -47,7 +47,7 @@ export default function Player() {
       onMouseOver={() => handleSetTimer(CONTROLLS_ALIVE_INTERVAL)}
 =======
       onMouseOver={() => {
-        handleSetTimer(5);
+        handleSetTimer(CONTROLLS_ALIVE_INTERVAL);
       }}
 >>>>>>> 38e993e (web: Auto controlls hiding after 5 seconds)
     >

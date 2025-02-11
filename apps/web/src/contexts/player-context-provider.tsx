@@ -57,11 +57,7 @@ export default function PlayerContextProvinder({
   const [played, setPlayed] = React.useState(0);
   const [timeStamp, setTimeStamp] = React.useState(0);
   const [showControls, setShowControls] = React.useState(true);
-<<<<<<< HEAD
   const [timer, setTimer] = React.useState(CONTROLLS_ALIVE_INTERVAL);
-=======
-  const [timer, setTimer] = React.useState(5);
->>>>>>> 38e993e (web: Auto controlls hiding after 5 seconds)
   /**
    * Ref
    */
