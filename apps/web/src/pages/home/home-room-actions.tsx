@@ -2,7 +2,7 @@ import React from 'react';
 import useAuth from '../../hooks/use-auth';
 import JoinRoomForm from './join-room-form';
 import axios from 'axios';
-import { API_BASE_URL } from '../../lib/constants';
+import { DEPLOYED_API_BASE_URL } from '../../lib/constants';
 import { useNavigate } from 'react-router-dom';
 import { ApiResponseRoom } from '../../lib/types';
 
@@ -17,9 +17,12 @@ export default function HomeRoomActions() {
   const handleCreateRoom = async () => {
     try {
       setIsLoading(true);
-      const response = await axios.get<ApiResponseRoom>(`${API_BASE_URL}/r/`, {
-        withCredentials: true,
-      });
+      const response = await axios.get<ApiResponseRoom>(
+        `${DEPLOYED_API_BASE_URL}/r/`,
+        {
+          withCredentials: true,
+        }
+      );
 
       if (response.status >= 400) {
         alert('Bad Request');

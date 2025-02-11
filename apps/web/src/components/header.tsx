@@ -7,7 +7,7 @@ import Filler from './filler';
 import Logo from './logo';
 import ProfileIcon from './profile';
 
-import { API_BASE_URL } from '../lib/constants';
+import { DEPLOYED_API_BASE_URL } from '../lib/constants';
 
 export default function Header() {
   const isAuth = useAuth().account;
@@ -21,7 +21,7 @@ export default function Header() {
         {isAuth ? (
           <ProfileIcon profileImg={profileImg} />
         ) : (
-          <a href={`${API_BASE_URL}/auth/google`}>
+          <a href={`${DEPLOYED_API_BASE_URL}/auth/google`}>
             <Button>Login</Button>
           </a>
         )}

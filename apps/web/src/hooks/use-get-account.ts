@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 
-import { API_BASE_URL } from '../lib/constants';
+import { DEPLOYED_API_BASE_URL } from '../lib/constants';
 import { AccountState, ApiResponse } from '../lib/types';
 
 export default function useGetAccount() {
@@ -15,9 +15,12 @@ export default function useGetAccount() {
   React.useEffect(() => {
     async function fetchData() {
       try {
-        const res = await axios.get<ApiResponse>(`${API_BASE_URL}/reqAuth`, {
-          withCredentials: true,
-        });
+        const res = await axios.get<ApiResponse>(
+          `${DEPLOYED_API_BASE_URL}/reqAuth`,
+          {
+            withCredentials: true,
+          }
+        );
 
         if (res.status === 200 && res.data) {
           setAccount({

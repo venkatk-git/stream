@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React from 'react';
-import { API_BASE_URL } from '../../lib/constants';
+import { DEPLOYED_API_BASE_URL } from '../../lib/constants';
 import { ApiResponseRoom } from '../../lib/types';
 import { useNavigate } from 'react-router-dom';
 
@@ -20,7 +20,7 @@ export default function JoinRoomForm({ isDisabled }: RoomFormProps) {
     try {
       setIsLoading(true);
       const response = await axios.get<ApiResponseRoom>(
-        `${API_BASE_URL}/r/join/${roomId}`,
+        `${DEPLOYED_API_BASE_URL}/r/join/${roomId}`,
         {
           withCredentials: true,
         }

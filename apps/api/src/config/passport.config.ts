@@ -1,7 +1,7 @@
-import passport, { DoneCallback, Profile } from "passport";
-import GoogleStratergy from "passport-google-oauth20";
+import passport, { DoneCallback, Profile } from 'passport';
+import GoogleStratergy from 'passport-google-oauth20';
 
-import Users from "../models/user.model";
+import Users from '../models/user.model';
 
 /**
  * Serializes the user ID into the session.
@@ -13,7 +13,7 @@ import Users from "../models/user.model";
  * @param done - The callback to signal the completion of serialization.
  */
 passport.serializeUser((userId: string, done: DoneCallback) => {
-    done(null, userId);
+  done(null, userId);
 });
 
 /**
@@ -26,7 +26,7 @@ passport.serializeUser((userId: string, done: DoneCallback) => {
  * @param done - The callback to signal the completion of deserialization.
  */
 passport.deserializeUser((userId: string, done: DoneCallback) => {
-    done(null, userId);
+  done(null, userId);
 });
 
 /**
@@ -38,50 +38,50 @@ passport.deserializeUser((userId: string, done: DoneCallback) => {
  * - Finding or creating a user in the database based on their Google profile.
  */
 passport.use(
-    new GoogleStratergy(
-        {
-            // Google OAuth 2.0 options
-            clientID: process.env.GOOGLE_CLIENT_ID,
-            clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-            callbackURL: "/auth/google/cb",
-        },
-        /**
-         *
-         * It either finds the user in the database by their Google ID (or) creates a
-         * new user if none exists.
-         *
-         * @param accessToken - The access token provided by Google.
-         * @param refreshToken - The refresh token provided by Google (unused here).
-         * @param profile - The authenticated user's profile information from Google.
-         * @param done - The callback to signal the completion of authentication.
-         */
-        async (
-            accessToken: string,
-            refreshToken: string,
-            profile: Profile,
-            done: DoneCallback
-        ) => {
-            // Check if a user with the given Google ID already exists in the database
-            const user = await Users.findOne({ googleId: profile.id });
+  new GoogleStratergy(
+    {
+      // Google OAuth 2.0 options
+      clientID: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      callbackURL: process.env.GOOGLE_CALLBACK_URL || '/auth/google/cb',
+    },
+    /**
+     *
+     * It either finds the user in the database by their Google ID (or) creates a
+     * new user if none exists.
+     *
+     * @param accessToken - The access token provided by Google.
+     * @param refreshToken - The refresh token provided by Google (unused here).
+     * @param profile - The authenticated user's profile information from Google.
+     * @param done - The callback to signal the completion of authentication.
+     */
+    async (
+      accessToken: string,
+      refreshToken: string,
+      profile: Profile,
+      done: DoneCallback
+    ) => {
+      // Check if a user with the given Google ID already exists in the database
+      const user = await Users.findOne({ googleId: profile.id });
 
-            // If user exists, complete authentication by passing the user ID
-            if (user) {
-                done(null, user._id.toString());
-                return;
-            }
+      // If user exists, complete authentication by passing the user ID
+      if (user) {
+        done(null, user._id.toString());
+        return;
+      }
 
-            // If user does not exist, create a new user in the database
-            const newUser = await new Users({
-                username: profile.displayName,
-                googleId: profile.id,
-                profileImg: profile.photos[0].value,
-            }).save();
+      // If user does not exist, create a new user in the database
+      const newUser = await new Users({
+        username: profile.displayName,
+        googleId: profile.id,
+        profileImg: profile.photos[0].value,
+      }).save();
 
-            const serializeUserPayload = newUser._id.toString();
+      const serializeUserPayload = newUser._id.toString();
 
-            done(null, serializeUserPayload);
-        }
-    )
+      done(null, serializeUserPayload);
+    }
+  )
 );
 
 export default passport;
