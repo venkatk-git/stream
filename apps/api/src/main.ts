@@ -2,7 +2,7 @@ import http from "http";
 import { Server } from "socket.io";
 import helmet from "helmet";
 import dotenv from "dotenv";
-dotenv.config({ path: ".env" });
+dotenv.config({ path: ".env.local" });
 
 import { authorizeUser } from "./middlewares/auth.middleware";
 import { attachUserToSocket } from "./middlewares/socket.middleware";
