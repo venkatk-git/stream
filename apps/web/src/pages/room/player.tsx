@@ -44,12 +44,16 @@ export default function Player() {
     <div
       className="p-1 w-full h-full flex items-center"
 <<<<<<< HEAD
+<<<<<<< HEAD
       onMouseOver={() => handleSetTimer(CONTROLLS_ALIVE_INTERVAL)}
 =======
       onMouseOver={() => {
         handleSetTimer(CONTROLLS_ALIVE_INTERVAL);
       }}
 >>>>>>> 38e993e (web: Auto controlls hiding after 5 seconds)
+=======
+      onMouseOver={() => handleSetTimer(CONTROLLS_ALIVE_INTERVAL)}
+>>>>>>> 35301f4 (app: removing nx)
     >
       <div className="w-full h-full relative bottom-0 rounded-md overflow-hidden">
         <ReactPlayer
