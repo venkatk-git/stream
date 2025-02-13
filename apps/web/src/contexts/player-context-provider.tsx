@@ -117,10 +117,10 @@ export default function PlayerContextProvinder({
     /**
      * Listening Handlers
      */
-    const handleOnPlay = (initiator: string) => {
+    const handleOnPlay = () => {
       setPlaying(true);
     };
-    const handleOnPause = (initiator: string) => {
+    const handleOnPause = () => {
       setPlaying(false);
     };
     const handleOnSeek = (seekTo: number) => {

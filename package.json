@@ -3,7 +3,10 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "start:api": "cd ./apps/api && npm install && npm run build && npm start"
+    "start:api": "cd ./apps/api && npm install && npm run build && npm start",
+    "start:web": "cd ./apps/web && npm install && npm run build && npm start",
+    "npm:install:web": "cd ./apps/web && npm install",
+    "npm:build:web": "cd ./apps/web && npm run build"
   },
   "private": true,
   "dependencies": {

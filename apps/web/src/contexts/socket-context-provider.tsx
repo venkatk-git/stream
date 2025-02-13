@@ -4,7 +4,8 @@ import socket from '../socket';
 import { Socket } from 'socket.io-client';
 
 type SocketContextValues = {
-  socket: Socket;
+  // ts-ignore
+  socket: typeof(Socket);
 };
 
 export const SocketContext = React.createContext<SocketContextValues | null>(
