@@ -3,7 +3,7 @@ import { useSocketContext } from './socket-context-provider';
 import ReactPlayer from 'react-player';
 import { OnProgressProps } from 'react-player/base';
 import { useToast } from '../hooks/use-toast';
-import { LoadVideo, Video } from '../lib/types';
+import { LoadVideo, Video, Event } from '../lib/types';
 import { CONTROLLS_ALIVE_INTERVAL } from '../lib/constants';
 
 type PlayerContextType = {
@@ -22,6 +22,7 @@ type PlayerContextType = {
   handleTriggerPause: () => void;
   handleTriggerSeek: (seekTo: number) => void;
   handleTriggerLoadVideo: (video: Video) => void;
+  handleTriggerVideoBuffer: () => void;
   handleShowControls: (showControls: boolean) => void;
   handleSetTimer: (timer: number) => void;
 };
@@ -58,6 +59,7 @@ export default function PlayerContextProvinder({
   const [timeStamp, setTimeStamp] = React.useState(0);
   const [showControls, setShowControls] = React.useState(true);
   const [timer, setTimer] = React.useState(CONTROLLS_ALIVE_INTERVAL);
+
   /**
    * Ref
    */
@@ -109,6 +111,9 @@ export default function PlayerContextProvinder({
   const handleTriggerLoadVideo = (video: Video) => {
     socket.emit('video:load', video);
   };
+  const handleTriggerVideoBuffer = () => {
+    socket.emit('video:buffering');
+  };
 
   /**
    * Socket Event Handling
@@ -117,13 +122,22 @@ export default function PlayerContextProvinder({
     /**
      * Listening Handlers
      */
-    const handleOnPlay = () => {
+    const handleOnPlay = (intiator: string) => {
+      console.log(`${intiator} has played`);
       setPlaying(true);
     };
-    const handleOnPause = () => {
+    const handleOnPause = (intiator: string) => {
+      console.log(`${intiator} has paused`);
       setPlaying(false);
     };
-    const handleOnSeek = (seekTo: number) => {
+    const handleOnSeek = ({
+      seekTo,
+      intiator,
+    }: {
+      seekTo: number;
+      intiator: string;
+    }) => {
+      console.log(`${intiator} has seeked`);
       playerRef.current?.seekTo(seekTo);
     };
     const handleOnLoadVideo = (video: LoadVideo) => {
@@ -131,10 +145,19 @@ export default function PlayerContextProvinder({
       setTimeStamp(video.timeStamp);
     };
 
+    const handleOnVideoBuffer = (intiator) => {
+      toast({
+        title: 'Oops',
+        description: `${intiator} experiencing buffering`,
+        duration: 3000,
+      });
+    };
+
     socket.on('video:load', handleOnLoadVideo);
     socket.on('video:play', handleOnPlay);
     socket.on('video:pause', handleOnPause);
     socket.on('video:seek', handleOnSeek);
+    socket.on('video:buffering', handleOnVideoBuffer);
 
     // Clean up
     return () => {
@@ -142,6 +165,7 @@ export default function PlayerContextProvinder({
       socket.off('video:play', handleOnPlay);
       socket.off('video:pause', handleOnPause);
       socket.off('video:seek', handleOnSeek);
+      socket.off('video:buffering', handleOnVideoBuffer);
     };
   }, [socket, toast]);
 
@@ -180,6 +204,7 @@ export default function PlayerContextProvinder({
         handleTriggerPause,
         handleTriggerSeek,
         handleTriggerLoadVideo,
+        handleTriggerVideoBuffer,
         handleShowControls,
         handleSetTimer,
       }}

@@ -17,6 +17,7 @@ export default function Header() {
     <header className="flex h-12 items-center">
       <Logo />
       <Filler />
+      <Filler />
       <div className="">
         {isAuth ? (
           <ProfileIcon profileImg={profileImg} />

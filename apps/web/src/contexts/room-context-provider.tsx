@@ -56,6 +56,7 @@ export default function RoomContextProvider({
       toast({
         title: 'New user connected',
         description: name,
+        duration: 1000,
       });
     };
     const handleMembersList = (members: Member[]) => {

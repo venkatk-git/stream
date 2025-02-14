@@ -39,3 +39,9 @@ export interface Video {
 export interface LoadVideo extends Video {
   timeStamp: number;
 }
+
+export type Event = {
+  data: string;
+  timer: number;
+  show: boolean;
+};

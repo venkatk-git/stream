@@ -17,6 +17,7 @@ export default function Player() {
     handleProgress,
     handleTriggerPlay,
     handleTriggerPause,
+    handleTriggerVideoBuffer,
     handleSetTimer,
   } = usePlayerContext();
 
@@ -54,7 +55,7 @@ export default function Player() {
           controls={false}
           playing={playing}
           onReady={() => handleOnLoadSeek(timeStamp)}
-          onBuffer={() => console.log('Bufferring')}
+          onBuffer={() => handleTriggerVideoBuffer()}
           onBufferEnd={() => console.log('Buffer Ended')}
           onDuration={handleSetDuration}
           onProgress={handleProgress}

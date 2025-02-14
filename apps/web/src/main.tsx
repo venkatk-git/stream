@@ -15,7 +15,7 @@ root.render(
     <AccountContextProvider>
       <BrowserRouter>
         <App />
-        <Toaster  />
+        <Toaster />
       </BrowserRouter>
     </AccountContextProvider>
   </StrictMode>

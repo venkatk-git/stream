@@ -4,7 +4,7 @@ import MembersTab from './member-tab';
 
 export default function TabsMenu() {
   return (
-    <Tabs defaultValue="video_queue" className="h-full flex flex-col">
+    <Tabs defaultValue="members" className="h-full flex flex-col">
       {/* Tabs header */}
       <TabsList className="p-3 w-full flex gap-2 border-b border-gray-800">
         <TabsTrigger
