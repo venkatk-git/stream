@@ -15,12 +15,15 @@ export default function useGetAccount() {
   React.useEffect(() => {
     async function fetchData() {
       try {
+        console.log('fetching');
         const res = await axios.get<ApiResponse>(
           `${DEPLOYED_API_BASE_URL}/reqAuth`,
           {
             withCredentials: true,
           }
         );
+
+        console.log(res);
 
         if (res.status === 200 && res.data) {
           setAccount({
@@ -35,6 +38,8 @@ export default function useGetAccount() {
           });
         }
       } catch (error) {
+        console.log(error);
+
         setAccount({
           isValid: false,
           account: null,
