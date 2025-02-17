@@ -1,22 +1,19 @@
 // import { redisClient } from "../redis";
 
-import Users from "../models/user.model";
+import Users from '../models/user.model';
 
-import { RequestHandler, Response, NextFunction } from "express";
-import { ExtendedRequest, ExtendedSocket } from "../lib/types";
+import { RequestHandler, Response, NextFunction } from 'express';
+import { ExtendedRequest, ExtendedSocket } from '../lib/types';
 
 export function isAuthenticated(): RequestHandler {
-    return (req: ExtendedRequest, res: Response, next: NextFunction) => {
-        if (
-            !req.user ||
-            !req.isAuthenticated() ||
-            !req.session?.passport?.user
-        ) {
-            return next(new Error("Not authenticated"));
-        }
+  console.log('isAuth()');
+  return (req: ExtendedRequest, res: Response, next: NextFunction) => {
+    if (!req.user || !req.isAuthenticated() || !req.session?.passport?.user) {
+      return next(new Error('Not authenticated'));
+    }
 
-        return next();
-    };
+    return next();
+  };
 }
 
 /**
@@ -31,17 +28,17 @@ export function isAuthenticated(): RequestHandler {
  * @param next - Callback to pass control to the next middleware or function.
  */
 export function authorizeUser(socket: ExtendedSocket, next: NextFunction) {
-    if (
-        !socket.request.session ||
-        !socket.request.session.passport ||
-        !socket.request.session.passport.user
-    ) {
-        return next(new Error("User not authorized"));
-    }
+  if (
+    !socket.request.session ||
+    !socket.request.session.passport ||
+    !socket.request.session.passport.user
+  ) {
+    return next(new Error('User not authorized'));
+  }
 
-    socket.user = { ...socket.request.session.user };
-    // redisClient.hSet(`userid:${socket.user.id}`, "socketid", socket.id);
-    return next();
+  socket.user = { ...socket.request.session.user };
+  // redisClient.hSet(`userid:${socket.user.id}`, "socketid", socket.id);
+  return next();
 }
 
 /**
@@ -59,26 +56,26 @@ export function authorizeUser(socket: ExtendedSocket, next: NextFunction) {
  * @param next - The next middleware function in the request lifecycle.
  */
 export const attachUserToRequest = async (
-    req: ExtendedRequest,
-    res: Response,
-    next: NextFunction
+  req: ExtendedRequest,
+  res: Response,
+  next: NextFunction
 ): Promise<void> => {
-    try {
-        const userId = req.session?.passport?.user;
-        if (!userId) return next(new Error("User is not authenticated"));
+  try {
+    const userId = req.session?.passport?.user;
+    if (!userId) return next(new Error('User is not authenticated'));
 
-        const user = await Users.findById(userId);
-        if (!user) return next(new Error("User not found"));
+    const user = await Users.findById(userId);
+    if (!user) return next(new Error('User not found'));
 
-        req.user = {
-            id: user._id.toString(),
-            username: user.username,
-            googleId: user.googleId,
-            profileImg: user.profileImg,
-        };
+    req.user = {
+      id: user._id.toString(),
+      username: user.username,
+      googleId: user.googleId,
+      profileImg: user.profileImg,
+    };
 
-        next();
-    } catch (error) {
-        next(error);
-    }
+    next();
+  } catch (error) {
+    next(error);
+  }
 };
