@@ -29,7 +29,7 @@ app.use(cookieParser());
 
 const allowedOrigins = [
   'http://localhost:4200',
-  'https://stream-sand.vercel.app/', // Add your actual frontend URL
+  'https://stream-sand.vercel.app', // Add your actual frontend URL
 ];
 
 app.use(
