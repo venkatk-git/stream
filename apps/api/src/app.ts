@@ -97,6 +97,7 @@ app.use(attachUserToRequest);
 
 app.get('/reqAuth', isAuthenticated(), (req: ExtendedRequest, res) => {
   const user = req.user;
+  console.log('req auth');
 
   res.status(200).json(successResponse(user));
 });
