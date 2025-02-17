@@ -55,7 +55,7 @@ router.get(
     req.session.user = req.user;
 
     // res.redirect('/protected');
-    res.redirect('http://localhost:4200/');
+    res.redirect(process.env.CLIENT_ORIGIN);
   }
 );
 
