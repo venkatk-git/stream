@@ -61,11 +61,11 @@ export const attachUserToRequest = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    console.log('here the bug');
-
     const userId = req.session?.passport?.user;
-    if (!userId) return next(new Error('User is not authenticated'));
-
+    if (!userId) {
+      console.log('here the bug');
+      return next(new Error('User is not authenticated'));
+    }
     const user = await Users.findById(userId);
     if (!user) return next(new Error('User not found'));
 

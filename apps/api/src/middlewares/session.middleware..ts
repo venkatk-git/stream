@@ -13,9 +13,9 @@ const sessionMiddleware = session({
   secret: process.env.COOKIE_SECRET || 'good day',
   cookie: {
     maxAge: 1000 * 60 * 60 * 24, // 1 day
-    secure: process.env.NODE_ENV === 'production', // ✅ True for HTTPS
+    secure: process.env.NODE_ENV === 'production', // ✅ Secure only in production
     httpOnly: true,
-    sameSite: 'none', // ✅ Required for cross-origin requests
+    sameSite: 'none',
   },
 });
 

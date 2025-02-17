@@ -4,6 +4,7 @@ import passport from 'passport';
 
 import cors from 'cors';
 import helmet from 'helmet';
+import cookieParser from 'cookie-parser';
 
 import authRouter from './routes/auth.router';
 import testRouter from './routes/test.router';
@@ -24,6 +25,7 @@ import { Response, NextFunction } from 'express';
 import { successResponse } from './lib/utils/response.utils';
 
 const app = express();
+app.use(cookieParser());
 
 const allowedOrigins = [
   'http://localhost:4200',
@@ -97,7 +99,7 @@ app.use(attachUserToRequest);
 
 app.get('/reqAuth', isAuthenticated(), (req: ExtendedRequest, res) => {
   const user = req.user;
-  console.log('req auth');
+  console.log();
 
   res.status(200).json(successResponse(user));
 });
