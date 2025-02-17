@@ -1,4 +1,5 @@
 import session from 'express-session';
+import process from 'process';
 // import { redisClient } from "../redis";
 // import { RedisStore } from "connect-redis";
 
@@ -8,12 +9,12 @@ import session from 'express-session';
 
 const sessionMiddleware = session({
   name: 'session_id',
+  secret: process.env.COOKIE_SECRET || 'good day',
   resave: false,
   saveUninitialized: false,
-  secret: process.env.COOKIE_SECRET || 'good day',
   cookie: {
     maxAge: 1000 * 60 * 60 * 24, // 1 day
-    secure: process.env.NODE_ENV === 'production', // ✅ Secure only in production
+    secure: process.env.NODE_ENV === 'production',
     httpOnly: true,
     sameSite: 'none',
   },
