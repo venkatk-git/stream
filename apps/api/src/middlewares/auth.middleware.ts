@@ -61,6 +61,8 @@ export const attachUserToRequest = async (
   next: NextFunction
 ): Promise<void> => {
   try {
+    console.log('here the bug');
+
     const userId = req.session?.passport?.user;
     if (!userId) return next(new Error('User is not authenticated'));
 
