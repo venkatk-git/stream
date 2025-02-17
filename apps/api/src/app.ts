@@ -25,14 +25,16 @@ import { successResponse } from './lib/utils/response.utils';
 
 const app = express();
 
-// CORS
-const allowedOrigins = ['http://localhost:4200']; // Add allowed origins here
+const allowedOrigins = [
+  'http://localhost:4200',
+  'https://stream-xra9.onrender.com/', // Add your actual frontend URL
+];
 
 app.use(
   cors({
     origin: (origin, callback) => {
       if (allowedOrigins.includes(origin) || !origin) {
-        callback(null, origin);
+        callback(null, true);
       } else {
         callback(new Error('Not allowed by CORS'));
       }
