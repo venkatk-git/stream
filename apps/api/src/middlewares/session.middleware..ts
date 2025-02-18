@@ -17,8 +17,7 @@ const sessionMiddleware = session({
     secure:
       process.env.APPLICATION_ENVIRONMENT === 'PRODUCTION' ? true : 'auto',
     httpOnly: true,
-    sameSite:
-      process.env.APPLICATION_ENVIRONMENT === 'PRODUCTION' ? 'none' : 'lax',
+    sameSite: 'lax',
     domain: process.env.CLIENT_ORIGIN,
   },
 });

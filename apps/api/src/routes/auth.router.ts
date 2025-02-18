@@ -54,7 +54,6 @@ router.get(
 
     req.session.user = req.user;
 
-    // res.redirect('/protected');
     res.redirect(process.env.CLIENT_ORIGIN);
   }
 );
