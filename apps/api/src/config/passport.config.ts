@@ -43,7 +43,7 @@ passport.use(
       // Google OAuth 2.0 options
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: process.env.GOOGLE_CALLBACK_URL || '/auth/google/cb',
+      callbackURL: process.env.GOOGLE_CALLBACK_URL,
     },
     /**
      *
