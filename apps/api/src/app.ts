@@ -27,19 +27,9 @@ import { successResponse } from './lib/utils/response.utils';
 const app = express();
 app.use(cookieParser());
 
-const allowedOrigins = [
-  'https://stream-sand.vercel.app', // Add your actual frontend URL
-];
-
 app.use(
   cors({
-    origin: (origin, callback) => {
-      if (allowedOrigins.includes(origin) || !origin) {
-        callback(null, true);
-      } else {
-        callback(new Error('Not allowed by CORS'));
-      }
-    },
+    origin: process.env.CLIENT_ORIGIN,
     credentials: true, // Allow cookies and credentials
   })
 );
