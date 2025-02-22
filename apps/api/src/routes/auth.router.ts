@@ -54,6 +54,8 @@ router.get(
 
     req.session.user = req.user;
 
+    console.log({"session": req.session});
+
     res.redirect(process.env.CLIENT_ORIGIN);
   }
 );
