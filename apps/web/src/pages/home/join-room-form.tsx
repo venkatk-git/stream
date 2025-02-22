@@ -64,7 +64,7 @@ export default function JoinRoomForm({ isDisabled }: RoomFormProps) {
           type="submit"
           disabled={isDisabled || isLoading}
           onClick={() => handleJoinRoom()}
-          className={`h-12 w-32 px-4 py-1.5 transition bg-red-600 hover:bg-red-500 text-gray-200 text-sm rounded-md rounded-t-none md:rounded-md md:rounded-l-none border-l-0 outline-accent-500 border border-red-500 ${
+          className={`h-12 w-full md:w-32 px-4 py-1.5 transition bg-red-600 hover:bg-red-500 text-gray-200 text-sm rounded-md rounded-t-none md:rounded-md md:rounded-l-none border-l-0 outline-accent-500 border border-red-500 ${
             isDisabled ? 'cursor-not-allowed' : 'cursor-pointer'
           }`}
         >
