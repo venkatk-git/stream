@@ -34,6 +34,8 @@ app.use(
   })
 );
 
+console.log(process.env.CLIENT_ORIGIN);
+
 // Connect to Mongodb
 mongoose
   .connect(process.env.MONGODB_URI)
