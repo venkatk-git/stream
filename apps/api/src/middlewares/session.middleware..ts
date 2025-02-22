@@ -15,7 +15,7 @@ const sessionMiddleware = session({
   cookie: {
     maxAge: 1000 * 60 * 60 * 24, // 1 day
     secure:
-      process.env.APPLICATION_ENVIRONMENT === 'PRODUCTION' ? true : 'auto',
+      process.env.APPLICATION_ENVIRONMENT === 'PRODUCTION' ? true : false,
     httpOnly: true,
     sameSite: 'lax',
     domain: process.env.CLIENT_ORIGIN,
