@@ -60,6 +60,9 @@ app.use(helmet());
 
 app.use(express.json());
 
+// To trust vercel frontend
+app.set('trust proxy', 1);
+
 /**
  * Initializes session handling using express-session.
  *
