@@ -56,6 +56,12 @@ router.get(
 
     console.log({"session": req.session});
 
+    res.cookie('session_id', req.sessionID, {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'none',
+    });
+
     res.redirect(process.env.CLIENT_ORIGIN);
   }
 );
