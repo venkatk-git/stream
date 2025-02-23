@@ -56,7 +56,7 @@ router.get(
 
     console.log({ session: req.session });
 
-    res.cookie('session_id', req.sessionID, {
+    res.cookie('session_id', req.session, {
       httpOnly: true,
       secure: true,
       sameSite: 'none',
