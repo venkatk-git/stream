@@ -51,7 +51,8 @@ router.get(
       googleId: user.googleId,
       profileImg: user.profileImg,
     };
-
+    console.log('Set-Cookie Header:', res.getHeaders()['set-cookie']);
+    
     req.session.user = req.user;
 
     console.log({ session: req.session });
