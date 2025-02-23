@@ -62,8 +62,7 @@ router.get(
       sameSite: 'none',
     });
 
-    console.log(res.cookie);
-
+    console.log('Set-Cookie Header:', res.getHeaders()['set-cookie']);
     res.redirect(process.env.CLIENT_ORIGIN);
   }
 );
