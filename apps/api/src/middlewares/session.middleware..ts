@@ -14,10 +14,13 @@ const sessionMiddleware = session({
   saveUninitialized: false,
   cookie: {
     maxAge: 1000 * 60 * 60 * 24, // 1 day
-    secure: process.env.APPLICATION_ENVIRONMENT === "production",
+    secure: process.env.APPLICATION_ENVIRONMENT === 'production',
     httpOnly: true,
     sameSite: 'none',
+    domain: 'stream-xra9.onrender.com',
   },
 });
+
+console.log(process.env.APPLICATION_ENVIRONMENT === 'production');
 
 export { sessionMiddleware };
