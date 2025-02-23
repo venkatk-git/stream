@@ -54,13 +54,15 @@ router.get(
 
     req.session.user = req.user;
 
-    console.log({"session": req.session});
+    console.log({ session: req.session });
 
     res.cookie('session_id', req.sessionID, {
       httpOnly: true,
       secure: true,
       sameSite: 'none',
     });
+
+    console.log(res.cookie);
 
     res.redirect(process.env.CLIENT_ORIGIN);
   }
