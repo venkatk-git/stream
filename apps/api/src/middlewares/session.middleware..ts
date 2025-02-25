@@ -1,5 +1,5 @@
 import session from 'express-session';
-import process from 'process';
+import MongoStore from 'connect-mongo';
 // import { redisClient } from "../redis";
 // import { RedisStore } from "connect-redis";
 
@@ -11,6 +11,7 @@ const sessionMiddleware = session({
   name: 'session_id',
   secret: process.env.COOKIE_SECRET || 'good day',
   resave: false,
+  store: MongoStore.create({ mongoUrl: process.env.MONGODB_URI }),
   saveUninitialized: false,
   cookie: {
     maxAge: 1000 * 60 * 60 * 24, // 1 day
