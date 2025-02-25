@@ -15,9 +15,8 @@ const sessionMiddleware = session({
   saveUninitialized: false,
   cookie: {
     maxAge: 1000 * 60 * 60 * 24, // 1 day
-    secure: process.env.APPLICATION_ENVIRONMENT === 'production',
-    httpOnly: true,
-    sameSite: 'none',
+    secure: true, // ✅ Required for cross-site cookies
+    sameSite: 'none', // ✅ Needed for cross-origin requests
   },
 });
 
