@@ -38,6 +38,7 @@ router.get(
     failureRedirect: '/auth/google',
   }),
   async (req: ExtendedRequest, res) => {
+    console.log("This is google cb");
     console.log(req.session);
     
     const user = await Users.findById(req.session.passport.user);
