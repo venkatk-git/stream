@@ -52,16 +52,12 @@ router.get(
       profileImg: user.profileImg,
     };
     console.log('Set-Cookie Header:', res.getHeaders()['set-cookie']);
-    
+
     req.session.user = req.user;
 
     console.log({ session: req.session });
 
-    res.cookie('session_id', req.sessionID, {
-      httpOnly: true,
-      secure: true,
-      sameSite: 'none',
-    });
+    req.session.save();
 
     console.log('Set-Cookie Header:', res.getHeaders()['set-cookie']);
     res.redirect(process.env.CLIENT_ORIGIN);
