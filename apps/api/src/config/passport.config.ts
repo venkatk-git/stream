@@ -80,6 +80,7 @@ passport.use(
       const serializeUserPayload = newUser._id.toString();
 
       done(null, serializeUserPayload);
+      
     }
   )
 );
