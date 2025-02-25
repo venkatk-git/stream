@@ -25,7 +25,6 @@ import { Response, NextFunction } from 'express';
 import { successResponse } from './lib/utils/response.utils';
 
 const app = express();
-app.use(cookieParser());
 
 app.use(
   cors({
@@ -56,7 +55,7 @@ mongoose
  * Purpose:
  * - Enhances the security of the application by setting various HTTP headers.
  */
-app.use(helmet());
+// app.use(helmet());
 
 app.use(express.json());
 
@@ -73,6 +72,7 @@ app.set('trust proxy', true);
  * Purpose:
  * - Manages session data for incoming requests, integrating with Passport.js
  */
+app.use(cookieParser());
 app.use(sessionMiddleware);
 
 // Passport Initialization
