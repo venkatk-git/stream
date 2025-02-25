@@ -38,9 +38,6 @@ router.get(
     failureRedirect: '/auth/google',
   }),
   async (req: ExtendedRequest, res) => {
-    console.log("This is google cb");
-    console.log(req.session);
-    
     const user = await Users.findById(req.session.passport.user);
 
     if (!user) {
@@ -55,15 +52,12 @@ router.get(
       profileImg: user.profileImg,
     };
 
-    console.log('Set-Cookie Header:', res.getHeaders());
-
     req.session.user = req.user;
 
-    console.log({ session: req.session });
+    console.log({ ExpressSession: req.session });
 
     req.session.save();
 
-    console.log('Set-Cookie Header:', res.getHeaders()['set-cookie']);
     res.redirect(process.env.CLIENT_ORIGIN);
   }
 );

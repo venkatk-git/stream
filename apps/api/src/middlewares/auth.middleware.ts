@@ -33,7 +33,7 @@ export function authorizeUser(socket: ExtendedSocket, next: NextFunction) {
     !socket.request.session.passport ||
     !socket.request.session.passport.user
   ) {
-    console.log(socket.request.session);
+    console.log({ socketSession: socket.request.session });
 
     return next(new Error('User not authorized'));
   }
