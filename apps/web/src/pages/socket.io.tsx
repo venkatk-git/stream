@@ -10,8 +10,6 @@ export default function SocketIo() {
       console.log(payload);
     });
   }, []);
-
-  return <div>socket.io</div>;
 }
 
 function useSocketSetup() {
@@ -19,6 +17,9 @@ function useSocketSetup() {
     socket.connect();
     socket.on('connect_error', () => {
       console.error('Oops! There is a problem in react socket connection :(');
+    });
+    socket.on('connect', () => {
+      console.log('Socket connected!');
     });
   }, []);
 }
