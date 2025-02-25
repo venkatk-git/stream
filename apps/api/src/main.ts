@@ -63,8 +63,17 @@ io.engine.use(helmet());
  * Purpose:
  * - This middleware ensures that session data is available for each incoming socket connection.
  */
-io.engine.use(sessionMiddleware);
-
+io.use((socket, next) => {
+  const req = socket.request as any;
+  sessionMiddleware(req, {} as any, () => {
+    if (!req.session || !req.session.passport) {
+      console.log('User not authorized in WebSocket');
+      return next(new Error('User not authorized'));
+    }
+    console.log('User authenticated:', req.session.passport.user);
+    next();
+  });
+});
 /**
  * Purpose:
  * - This middleware ensures that the user is authenticated before establishing a socket connection.
