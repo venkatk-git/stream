@@ -147,9 +147,9 @@ export default function PlayerContextProvinder({
 
     const handleOnVideoBuffer = (intiator) => {
       toast({
-        title: 'Oops',
+        title: 'Buffering :)',
         description: `${intiator} experiencing buffering`,
-        duration: 3000,
+        duration: 500,
       });
     };
 
