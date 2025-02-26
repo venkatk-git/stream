@@ -1,5 +1,3 @@
-// import { redisClient } from "../redis";
-
 import Users from '../models/user.model';
 
 import { RequestHandler, Response, NextFunction } from 'express';
@@ -39,7 +37,6 @@ export function authorizeUser(socket: ExtendedSocket, next: NextFunction) {
   }
 
   socket.user = { ...socket.request.session.user };
-  // redisClient.hSet(`userid:${socket.user.id}`, "socketid", socket.id);
   return next();
 }
 
