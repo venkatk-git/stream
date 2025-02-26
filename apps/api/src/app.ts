@@ -3,8 +3,6 @@ import mongoose from 'mongoose';
 import passport from 'passport';
 
 import cors from 'cors';
-import helmet from 'helmet';
-import cookieParser from 'cookie-parser';
 
 import authRouter from './routes/auth.router';
 import testRouter from './routes/test.router';
@@ -72,7 +70,6 @@ app.set('trust proxy', true);
  * Purpose:
  * - Manages session data for incoming requests, integrating with Passport.js
  */
-app.use(cookieParser());
 app.use(sessionMiddleware);
 
 // Passport Initialization

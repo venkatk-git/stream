@@ -5,8 +5,8 @@ import socket from '../socket';
 export default function useSocket() {
   React.useEffect(() => {
     socket.connect();
-    socket.on('connect_error', (error) => {
-      console.log('Connection failed', error);
+    socket.on('connect_error', () => {
+      console.log('Connection failed');
     });
 
     return () => {
