@@ -8,7 +8,7 @@ export function isAuthenticated(): RequestHandler {
   return (req: ExtendedRequest, res: Response, next: NextFunction) => {
     if (!req.user || !req.isAuthenticated() || !req.session?.passport?.user) {
       return next(new Error('Not authenticated'));
-    }
+    } 
 
     return next();
   };

@@ -36,8 +36,6 @@ export const createNewRoom = catchAsync(
 );
 
 /**
- * !!IMPORTANT!! This function is not used in the application and is provided as a reference.
- *
  *  The function performs the following actions:
  * - Retrieves the room ID from the URL parameters.
  * - Validates if the room ID exists and is valid by calling the service function.

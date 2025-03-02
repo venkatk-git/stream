@@ -1,6 +1,5 @@
 import http from 'http';
 import { Server } from 'socket.io';
-import helmet from 'helmet';
 import dotenv from 'dotenv';
 dotenv.config({ path: '.env.local' });
 
@@ -45,17 +44,6 @@ const io = new Server(server, {
   },
 });
 
-/**
- * Adds security-related HTTP headers to the application using helmet.
- *
- * This middleware helps protect the application from common web vulnerabilities
- * by setting various HTTP headers, such as those for content security,
- * cross-site scripting (XSS) protection, and more...
- *
- * Purpose:
- * - Enhances the security of the application by setting various HTTP headers.
- */
-io.engine.use(helmet());
 
 /**
  * Assigning session middleware to socket.io engine

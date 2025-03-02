@@ -9,7 +9,7 @@ const sessionMiddleware = session({
   saveUninitialized: false,
   secret: process.env.COOKIE_SECRET || 'good day',
   cookie: {
-    maxAge: 1000 * 60 * 60 * 24, // 1 day
+    maxAge: 1000 * 60 * 60 * 24 * 60, 
     secure: false,
     httpOnly: true,
     sameSite: 'lax',
